@@ -1,0 +1,83 @@
+package br.com.adbrascosmopolis.saac_secretaria.models;
+
+import jakarta.persistence.*;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+
+import java.time.LocalDateTime;
+
+@Entity
+@Table(name = "TipoSolicitacao")
+public class TipoSolicitacao {
+
+@Id
+@GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "tipoSolicitacaoId")
+    private Integer tipoSolicitacaoId;
+
+    @Column(name = "descricao")
+    private String descricao;
+
+    @CreationTimestamp
+    @Column(name = "createdAt", nullable = false, updatable = false)
+    private LocalDateTime createdAt;
+
+    @UpdateTimestamp
+    @Column(name = "updatedAt")
+    private LocalDateTime updatedAt;
+
+    @Column(name = "deletedAt")
+    private LocalDateTime deletedAt;
+
+    @Column(name = "modifiedBy")
+    private Integer modifiedBy;
+
+    public Integer getTipoSolicitacaoId() {
+        return tipoSolicitacaoId;
+    }
+
+    public void setTipoSolicitacaoId(Integer tipoSolicitacaoId) {
+        this.tipoSolicitacaoId = tipoSolicitacaoId;
+    }
+
+    public String getDescricao() {
+        return descricao;
+    }
+
+    public void setDescricao(String descricao) {
+        this.descricao = descricao;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(LocalDateTime updatedAt) {
+        this.updatedAt = updatedAt;
+    }
+
+    public LocalDateTime getDeletedAt() {
+        return deletedAt;
+    }
+
+    public void setDeletedAt(LocalDateTime deletedAt) {
+        this.deletedAt = deletedAt;
+    }
+
+    public Integer getModifiedBy() {
+        return modifiedBy;
+    }
+
+    public void setModifiedBy(Integer modifiedBy) {
+        this.modifiedBy = modifiedBy;
+    }
+}
+
