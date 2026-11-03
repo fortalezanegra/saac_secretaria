@@ -13,6 +13,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -35,6 +36,7 @@ public class PessoaController {
 
     /* Pesquisar Todas as Pessoas */
     @GetMapping("/all")
+    @PreAuthorize("hasAuthority('PERMISSION_TESOURARIA_MOVIMENTO_FINANCEIRO_READ_GLOBAL') or hasAuthority('PERMISSION_TESOURARIA_MOVIMENTO_FINANCEIRO_READ_LOCAL')")
     public ResponseEntity<List<PessoaResponseDTO>> getAll(){
         List<PessoaResponseDTO> pessoas = _service.getAll();
         return ResponseEntity.ok(pessoas);
@@ -42,6 +44,7 @@ public class PessoaController {
 
     /* Pesquisar Todas as Pessoas não deletadas */
     @GetMapping()
+    @PreAuthorize("hasAuthority('PERMISSION_TESOURARIA_MOVIMENTO_FINANCEIRO_READ_GLOBAL') or hasAuthority('PERMISSION_TESOURARIA_MOVIMENTO_FINANCEIRO_READ_LOCAL')")
     public ResponseEntity<List<PessoaResponseDTO>> getAllNotDeleted(){
         List<PessoaResponseDTO> pessoas = _service.getAllNotDeleted();
         return ResponseEntity.ok(pessoas);

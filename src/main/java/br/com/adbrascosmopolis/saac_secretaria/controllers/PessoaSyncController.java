@@ -3,6 +3,7 @@ package br.com.adbrascosmopolis.saac_secretaria.controllers;
 import br.com.adbrascosmopolis.saac_secretaria.dto.sincronizacao.tesouraria.PessoaSyncDTO;
 import br.com.adbrascosmopolis.saac_secretaria.services.PessoaSyncService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,9 +24,9 @@ public class PessoaSyncController {
 
     /* Pesquisar Todas as Pessoas não deletadas */
     @GetMapping("/pessoa")
+    @PreAuthorize("hasAuthority('PERMISSION_TESOURARIA_MOVIMENTO_FINANCEIRO_REPORT_GLOBAL') or hasAuthority('PERMISSION_TESOURARIA_MOVIMENTO_FINANCEIRO_REPORT_LOCAL')")
     public ResponseEntity<List<PessoaSyncDTO>> getAllNotDeleted(){
         List<PessoaSyncDTO> pessoas = _service.getPessoaSyncTesouraria();
         return ResponseEntity.ok(pessoas);
     }
-
 }

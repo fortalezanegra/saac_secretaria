@@ -9,6 +9,7 @@ import br.com.adbrascosmopolis.saac_secretaria.dto.pessoa.PessoaResponseDTO;
 import br.com.adbrascosmopolis.saac_secretaria.models.Congregacao;
 import br.com.adbrascosmopolis.saac_secretaria.services.CongregacaoService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -29,6 +30,7 @@ public class CongregacaoController {
 
     // Dropdown/ComboBox
     @GetMapping()
+    @PreAuthorize("hasAuthority('PERMISSION_TESOURARIA_MOVIMENTO_FINANCEIRO_READ_GLOBAL') or hasAuthority('PERMISSION_TESOURARIA_MOVIMENTO_FINANCEIRO_READ_LOCAL')")
     public ResponseEntity<List<CongregacaoDropdownDTO>> getAll(){
         List<CongregacaoDropdownDTO> congregacoes = _service.dropdown();
         return ResponseEntity.ok(congregacoes);
@@ -36,6 +38,7 @@ public class CongregacaoController {
 
     // Buscar todas as congregações
     @GetMapping("/all")
+    @PreAuthorize("hasAuthority('PERMISSION_TESOURARIA_MOVIMENTO_FINANCEIRO_READ_GLOBAL') or hasAuthority('PERMISSION_TESOURARIA_MOVIMENTO_FINANCEIRO_READ_LOCAL')")
     public ResponseEntity<List<CongregacaoResponseDTO>> getAllComplete() {
         List<CongregacaoResponseDTO> congregacoes = _service.listAll();
         return ResponseEntity.ok(congregacoes);
