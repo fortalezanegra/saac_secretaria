@@ -7,7 +7,7 @@ import java.time.LocalDateTime;
 
 public class EventoEditDTO {
 
-    private Integer eventoId;
+    private Long eventoId;
     private Integer congregacaoId;
     private Integer tipoEventoId;
     private String descricao;
@@ -34,11 +34,11 @@ public class EventoEditDTO {
         return dto;
     }
 
-    public Integer getEventoId() {
+    public Long getEventoId() {
         return eventoId;
     }
 
-    public void setEventoId(Integer eventoId) {
+    public void setEventoId(Long eventoId) {
         this.eventoId = eventoId;
     }
 

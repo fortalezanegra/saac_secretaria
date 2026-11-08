@@ -14,7 +14,7 @@ public class Evento {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "eventoId")
-    private Integer eventoId;
+    private Long eventoId;
 
     @ManyToOne(fetch = FetchType.LAZY) // ou EAGER se quiser carregar junto
     @JoinColumn(name = "congregacaoId", referencedColumnName = "congregacaoId")
@@ -54,11 +54,11 @@ public class Evento {
     @Column(name = "modifiedBy")
     private Integer modifiedBy;
 
-    public Integer getEventoId() {
+    public Long getEventoId() {
         return eventoId;
     }
 
-    public void setEventoId(Integer eventoId) {
+    public void setEventoId(Long eventoId) {
         this.eventoId = eventoId;
     }
 

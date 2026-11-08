@@ -11,6 +11,7 @@ import br.com.adbrascosmopolis.saac_secretaria.repository.TipoEventoRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -34,14 +35,16 @@ public class EventoService {
     }
 
 
-    // Busca todos os Eventos
-    public List<EventoResponseDTO> listAll(){
-        List<Evento> eventos = eventoRepository.buscarTodosEventos();
+    // Find All Eventos
+    public List<EventoResponseDTO> findAll(){
+        List<Evento> eventos = eventoRepository.findAllEventos();
 
         return eventos.stream()
                 .map(e -> new EventoResponseDTO(
                         e.getEventoId(),
+                        e.getCongregacao() != null ? e.getCongregacao().getCongregacaoId() : null,
                         e.getCongregacao() != null ? e.getCongregacao().getNome() : null,
+                        e.getTipoEvento() != null ? e.getTipoEvento().getTipoEventoId() : null,
                         e.getTipoEvento() != null ? e.getTipoEvento().getDescricao() : null,
                         e.getDescricao(),
                         e.getParticipantes(),
@@ -52,20 +55,22 @@ public class EventoService {
                 )).toList();
     }
 
-    // Busca Evento por Id
-    public Evento listById(Integer id){
-        Evento evento = eventoRepository.getReferenceById(id);
-        return evento;
+    // Find By Id
+    public EventoResponseDTO findById(Long id){
+        Evento evento = eventoRepository.findByIdFetchAll(id);
+        return EventoResponseDTO.fromEvento(evento);
     }
 
-    // Busca Eventos por Congregacao
-    public List<EventoResponseDTO> listByCongregacao(Integer id) {
-        List<Evento> eventos = eventoRepository.buscarEventoPorCongregacao(id);
+    // Find By Congregacao
+    public List<EventoResponseDTO> findByCongregacao(Integer id) {
+        List<Evento> eventos = eventoRepository.findAllEventosByCongregacao(id);
 
         return eventos.stream()
                 .map(e -> new EventoResponseDTO(
                         e.getEventoId(),
+                        e.getCongregacao() != null ? e.getCongregacao().getCongregacaoId() : null,
                         e.getCongregacao() != null ? e.getCongregacao().getNome() : null,
+                        e.getTipoEvento() != null ? e.getTipoEvento().getTipoEventoId() : null,
                         e.getTipoEvento() != null ? e.getTipoEvento().getDescricao() : null,
                         e.getDescricao(),
                         e.getParticipantes(),
@@ -110,17 +115,22 @@ public class EventoService {
 
 
         Evento salvo = eventoRepository.save(evento);
-        Evento completo = eventoRepository.findByIdFetchAll(salvo.getEventoId())
-                .orElseThrow(()-> new RuntimeException("Evento não encontrado"));
+        Evento completo = eventoRepository.findByIdFetchAll(salvo.getEventoId());
+        if(completo == null){
+            throw  new RuntimeException("Evento não encontrado");
+        }
 
         return EventoResponseDTO.fromEvento(completo);
     }
 
     // Update
     public EventoResponseDTO update(EventoEditDTO dto){
-        Evento evento = eventoRepository.findById(dto.getEventoId())
-                .orElseThrow(()-> new RuntimeException("Evento não encontrado"));
+        Evento evento = eventoRepository.findByIdFetchAll(dto.getEventoId());
+        if(evento == null){
+            throw new RuntimeException("Evento não encontrado");
+        }
 
+        //Set Atributes
         evento.setDescricao(dto.getDescricao());
         evento.setParticipantes(dto.getParticipantes());
         evento.setVisitantes(dto.getVisitantes());
@@ -155,10 +165,12 @@ public class EventoService {
 
     // Delete
     public EventoResponseDTO delete(EventoEditDTO dto){
-        Evento evento = eventoRepository.findById(dto.getEventoId())
-                .orElseThrow(()-> new RuntimeException("Evento não encontrado"));
+        Evento evento = eventoRepository.findByIdFetchAll(dto.getEventoId());
+        if(evento == null){
+            throw new RuntimeException("Evento não encontrado");
+        }
 
-        evento.setDeletedAt(dto.getDeletedAt());
+        evento.setDeletedAt(LocalDateTime.now());
 
         var result = eventoRepository.save(evento);
 

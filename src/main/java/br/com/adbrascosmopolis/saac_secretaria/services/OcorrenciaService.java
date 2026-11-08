@@ -3,10 +3,11 @@ package br.com.adbrascosmopolis.saac_secretaria.services;
 import br.com.adbrascosmopolis.saac_secretaria.dto.ocorrencia.OcorrenciaEditDTO;
 import br.com.adbrascosmopolis.saac_secretaria.dto.ocorrencia.OcorrenciaRequestDTO;
 import br.com.adbrascosmopolis.saac_secretaria.dto.ocorrencia.OcorrenciaResponseDTO;
+import br.com.adbrascosmopolis.saac_secretaria.enumeration.TipoOcorrencia;
 import br.com.adbrascosmopolis.saac_secretaria.models.Ocorrencia;
+import br.com.adbrascosmopolis.saac_secretaria.repository.CongregacaoRepository;
 import br.com.adbrascosmopolis.saac_secretaria.repository.EventoRepository;
 import br.com.adbrascosmopolis.saac_secretaria.repository.OcorrenciaRepository;
-import br.com.adbrascosmopolis.saac_secretaria.repository.TipoOcorrenciaRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
@@ -17,58 +18,60 @@ import java.util.List;
 public class OcorrenciaService {
 
     private final OcorrenciaRepository ocorrenciaRepository;
+    private final CongregacaoRepository congregacaoRepository;
     private final EventoRepository eventoRepository;
-    private final TipoOcorrenciaRepository tipoOcorrenciaRepository;
 
     public OcorrenciaService(
             OcorrenciaRepository ocorrenciaRepository,
-            EventoRepository eventoRepository,
-            TipoOcorrenciaRepository tipoOcorrenciaRepository
+            CongregacaoRepository congregacaoRepository,
+            EventoRepository eventoRepository
     ){
         this.ocorrenciaRepository = ocorrenciaRepository;
+        this.congregacaoRepository = congregacaoRepository;
         this.eventoRepository = eventoRepository;
-        this.tipoOcorrenciaRepository = tipoOcorrenciaRepository;
     }
 
     // Busca todas as Ocorrencia
     public List<OcorrenciaResponseDTO> listAll(){
-        List<Ocorrencia> ocorrencias = ocorrenciaRepository.buscarTodasOcorrencias();
+        List<Ocorrencia> ocorrencias = ocorrenciaRepository.findAllOcorrencias();
 
         return ocorrencias.stream()
                 .map(o -> new OcorrenciaResponseDTO(
                         o.getOcorrenciaId(),
-                        o.getEvento() != null ? o.getEvento().getDescricao()  : null,
+                        o.getCongregacao() != null ? o.getCongregacao().getCongregacaoId() : null,
+                        o.getCongregacao() != null ? o.getCongregacao().getNome() : null,
                         o.getEvento() != null ? o.getEvento().getEventoId() : null,
-                        o.getTipoOcorrencia() != null ? o.getTipoOcorrencia().getDescricao() : null,
-                        o.getTipoOcorrencia() != null ? o.getTipoOcorrencia().getTipoOcorrenciaId() : null,
+                        o.getEvento() != null ? o.getEvento().getDescricao()  : null,
+                        o.getTipoOcorrencia(),
                         o.getQuantidade()
                 )).toList();
     }
 
-    // Busca Ocorrencia por Id
-    public Ocorrencia listById(Integer id){
-        Ocorrencia ocorrencia = ocorrenciaRepository.getReferenceById(id);
-        return ocorrencia;
+    // Find Ocorrencia By Id
+    public OcorrenciaResponseDTO listById(Long id){
+        Ocorrencia ocorrencia = ocorrenciaRepository.findByIdFetchAll(id);
+        return OcorrenciaResponseDTO.fromOcorrencia(ocorrencia);
     }
 
     // Busca Ocorrencia por Evento
-    public List<OcorrenciaResponseDTO> listByEvento(Integer id) {
-        List<Ocorrencia> ocorrencias = ocorrenciaRepository.buscarOcorrenciaPorEvento(id);
+    public List<OcorrenciaResponseDTO> listByEvento(Long id) {
+        List<Ocorrencia> ocorrencias = ocorrenciaRepository.findByEvento(id);
 
         return ocorrencias.stream()
                 .map(o -> new OcorrenciaResponseDTO(
                         o.getOcorrenciaId(),
-                        o.getEvento() != null ? o.getEvento().getDescricao()  : null,
+                        o.getCongregacao() != null ? o.getCongregacao().getCongregacaoId() : null,
+                        o.getCongregacao() != null ? o.getCongregacao().getNome() : null,
                         o.getEvento() != null ? o.getEvento().getEventoId() : null,
-                        o.getTipoOcorrencia() != null ? o.getTipoOcorrencia().getDescricao() : null,
-                        o.getTipoOcorrencia() != null ? o.getTipoOcorrencia().getTipoOcorrenciaId() : null,
+                        o.getEvento() != null ? o.getEvento().getDescricao()  : null,
+                        o.getTipoOcorrencia(),
                         o.getQuantidade()
                 )).toList();
     }
 
     //Buscar Ocorrencia por Id e EventoId
-    public OcorrenciaResponseDTO listByIdAndEventoId(Integer eventoId, Integer ocorrenciaId){
-        Ocorrencia ocorrencia = ocorrenciaRepository.buscarPorEventoEOcorrencia(eventoId, ocorrenciaId);
+    public OcorrenciaResponseDTO listByIdAndEventoId(Long eventoId, TipoOcorrencia tipoOcorrencia){
+        Ocorrencia ocorrencia = ocorrenciaRepository.findByEventoAndTipoOcorrencia(eventoId, tipoOcorrencia);
         return OcorrenciaResponseDTO.fromOcorrencia(ocorrencia);
     }
 
@@ -77,26 +80,27 @@ public class OcorrenciaService {
     public OcorrenciaResponseDTO create(OcorrenciaRequestDTO dto){
         Ocorrencia ocorrencia = new Ocorrencia();
 
-        ocorrencia.setQuantidade(dto.getQuantidade());
-
         // Buscar entidades relacionadas pelo ID
+        if(dto.getCongregacaoId() != null){
+            congregacaoRepository.findByIdFetchAll(dto.getCongregacaoId())
+                    .orElseThrow( () -> new RuntimeException("Congregação não encontrada"));
+        }
+
         if(dto.getEventoId() != null){
             ocorrencia.setEvento(
-                    eventoRepository.findById(dto.getEventoId())
-                            .orElseThrow(() -> new RuntimeException("Evento não encontrado"))
+                    eventoRepository.findByIdFetchAll(dto.getEventoId())
+
             );
         }
 
-        if(dto.getTipoOcorrenciaId() != null){
-            ocorrencia.setTipoOcorrencia(
-                    tipoOcorrenciaRepository.findById(dto.getTipoOcorrenciaId())
-                            .orElseThrow(() -> new RuntimeException("Tipo de Ocorrencia não encontrado"))
-            );
-        }
+        ocorrencia.setTipoOcorrencia(dto.getTipoOcorrencia());
+        ocorrencia.setQuantidade(dto.getQuantidade());
 
         Ocorrencia salva = ocorrenciaRepository.save(ocorrencia);
-        Ocorrencia completo = ocorrenciaRepository.findByIdFetchAll(salva.getOcorrenciaId())
-                .orElseThrow(()-> new RuntimeException("Evento não encontrado"));
+        Ocorrencia completo = ocorrenciaRepository.getReferenceById(salva.getOcorrenciaId());
+        if(salva.getOcorrenciaId() == null){
+            throw new RuntimeException("Evento não encontrado");
+        }
 
         return OcorrenciaResponseDTO.fromOcorrencia(completo);
     }
@@ -115,15 +119,15 @@ public class OcorrenciaService {
         result.setQuantidade(dto.getQuantidade());
 
         // Relacionamentos (CORRETO)
-        if(dto.getEventoId() != null){
-            result.setEvento(
-                    eventoRepository.getReferenceById(dto.getEventoId())
+        if(dto.getCongregacaoId() != null){
+            result.setCongregacao(
+                    congregacaoRepository.getReferenceById(dto.getCongregacaoId())
             );
         }
 
-        if(dto.getTipoOcorrenciaId() != null){
-            result.setTipoOcorrencia(
-                    tipoOcorrenciaRepository.getReferenceById(dto.getTipoOcorrenciaId())
+        if(dto.getEventoId() != null){
+            result.setEvento(
+                    eventoRepository.findByIdFetchAll(dto.getEventoId())
             );
         }
 

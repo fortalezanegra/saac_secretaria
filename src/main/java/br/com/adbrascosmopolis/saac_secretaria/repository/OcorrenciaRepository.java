@@ -1,5 +1,6 @@
 package br.com.adbrascosmopolis.saac_secretaria.repository;
 
+import br.com.adbrascosmopolis.saac_secretaria.enumeration.TipoOcorrencia;
 import br.com.adbrascosmopolis.saac_secretaria.models.Ocorrencia;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -10,9 +11,9 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface OcorrenciaRepository extends JpaRepository<Ocorrencia, Integer> {
+public interface OcorrenciaRepository extends JpaRepository<Ocorrencia, Long> {
 
-
+    //Find All By Id
     @Query("""
     select o from Ocorrencia o
     left join fetch o.evento
@@ -20,9 +21,9 @@ public interface OcorrenciaRepository extends JpaRepository<Ocorrencia, Integer>
     where o.ocorrenciaId = :id
     and o.deletedAt IS NULL
 """)
-    Optional<Ocorrencia> findByIdFetchAll(@Param("id") Integer id);
+    Ocorrencia findByIdFetchAll(@Param("id") Long id);
 
-    //Buscar Ocorrencias por Evento
+    //Find By Evento
     @Query("""
     select o from Ocorrencia o
     left join fetch o.evento
@@ -30,30 +31,40 @@ public interface OcorrenciaRepository extends JpaRepository<Ocorrencia, Integer>
     where o.evento.eventoId = :id
     and o.deletedAt IS NULL
 """)
-    List<Ocorrencia> buscarOcorrenciaPorEvento(@Param("id") Integer id);
+    List<Ocorrencia> findByEvento(@Param("id") Long id);
 
-    //Buscar por Evento e TipoOcorrencia (Duplicidade)
+    //Find By Congregacao
+    @Query("""
+    select o from Ocorrencia o
+    left join fetch o.evento
+    left join fetch o.tipoOcorrencia
+    where o.congregacao.congregacaoId = :id
+    and o.deletedAt IS NULL
+""")
+    List<Ocorrencia> findByCongregacao(@Param("id") Integer id);
+
+    //Find By Evento And TipoOcorrencia
     @Query("""
     select o from Ocorrencia o
     left join fetch o.evento
     left join fetch o.tipoOcorrencia
     where o.evento.eventoId = :eventoId
-    and o.tipoOcorrencia.tipoOcorrenciaId = :tipoOcorrenciaId
+    and o.tipoOcorrencia = :tipoOcorrencia
     and o.deletedAt IS NULL
 """)
-    Ocorrencia buscarPorEventoEOcorrencia(
-            @Param("eventoId") Integer eventoId,
-            @Param("tipoOcorrenciaId") Integer tipoOcorrenciaId);
+    Ocorrencia findByEventoAndTipoOcorrencia(
+            @Param("eventoId") Long eventoId,
+            @Param("tipoOcorrencia") TipoOcorrencia tipoOcorrencia);
 
 
-    //Buscar Todas as Ocorrencias
+    //Find All
     @Query("""
     select o from Ocorrencia o
     left join fetch o.evento
     left join fetch o.tipoOcorrencia
     where o.deletedAt IS NULL
-    order by o.tipoOcorrencia.descricao ASC
+    order by o.tipoOcorrencia ASC
 """)
-    List<Ocorrencia> buscarTodasOcorrencias();
+    List<Ocorrencia> findAllOcorrencias();
 
 }

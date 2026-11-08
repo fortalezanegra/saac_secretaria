@@ -1,5 +1,6 @@
 package br.com.adbrascosmopolis.saac_secretaria.models;
 
+import br.com.adbrascosmopolis.saac_secretaria.enumeration.TipoOcorrencia;
 import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -13,14 +14,17 @@ public class Ocorrencia {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ocorrenciaId")
-    private Integer ocorrenciaId;
+    private Long ocorrenciaId;
+
+    @ManyToOne(fetch = FetchType.LAZY) // ou EAGER se quiser carregar junto
+    @JoinColumn(name = "congregacaoId", referencedColumnName = "congregacaoId")
+    private Congregacao congregacao;
 
     @ManyToOne(fetch = FetchType.LAZY) // ou EAGER se quiser carregar junto
     @JoinColumn(name = "eventoId", referencedColumnName = "eventoId")
     private Evento evento;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "tipoOcorrenciaId", referencedColumnName = "tipoOcorrenciaId")
+    @Enumerated(EnumType.STRING)
     private TipoOcorrencia tipoOcorrencia;
 
     @Column(name = "quantidade")
@@ -40,12 +44,20 @@ public class Ocorrencia {
     @Column(name = "modifiedBy")
     private Integer modifiedBy;
 
-    public Integer getOcorrenciaId() {
+    public Long getOcorrenciaId() {
         return ocorrenciaId;
     }
 
-    public void setOcorrenciaId(Integer ocorrenciaId) {
+    public void setOcorrenciaId(Long ocorrenciaId) {
         this.ocorrenciaId = ocorrenciaId;
+    }
+
+    public Congregacao getCongregacao() {
+        return congregacao;
+    }
+
+    public void setCongregacao(Congregacao congregacao) {
+        this.congregacao = congregacao;
     }
 
     public Evento getEvento() {

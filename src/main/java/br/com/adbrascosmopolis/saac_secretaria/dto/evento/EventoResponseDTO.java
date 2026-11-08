@@ -6,8 +6,10 @@ import java.time.LocalDate;
 
 public class EventoResponseDTO {
 
-    private Integer eventoId;
+    private Long eventoId;
+    private Integer congregacaoId;
     private String congregacao;
+    private Integer tipoEventoId;
     private String tipoEvento;
     private String descricao;
     private Integer participantes;
@@ -16,8 +18,10 @@ public class EventoResponseDTO {
     private String situacao;
 
     public EventoResponseDTO(
-            Integer eventoId,
+            Long eventoId,
+            Integer congregacaoId,
             String congregacao,
+            Integer tipoEventoId,
             String tipoEvento,
             String descricao,
             Integer participantes,
@@ -26,7 +30,9 @@ public class EventoResponseDTO {
             String situacao
     ){
         this.eventoId = eventoId;
+        this.congregacaoId = congregacaoId;
         this.congregacao = congregacao;
+        this.tipoEventoId = tipoEventoId;
         this.tipoEvento = tipoEvento;
         this.descricao = descricao;
         this.participantes = participantes;
@@ -40,7 +46,9 @@ public class EventoResponseDTO {
 
         return new EventoResponseDTO(
                 e.getEventoId(),
+                e.getCongregacao() != null ? e.getCongregacao().getCongregacaoId() : null,
                 e.getCongregacao() != null ? e.getCongregacao().getNome() : null,
+                e.getTipoEvento() != null ? e.getTipoEvento().getTipoEventoId() : null,
                 e.getTipoEvento() != null ? e.getTipoEvento().getDescricao() : null,
                 e.getDescricao(),
                 e.getParticipantes(),
@@ -50,12 +58,20 @@ public class EventoResponseDTO {
         );
     }
 
-    public Integer getEventoId() {
+    public Long getEventoId() {
         return eventoId;
     }
 
-    public void setEventoId(Integer eventoId) {
+    public void setEventoId(Long eventoId) {
         this.eventoId = eventoId;
+    }
+
+    public Integer getCongregacaoId() {
+        return congregacaoId;
+    }
+
+    public void setCongregacaoId(Integer congregacaoId) {
+        this.congregacaoId = congregacaoId;
     }
 
     public String getCongregacao() {
@@ -64,6 +80,14 @@ public class EventoResponseDTO {
 
     public void setCongregacao(String congregacao) {
         this.congregacao = congregacao;
+    }
+
+    public Integer getTipoEventoId() {
+        return tipoEventoId;
+    }
+
+    public void setTipoEventoId(Integer tipoEventoId) {
+        this.tipoEventoId = tipoEventoId;
     }
 
     public String getTipoEvento() {

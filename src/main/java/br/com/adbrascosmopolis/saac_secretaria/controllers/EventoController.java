@@ -1,15 +1,12 @@
 package br.com.adbrascosmopolis.saac_secretaria.controllers;
 
-import br.com.adbrascosmopolis.saac_secretaria.dto.congregacao.CongregacaoEditDTO;
-import br.com.adbrascosmopolis.saac_secretaria.dto.congregacao.CongregacaoRequestDTO;
-import br.com.adbrascosmopolis.saac_secretaria.dto.congregacao.CongregacaoResponseDTO;
 import br.com.adbrascosmopolis.saac_secretaria.dto.evento.EventoEditDTO;
+import br.com.adbrascosmopolis.saac_secretaria.dto.evento.EventoFilterDTO;
 import br.com.adbrascosmopolis.saac_secretaria.dto.evento.EventoRequestDTO;
 import br.com.adbrascosmopolis.saac_secretaria.dto.evento.EventoResponseDTO;
-import br.com.adbrascosmopolis.saac_secretaria.models.Congregacao;
-import br.com.adbrascosmopolis.saac_secretaria.models.Evento;
 import br.com.adbrascosmopolis.saac_secretaria.services.EventoService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -22,40 +19,44 @@ import java.util.List;
 @CrossOrigin(origins = "*")
 public class EventoController {
 
-    private final EventoService _service;
+    private final EventoService service;
 
     public EventoController(EventoService service){
-        this._service = service;
+        this.service = service;
     }
 
-    // Buscar todos os Eventos
-    @GetMapping("/all")
+    // FindAll
+    @GetMapping()
+    @PreAuthorize("hasAuthority('PERMISSION_SECRETARIA_EVENTO_READ_GLOBAL') or hasAuthority('PERMISSION_SECRETARIA_EVENTO_READ_LOCAL')")
     public ResponseEntity<List<EventoResponseDTO>> getAll() {
-        List<EventoResponseDTO> eventos = _service.listAll();
+        List<EventoResponseDTO> eventos = service.findAll();
         return ResponseEntity.ok(eventos);
     }
 
-    // Buscar Evento por Id
-    @GetMapping("/{id}")
-    public ResponseEntity<EventoEditDTO> getById(@PathVariable Integer id) {
-        Evento e = _service.listById(id);
-        if (e == null) return ResponseEntity.notFound().build();
-        return ResponseEntity.ok(EventoEditDTO.fromEvento(e));
+    // Find By Id
+    @PostMapping("/id")
+    @PreAuthorize("hasAuthority('PERMISSION_SECRETARIA_EVENTO_READ_GLOBAL') or hasAuthority('PERMISSION_SECRETARIA_EVENTO_READ_LOCAL')")
+    public ResponseEntity<EventoResponseDTO> getById(@RequestBody EventoFilterDTO dto) {
+        EventoResponseDTO evento = service.findById(dto.getEventoId());
+        if (evento == null) return ResponseEntity.notFound().build();
+        return ResponseEntity.ok(evento);
     }
 
-    // Listar Eventos por Congregacao
-    @GetMapping("/congregacao/{id}")
-    public ResponseEntity<List<EventoResponseDTO>> listarPorCongregacao(@PathVariable Integer id) {
-        List<EventoResponseDTO> eventos = _service.listByCongregacao(id);
+    // Find By Congregacao
+    @PostMapping("/congregacao")
+    @PreAuthorize("hasAuthority('PERMISSION_SECRETARIA_EVENTO_READ_GLOBAL') or hasAuthority('PERMISSION_SECRETARIA_EVENTO_READ_LOCAL')")
+    public ResponseEntity<List<EventoResponseDTO>> getByCongregacao(@RequestBody EventoFilterDTO dto) {
+        List<EventoResponseDTO> eventos = service.findByCongregacao(dto.getCongregacaoId());
         return ResponseEntity.ok(eventos);
     }
 
     // Create
-    @PostMapping("/create")
+    @PostMapping()
+    @PreAuthorize("hasAuthority('PERMISSION_SECRETARIA_EVENTO_CREATE_GLOBAL') or hasAuthority('PERMISSION_SECRETARIA_EVENTO_CREATE_LOCAL')")
     public ResponseEntity<Object> create(@RequestBody EventoRequestDTO dto) {
         try {
             // Passa o DTO direto para o Service
-            EventoResponseDTO responseDTO = _service.create(dto);
+            EventoResponseDTO responseDTO = service.create(dto);
 
             URI location = ServletUriComponentsBuilder
                     .fromCurrentRequest()
@@ -71,20 +72,23 @@ public class EventoController {
     }
 
     //Update
-    @PutMapping("/update")
+    @PutMapping()
+    @PreAuthorize("hasAuthority('PERMISSION_SECRETARIA_EVENTO_UPDATE_GLOBAL') or hasAuthority('PERMISSION_SECRETARIA_EVENTO_UPDATE_LOCAL')")
     public ResponseEntity<EventoResponseDTO> update(
             @RequestBody EventoEditDTO dto) {
 
-        EventoResponseDTO eventos = _service.update(dto);
+        EventoResponseDTO eventos = service.update(dto);
         return ResponseEntity.ok(eventos);
     }
 
+    //Delete
     @PutMapping("/delete")
+    @PreAuthorize("hasAuthority('PERMISSION_SECRETARIA_EVENTO_DELETE_GLOBAL') or hasAuthority('PERMISSION_SECRETARIA_EVENTO_DELETE_LOCAL')")
     public ResponseEntity<EventoResponseDTO> delete(
             @RequestBody EventoEditDTO dto) {
 
         dto.setDeletedAt(LocalDateTime.now());
-        EventoResponseDTO evento = _service.delete(dto);
+        EventoResponseDTO evento = service.delete(dto);
         return ResponseEntity.ok(evento);
     }
 

@@ -195,41 +195,13 @@ INSERT INTO TipoReuniao(descricao) VALUES
 ('Reunião de Obreiros');
 
 /* REUNIAO MINISTERIAL */
-INSERT INTO ReuniaoMinisterial (tipoReuniaoId, congregacaoId, dataReuniao, situacaoId)
-SELECT
-    1,
-    1,
-    '2026-01-05',
-    s.situacaoId
-FROM Situacao s
-WHERE s.contexto = 'REUNIAO_EVENTO'
-  AND s.descricao = 'Pendente';
+INSERT INTO ReuniaoMinisterial (tipoReuniaoId, congregacaoId, dataReuniao, situacaoId) VALUES
+(1, 1, '2026-11-15', 1),
+(2, 1, '2026-11-25', 1);
 
 /* BATISMO */
-INSERT INTO Batismo(congregacaoId, dataBatismo, situacaoId)
-SELECT 1, '2026-01-10', s.situacaoId
-FROM Situacao s
-WHERE s.contexto = 'BATISMO_EVENTO'
-AND s.descricao  = 'Pendente';
-
-/* CANDIDATO BATISMO */
-INSERT INTO CandidatoBatismo (
-  batismoId,
-  congregacaoId,
-  pessoaId,
-  situacaoId
-)
-SELECT
-  b.batismoId,
-  m.congregacaoId,
-  m.pessoaId,
-  s.situacaoId
-FROM Batismo b
-JOIN Pessoa m ON m.pessoaId = 1
-JOIN Situacao s 
-  ON s.contexto = 'BATISMO_CANDIDATO'
- AND s.descricao = 'Pendente'
-WHERE b.dataBatismo = '2026-01-10';
+INSERT INTO Batismo(congregacaoId, dataBatismo, situacaoId) VALUES
+(1, '2026-12-12', 1);
 
 
 /* TIPO SOLICITACAO */
@@ -248,7 +220,6 @@ INSERT INTO MotivoDesligamento(descricao) VALUES
 ('Falecimento'),
 ('Mudança'),
 ('Suspensão');
-
 
 /* TIPO HISTORICO */
 INSERT INTO TipoHistorico(descricao) VALUES
@@ -292,8 +263,8 @@ INSERT INTO TipoOcorrencia(descricao)VALUES
 ('Batismo Espirito Santo');
 
 /*  OCORRENCIA */
-INSERT INTO Ocorrencia(eventoId, tipoOcorrenciaId, quantidade)VALUES
-(1, 2, 3),
-(3, 1, 1),
-(4, 1, 3);
+INSERT INTO Ocorrencia(congregacaoId, eventoId, tipoOcorrencia, quantidade)VALUES
+(7, 1, 'CONVERSAO', 3),
+(7, 3, 'BATISMO_ESPIRITO_SANTO', 1),
+(7, 4, 'RECONCILIACAO', 3);
 

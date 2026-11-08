@@ -14,7 +14,7 @@ import java.util.Optional;
 public interface EventoRepository extends JpaRepository<Evento, Integer> {
 
 
-    //Buscar todos os dados de um Evento
+    //Get All Data By Id
     @Query("""
     select e from Evento e
     left join fetch e.congregacao
@@ -22,10 +22,10 @@ public interface EventoRepository extends JpaRepository<Evento, Integer> {
     left join fetch e.situacao
     where e.eventoId = :id
 """)
-    Optional<Evento> findByIdFetchAll(@Param("id") Integer id);
+    Evento findByIdFetchAll(@Param("id") Long id);
 
 
-    //Buscar Eventos por Congregacao
+    //Find All By Congregacao
     @Query("""
     select e from Evento e
     left join fetch e.congregacao
@@ -33,10 +33,10 @@ public interface EventoRepository extends JpaRepository<Evento, Integer> {
     left join fetch e.situacao
     where e.congregacao.congregacaoId = :id
 """)
-    List<Evento> buscarEventoPorCongregacao(@Param("id") Integer id);
+    List<Evento> findAllEventosByCongregacao(@Param("id") Integer id);
 
 
-    //Buscar Eventos
+    //Find All Eventos
     @Query("""
     select e from Evento e
     left join fetch e.congregacao
@@ -45,12 +45,7 @@ public interface EventoRepository extends JpaRepository<Evento, Integer> {
     where e.deletedAt IS NULL
     order by e.dataEvento DESC
 """)
-    List<Evento> buscarTodosEventos();
-
-
-
-
-
+    List<Evento> findAllEventos();
 
 
 

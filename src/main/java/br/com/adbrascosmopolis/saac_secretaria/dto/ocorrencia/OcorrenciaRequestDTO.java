@@ -1,23 +1,25 @@
 package br.com.adbrascosmopolis.saac_secretaria.dto.ocorrencia;
 
+import br.com.adbrascosmopolis.saac_secretaria.enumeration.TipoOcorrencia;
 import br.com.adbrascosmopolis.saac_secretaria.models.Evento;
 import br.com.adbrascosmopolis.saac_secretaria.models.Ocorrencia;
-import br.com.adbrascosmopolis.saac_secretaria.models.TipoEvento;
-import br.com.adbrascosmopolis.saac_secretaria.models.TipoOcorrencia;
 
 public class OcorrenciaRequestDTO {
 
-    private Integer eventoId;
-    private Integer tipoOcorrenciaId;
+    private Integer congregacaoId;
+    private Long eventoId;
+    private TipoOcorrencia tipoOcorrencia;
     private Integer quantidade;
 
     public OcorrenciaRequestDTO(
-            Integer eventoId,
-            Integer tipoOcorrenciaId,
+            Integer congregacaoId,
+            Long eventoId,
+            TipoOcorrencia tipoOcorrencia,
             Integer quantidade
     ){
+        this.congregacaoId = congregacaoId;
         this.eventoId = eventoId;
-        this.tipoOcorrenciaId = tipoOcorrenciaId;
+        this.tipoOcorrencia = tipoOcorrencia;
         this.quantidade = quantidade;
     }
 
@@ -33,29 +35,32 @@ public class OcorrenciaRequestDTO {
             ocorrencia.setEvento(evento);
         }
 
-        if(this.tipoOcorrenciaId != null){
-            TipoOcorrencia tipo = new TipoOcorrencia();
-            tipo.setTipoOcorrenciaId(this.tipoOcorrenciaId);
-            ocorrencia.setTipoOcorrencia(tipo);
-        }
-
         return  ocorrencia;
     }
 
-    public Integer getEventoId() {
+
+    public Integer getCongregacaoId() {
+        return congregacaoId;
+    }
+
+    public void setCongregacaoId(Integer congregacaoId) {
+        this.congregacaoId = congregacaoId;
+    }
+
+    public Long getEventoId() {
         return eventoId;
     }
 
-    public void setEventoId(Integer eventoId) {
+    public void setEventoId(Long eventoId) {
         this.eventoId = eventoId;
     }
 
-    public Integer getTipoOcorrenciaId() {
-        return tipoOcorrenciaId;
+    public TipoOcorrencia getTipoOcorrencia() {
+        return tipoOcorrencia;
     }
 
-    public void setTipoOcorrenciaId(Integer tipoOcorrenciaId) {
-        this.tipoOcorrenciaId = tipoOcorrenciaId;
+    public void setTipoOcorrencia(TipoOcorrencia tipoOcorrencia) {
+        this.tipoOcorrencia = tipoOcorrencia;
     }
 
     public Integer getQuantidade() {

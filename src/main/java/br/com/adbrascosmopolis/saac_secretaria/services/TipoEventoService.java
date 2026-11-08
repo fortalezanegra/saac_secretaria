@@ -17,7 +17,7 @@ public class TipoEventoService {
         this.repository = repository;
     }
 
-    //Dropdown/ComboBox
+    //Dropdown
     public List<TipoEventoDropdownDTO> dropdown(){
         List<TipoEvento> tipos = repository.findAll();
 

@@ -40,10 +40,10 @@ INSERT INTO Situacao (descricao, contexto, ativo, ordem) VALUES
 ('Aguardando Batismo',             'MEMBRO', 1, 6),
 ('Aguardando Reuniao Ministerial', 'MEMBRO', 1, 7),
 
--- REUNIAO_EVENTO
-('Pendente',  'REUNIAO_EVENTO', 1, 1),
-('Concluido', 'REUNIAO_EVENTO', 1, 2),
-('Cancelado', 'REUNIAO_EVENTO', 1, 3),
+-- REUNIAO_MINISTERIAL
+('Pendente',  'REUNIAO_MINISTERIAL', 1, 1),
+('Concluido', 'REUNIAO_MINISTERIAL', 1, 2),
+('Cancelado', 'REUNIAO_MINISTERIAL', 1, 3),
 
 -- ATA_REUNIAO
 ('Aguardando Redação',    'ATA_REUNIAO', 1, 1),
@@ -891,40 +891,27 @@ CREATE TABLE Evento (
 
 ) ENGINE=InnoDB;
 
-
-/*========================================================*/
-/*                     TIPO OCORRENCIA                    */
-/*========================================================*/
-CREATE TABLE TipoOcorrencia(
-  tipoOcorrenciaId INT PRIMARY KEY AUTO_INCREMENT,
-  descricao VARCHAR(255) UNIQUE NOT NULL, 
-  createdAt DATETIME DEFAULT CURRENT_TIMESTAMP,
-  updatedAt DATETIME DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
-  deletedAt DATETIME DEFAULT NULL,
-  modifiedBy BIGINT DEFAULT NULL
-) ENGINE=InnoDB;
-
 /*========================================================*/
 /*                    TABELA OCORRENCIA                   */
 /*========================================================*/
 CREATE TABLE Ocorrencia (
   ocorrenciaId BIGINT PRIMARY KEY AUTO_INCREMENT,
+  congregacaoId INT NOT NULL,
   eventoId BIGINT NOT NULL,
-  tipoOcorrenciaId INT NOT NULL,
+  tipoOcorrencia ENUM('CONVERSAO', 'RECONCILIACAO', 'BATISMO_ESPIRITO_SANTO') NOT NULL,
   quantidade INT DEFAULT NULL,
   createdAt DATETIME DEFAULT CURRENT_TIMESTAMP,
   updatedAt DATETIME DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
   deletedAt DATETIME DEFAULT NULL,
   modifiedBy BIGINT DEFAULT NULL,
 
-  UNIQUE(eventoId, tipoOcorrenciaId),
+  UNIQUE(eventoId, tipoOcorrencia),
+
+  CONSTRAINT FK_OCORRENCIA_X_CONGREGACAO
+    FOREIGN KEY(congregacaoId) REFERENCES Congregacao(congregacaoId) ON DELETE CASCADE ON UPDATE CASCADE,
 
   CONSTRAINT FK_OCORRENCIA_X_EVENTO
-    FOREIGN KEY(eventoId) REFERENCES Evento(eventoId) ON DELETE CASCADE ON UPDATE CASCADE,
-
-  CONSTRAINT FK_OCORRENCIA_X_TIPO_OCORRENCIA
-    FOREIGN KEY(tipoOcorrenciaId) REFERENCES TipoOcorrencia(tipoOcorrenciaId) ON DELETE RESTRICT ON UPDATE CASCADE
-
+    FOREIGN KEY(eventoId) REFERENCES Evento(eventoId) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB;
 
 
