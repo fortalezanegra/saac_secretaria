@@ -1,8 +1,10 @@
 package br.com.adbrascosmopolis.saac_secretaria.models;
 
 import jakarta.persistence.*;
+import jakarta.websocket.Decoder;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
+import org.w3c.dom.Text;
 
 import java.time.LocalDateTime;
 
@@ -22,6 +24,9 @@ public class DecisaoMinisterial {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "solicitacaoId", referencedColumnName = "solicitacaoId")
     private Solicitacao solicitacao;
+
+    @Column(name = "historico")
+    private String historico;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "situacaoId", referencedColumnName = "situacaoId")
@@ -63,6 +68,14 @@ public class DecisaoMinisterial {
 
     public void setSolicitacao(Solicitacao solicitacao) {
         this.solicitacao = solicitacao;
+    }
+
+    public String getHistorico() {
+        return historico;
+    }
+
+    public void setHistorico(String historico) {
+        this.historico = historico;
     }
 
     public Situacao getSituacao() {

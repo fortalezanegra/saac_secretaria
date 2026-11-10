@@ -3,12 +3,14 @@ package br.com.adbrascosmopolis.saac_secretaria.models;
 import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
+import org.w3c.dom.Text;
 
 import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "Solicitacao")
-public class Solicitacao{
+@Inheritance(strategy = InheritanceType.JOINED)
+public abstract class Solicitacao{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,39 +31,6 @@ public class Solicitacao{
     @JoinColumn(name = "tipoSolicitacaoId", referencedColumnName = "tipoSolicitacaoId")
     private TipoSolicitacao tipoSolicitacao;
 
-    /* Solicitação de União por Batismo */
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "candidatoBatismoId", referencedColumnName = "candidatoBatismoId")
-    private CandidatoBatismo candidatoBatismo;
-
-    /* Solicitação de Mudança/União */
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "igrejaOrigemId", referencedColumnName = "igrejaOrigemId")
-    private IgrejaOrigem igrejaOrigem;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "cargoIgrejaOrigemId", referencedColumnName = "cargoMinisterialId")
-    private CargoMinisterial cargoIgrejaOrigem;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "cargoRecebidoId", referencedColumnName = "cargoMinisterialId")
-    private CargoMinisterial cargoRecebido;
-
-    /* Solicitação de Transferencia */
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "congregacaoOrigemId", referencedColumnName = "congregacaoId")
-    private Congregacao congregacaoOrigem;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "congregacaoDestinoId", referencedColumnName = "congregacaoId")
-    private Congregacao congregacaoDestino;
-
-    /* Solicitação de Desligamento/Reconciliacao */
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "motivoDesligamentoId", referencedColumnName = "motivoDesligamentoId")
-    private MotivoDesligamento motivoDesligamento;
-
-    /* Pessoa */
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "pessoaId", referencedColumnName = "pessoaId")
     private Pessoa pessoa;
@@ -85,7 +54,7 @@ public class Solicitacao{
     private LocalDateTime deletedAt;
 
     @Column(name = "modifiedBy")
-    private Integer modifiedBy;
+    private Long modifiedBy;
 
     public Long getSolicitacaoId() {
         return solicitacaoId;
@@ -117,62 +86,6 @@ public class Solicitacao{
 
     public void setTipoSolicitacao(TipoSolicitacao tipoSolicitacao) {
         this.tipoSolicitacao = tipoSolicitacao;
-    }
-
-    public CandidatoBatismo getCandidatoBatismo() {
-        return candidatoBatismo;
-    }
-
-    public void setCandidatoBatismo(CandidatoBatismo candidatoBatismo) {
-        this.candidatoBatismo = candidatoBatismo;
-    }
-
-    public IgrejaOrigem getIgrejaOrigem() {
-        return igrejaOrigem;
-    }
-
-    public void setIgrejaOrigem(IgrejaOrigem igrejaOrigem) {
-        this.igrejaOrigem = igrejaOrigem;
-    }
-
-    public CargoMinisterial getCargoIgrejaOrigem() {
-        return cargoIgrejaOrigem;
-    }
-
-    public void setCargoIgrejaOrigem(CargoMinisterial cargoIgrejaOrigem) {
-        this.cargoIgrejaOrigem = cargoIgrejaOrigem;
-    }
-
-    public CargoMinisterial getCargoRecebido() {
-        return cargoRecebido;
-    }
-
-    public void setCargoRecebido(CargoMinisterial cargoRecebido) {
-        this.cargoRecebido = cargoRecebido;
-    }
-
-    public Congregacao getCongregacaoOrigem() {
-        return congregacaoOrigem;
-    }
-
-    public void setCongregacaoOrigem(Congregacao congregacaoOrigem) {
-        this.congregacaoOrigem = congregacaoOrigem;
-    }
-
-    public Congregacao getCongregacaoDestino() {
-        return congregacaoDestino;
-    }
-
-    public void setCongregacaoDestino(Congregacao congregacaoDestino) {
-        this.congregacaoDestino = congregacaoDestino;
-    }
-
-    public MotivoDesligamento getMotivoDesligamento() {
-        return motivoDesligamento;
-    }
-
-    public void setMotivoDesligamento(MotivoDesligamento motivoDesligamento) {
-        this.motivoDesligamento = motivoDesligamento;
     }
 
     public Pessoa getPessoa() {
@@ -223,11 +136,11 @@ public class Solicitacao{
         this.deletedAt = deletedAt;
     }
 
-    public Integer getModifiedBy() {
+    public Long getModifiedBy() {
         return modifiedBy;
     }
 
-    public void setModifiedBy(Integer modifiedBy) {
+    public void setModifiedBy(Long modifiedBy) {
         this.modifiedBy = modifiedBy;
     }
 }

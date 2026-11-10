@@ -1,6 +1,8 @@
 package br.com.adbrascosmopolis.saac_secretaria.dto.solicitacao.uniao_mudanca;
 
 import br.com.adbrascosmopolis.saac_secretaria.models.Solicitacao;
+import org.w3c.dom.Text;
+
 import java.time.LocalDateTime;
 
 public class SolicitacaoUniaoMudancaEditDTO {
@@ -13,7 +15,7 @@ public class SolicitacaoUniaoMudancaEditDTO {
     private Integer igrejaOrigemId;
     private Integer cargoIgrejaOrigemId;
     private Integer cargoRecebidoId;
-    private String  historico;
+    private String historico;
     private Integer situacaoId;
     private LocalDateTime deletedAt;
 
@@ -26,9 +28,6 @@ public class SolicitacaoUniaoMudancaEditDTO {
         dto.congregacaoSolicitanteId = s.getCongregacaoSolicitante() != null ? s.getCongregacaoSolicitante().getCongregacaoId() : null;
         dto.tipoSolicitacaoId = s.getTipoSolicitacao() != null ? s.getTipoSolicitacao().getTipoSolicitacaoId() : null;
         dto.pessoaId = s.getPessoa() != null ? s.getPessoa().getPessoaId() : null;
-        dto.igrejaOrigemId = s.getIgrejaOrigem() != null ? s.getIgrejaOrigem().getIgrejaOrigemId() : null;
-        dto.cargoIgrejaOrigemId = s.getCargoIgrejaOrigem() != null ? s.getCargoIgrejaOrigem().getCargoMinisterialId() : null;
-        dto.cargoRecebidoId = s.getCargoRecebido() != null ? s.getCargoRecebido().getCargoMinisterialId() : null;
         dto.historico = s.getHistorico();
         dto.situacaoId = s.getSituacao() != null ? s.getSituacao().getSituacaoId() : null;
         dto.deletedAt = s.getDeletedAt();

@@ -491,7 +491,7 @@ CREATE TABLE Endereco (
 /*                  TABELA TIPO REUNIAO                   */
 /*========================================================*/
 CREATE TABLE TipoReuniao(
-  tipoReuniaoId INT PRIMARY KEY AUTO_INCREMENT,
+  tipoReuniaoId BIGINT PRIMARY KEY AUTO_INCREMENT,
   descricao VARCHAR(255) UNIQUE NOT NULL,
   createdAt DATETIME DEFAULT CURRENT_TIMESTAMP,
   updatedAt DATETIME DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
@@ -666,99 +666,191 @@ CREATE TABLE IgrejaOrigem (
 CREATE TABLE Solicitacao (
   solicitacaoId BIGINT PRIMARY KEY AUTO_INCREMENT,
   reuniaoMinisterialId BIGINT DEFAULT NULL,
-
-  /* Identificação */
   congregacaoSolicitanteId INT NOT NULL,
   tipoSolicitacaoId INT NOT NULL,
   pessoaId BIGINT NOT NULL,
-
-  /* Solicitação de União por Batismo */
-  candidatoBatismoId BIGINT DEFAULT NULL,
-  
-  /* Solicitação União/Mudança */
-  igrejaOrigemId INT DEFAULT NULL,
-  cargoIgrejaOrigemId INT DEFAULT NULL,
-  cargoRecebidoId INT DEFAULT NULL,
-  
-  /* Solicitação Transferência */
-  congregacaoOrigemId INT DEFAULT NULL,
-  congregacaoDestinoId INT DEFAULT NULL,
-
-  /* Solicitação Desligamento */
-  motivoDesligamentoId INT DEFAULT NULL,
-
-  historico TEXT,
+  historico TEXT DEFAULT NULL,
   situacaoId INT NOT NULL,
 
-  createdAt DATETIME DEFAULT CURRENT_TIMESTAMP,
+  createdAt DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
   updatedAt DATETIME DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
   deletedAt DATETIME DEFAULT NULL,
   modifiedBy BIGINT DEFAULT NULL,
 
-  /* Índices para consultas */
   INDEX IDX_SOLIC_PESSOA (pessoaId),
   INDEX IDX_SOLIC_CONGREGACAO_SOLICITANTE (congregacaoSolicitanteId),
   INDEX IDX_SOLIC_TIPO_SOLICITACAO (tipoSolicitacaoId),
   INDEX IDX_SOLIC_SITUACAO (situacaoId),
+  INDEX IDX_SOLIC_REUNIAO (reuniaoMinisterialId),
 
-  /* Foreign Keys */
   CONSTRAINT FK_SOLIC_REUNIAO_MINISTERIAL
-    FOREIGN KEY (reuniaoMinisterialId) 
-    REFERENCES ReuniaoMinisterial(reuniaoMinisterialId) ON DELETE RESTRICT ON UPDATE CASCADE,
-
-  CONSTRAINT FK_SOLIC_TIPO_SOLICITACAO
-    FOREIGN KEY (tipoSolicitacaoId) 
-    REFERENCES TipoSolicitacao(tipoSolicitacaoId) ON DELETE RESTRICT ON UPDATE CASCADE,
+    FOREIGN KEY (reuniaoMinisterialId)
+    REFERENCES ReuniaoMinisterial(reuniaoMinisterialId)
+    ON DELETE RESTRICT ON UPDATE CASCADE,
 
   CONSTRAINT FK_SOLIC_CONGREGACAO_SOLICITANTE
-    FOREIGN KEY (congregacaoSolicitanteId) 
-    REFERENCES Congregacao(congregacaoId) ON DELETE RESTRICT ON UPDATE CASCADE,
+    FOREIGN KEY (congregacaoSolicitanteId)
+    REFERENCES Congregacao(congregacaoId)
+    ON DELETE RESTRICT ON UPDATE CASCADE,
+
+  CONSTRAINT FK_SOLIC_TIPO_SOLICITACAO
+    FOREIGN KEY (tipoSolicitacaoId)
+    REFERENCES TipoSolicitacao(tipoSolicitacaoId)
+    ON DELETE RESTRICT ON UPDATE CASCADE,
 
   CONSTRAINT FK_SOLIC_PESSOA
-    FOREIGN KEY (pessoaId) 
-    REFERENCES Pessoa(pessoaId) ON DELETE RESTRICT ON UPDATE CASCADE,
-
-  CONSTRAINT FK_SOLIC_UNIAO_BATISMO
-    FOREIGN KEY (candidatoBatismoId) 
-    REFERENCES CandidatoBatismo(candidatoBatismoId) ON DELETE SET NULL ON UPDATE CASCADE,
-
-  CONSTRAINT FK_SOLIC_IGREJA_ORIGEM
-    FOREIGN KEY (igrejaOrigemId) 
-    REFERENCES IgrejaOrigem(igrejaOrigemId) ON DELETE SET NULL ON UPDATE CASCADE,
-
-  CONSTRAINT FK_SOLIC_CARGO_ORIGEM
-    FOREIGN KEY (cargoIgrejaOrigemId) 
-    REFERENCES CargoMinisterial(cargoMinisterialId) ON DELETE SET NULL ON UPDATE CASCADE,
-
-  CONSTRAINT FK_SOLIC_CARGO_RECEBIDO
-    FOREIGN KEY (cargoRecebidoId) 
-    REFERENCES CargoMinisterial(cargoMinisterialId) ON DELETE SET NULL ON UPDATE CASCADE,
-
-  CONSTRAINT FK_SOLIC_CONGREGACAO_ORIGEM
-    FOREIGN KEY (congregacaoOrigemId) 
-    REFERENCES Congregacao(congregacaoId) ON DELETE SET NULL ON UPDATE CASCADE,
-
-  CONSTRAINT FK_SOLIC_CONGREGACAO_DESTINO
-    FOREIGN KEY (congregacaoDestinoId) 
-    REFERENCES Congregacao(congregacaoId) ON DELETE SET NULL ON UPDATE CASCADE,
-
-  CONSTRAINT FK_SOLIC_MOTIVO_DESLIGAMENTO
-    FOREIGN KEY (motivoDesligamentoId) 
-    REFERENCES MotivoDesligamento(motivoDesligamentoId) ON DELETE SET NULL ON UPDATE CASCADE,
+    FOREIGN KEY (pessoaId)
+    REFERENCES Pessoa(pessoaId)
+    ON DELETE RESTRICT ON UPDATE CASCADE,
 
   CONSTRAINT FK_SOLIC_SITUACAO
-    FOREIGN KEY (situacaoId) 
-    REFERENCES Situacao(situacaoId) ON DELETE RESTRICT ON UPDATE CASCADE
+    FOREIGN KEY (situacaoId)
+    REFERENCES Situacao(situacaoId)
+    ON DELETE RESTRICT ON UPDATE CASCADE
+) ENGINE=InnoDB;
+
+
+/*========================================================*/
+/*            TABELA SOLICITACAO UNIAO BATISMO            */
+/*========================================================*/
+CREATE TABLE SolicitacaoUniaoBatismo (
+  solicitacaoId BIGINT PRIMARY KEY,
+  candidatoBatismoId BIGINT NOT NULL,
+
+  CONSTRAINT FK_SUB_X_SOLICITACAO
+    FOREIGN KEY (solicitacaoId)
+    REFERENCES Solicitacao(solicitacaoId)
+    ON DELETE RESTRICT ON UPDATE CASCADE,
+
+  CONSTRAINT FK_SUB_X_CANDIDATO_BATISMO
+    FOREIGN KEY (candidatoBatismoId)
+    REFERENCES CandidatoBatismo(candidatoBatismoId)
+    ON DELETE RESTRICT ON UPDATE CASCADE
+) ENGINE=InnoDB;
+
+
+/*========================================================*/
+/*            TABELA SOLICITACAO UNIAO MUDANCA            */
+/*========================================================*/
+CREATE TABLE SolicitacaoUniaoMudanca (
+  solicitacaoId BIGINT PRIMARY KEY,
+  igrejaOrigemId INT NOT NULL,
+  cargoIgrejaOrigemId INT DEFAULT NULL,
+  cargoRecebidoId INT DEFAULT NULL,
+
+  CONSTRAINT FK_SUM_X_SOLICITACAO
+    FOREIGN KEY (solicitacaoId)
+    REFERENCES Solicitacao(solicitacaoId)
+    ON DELETE RESTRICT ON UPDATE CASCADE,
+
+  CONSTRAINT FK_SUM_X_IGREJA_ORIGEM
+    FOREIGN KEY (igrejaOrigemId)
+    REFERENCES IgrejaOrigem(igrejaOrigemId)
+    ON DELETE RESTRICT ON UPDATE CASCADE,
+
+  CONSTRAINT FK_SUM_X_CARGO_IGREJA_ORIGEM
+    FOREIGN KEY (cargoIgrejaOrigemId)
+    REFERENCES CargoMinisterial(cargoMinisterialId)
+    ON DELETE RESTRICT ON UPDATE CASCADE,
+
+  CONSTRAINT FK_SUM_X_CARGO_RECEBIDO
+    FOREIGN KEY (cargoRecebidoId)
+    REFERENCES CargoMinisterial(cargoMinisterialId)
+    ON DELETE RESTRICT ON UPDATE CASCADE
+) ENGINE=InnoDB;
+
+
+/*========================================================*/
+/*            TABELA SOLICITACAO TRANSFERENCIA            */
+/*========================================================*/
+CREATE TABLE SolicitacaoTransferencia (
+  solicitacaoId BIGINT PRIMARY KEY,
+  congregacaoOrigemId INT NOT NULL,
+  congregacaoDestinoId INT NOT NULL,
+
+  CONSTRAINT CK_ST_CONGREGACOES_DIFERENTES
+    CHECK (congregacaoOrigemId <> congregacaoDestinoId),
+
+  CONSTRAINT FK_ST_X_SOLICITACAO
+    FOREIGN KEY (solicitacaoId)
+    REFERENCES Solicitacao(solicitacaoId)
+    ON DELETE RESTRICT ON UPDATE CASCADE,
+
+  CONSTRAINT FK_ST_X_CONGREGACAO_ORIGEM
+    FOREIGN KEY (congregacaoOrigemId)
+    REFERENCES Congregacao(congregacaoId)
+    ON DELETE RESTRICT ON UPDATE CASCADE,
+
+  CONSTRAINT FK_ST_X_CONGREGACAO_DESTINO
+    FOREIGN KEY (congregacaoDestinoId)
+    REFERENCES Congregacao(congregacaoId)
+    ON DELETE RESTRICT ON UPDATE CASCADE
+) ENGINE=InnoDB;
+
+DELIMITER //
+
+CREATE TRIGGER TRG_SOL_TRANSFERENCIA_BI
+BEFORE INSERT ON SolicitacaoTransferencia
+FOR EACH ROW
+BEGIN
+  IF NEW.congregacaoOrigemId = NEW.congregacaoDestinoId THEN
+    SIGNAL SQLSTATE '45000'
+      SET MESSAGE_TEXT = 'A congregacao de origem deve ser diferente da congregacao de destino';
+  END IF;
+END//
+
+CREATE TRIGGER TRG_SOL_TRANSFERENCIA_BU
+BEFORE UPDATE ON SolicitacaoTransferencia
+FOR EACH ROW
+BEGIN
+  IF NEW.congregacaoOrigemId = NEW.congregacaoDestinoId THEN
+    SIGNAL SQLSTATE '45000'
+      SET MESSAGE_TEXT = 'A congregacao de origem deve ser diferente da congregacao de destino';
+  END IF;
+END//
+
+DELIMITER ;
+
+/*========================================================*/
+/*            TABELA SOLICITACAO DESLIGAMENTO             */
+/*========================================================*/
+CREATE TABLE SolicitacaoDesligamento (
+  solicitacaoId BIGINT PRIMARY KEY,
+  motivoDesligamentoId INT NOT NULL,
+
+  CONSTRAINT FK_SD_X_SOLICITACAO
+    FOREIGN KEY (solicitacaoId)
+    REFERENCES Solicitacao(solicitacaoId)
+    ON DELETE RESTRICT ON UPDATE CASCADE,
+
+  CONSTRAINT FK_SD_X_MOTIVO_DESLIGAMENTO
+    FOREIGN KEY (motivoDesligamentoId)
+    REFERENCES MotivoDesligamento(motivoDesligamentoId)
+    ON DELETE RESTRICT ON UPDATE CASCADE
+) ENGINE=InnoDB;
+
+/*========================================================*/
+/*            TABELA SOLICITACAO RECONCILIACAO            */
+/*========================================================*/
+CREATE TABLE SolicitacaoReconciliacao (
+  solicitacaoId BIGINT PRIMARY KEY,
+
+  CONSTRAINT FK_SR_X_SOLICITACAO
+    FOREIGN KEY (solicitacaoId)
+    REFERENCES Solicitacao(solicitacaoId)
+    ON DELETE RESTRICT ON UPDATE CASCADE
 
 ) ENGINE=InnoDB;
+
 
 /*========================================================*/
 /*                     DECISAO MINISTERIAL                */
 /*========================================================*/
 CREATE TABLE DecisaoMinisterial (
-  decisaoId BIGINT PRIMARY KEY AUTO_INCREMENT,
+  decisaoMinisterialId BIGINT PRIMARY KEY AUTO_INCREMENT,
   reuniaoMinisterialId BIGINT NOT NULL,
   solicitacaoId BIGINT NOT NULL,
+  historico TEXT DEFAULT NULL,
   situacaoId INT NOT NULL,
   
   createdAt DATETIME DEFAULT CURRENT_TIMESTAMP,
