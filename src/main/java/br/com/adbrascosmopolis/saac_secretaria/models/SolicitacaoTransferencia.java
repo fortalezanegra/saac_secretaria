@@ -8,11 +8,11 @@ import jakarta.persistence.*;
 public class SolicitacaoTransferencia extends Solicitacao{
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "congregacaoOrigemId", referencedColumnName = "congregacaoId")
+    @JoinColumn(name = "congregacaoOrigemId", nullable = false, referencedColumnName = "congregacaoId")
     private Congregacao congregacaoOrigem;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "congregacaoDestinoId", referencedColumnName = "congregacaoId")
+    @JoinColumn(name = "congregacaoDestinoId",nullable = false, referencedColumnName = "congregacaoId")
     private Congregacao congregacaoDestino;
 
     public Congregacao getCongregacaoOrigem() {

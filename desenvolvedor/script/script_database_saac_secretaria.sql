@@ -591,7 +591,6 @@ CREATE TABLE Batismo (
 CREATE TABLE CandidatoBatismo (
   candidatoBatismoId BIGINT PRIMARY KEY AUTO_INCREMENT,
   batismoId BIGINT NOT NULL,
-  congregacaoId INT NOT NULL,
   pessoaId BIGINT NOT NULL,
   situacaoId INT NOT NULL,
   createdAt DATETIME DEFAULT CURRENT_TIMESTAMP,
@@ -601,7 +600,6 @@ CREATE TABLE CandidatoBatismo (
   UNIQUE(batismoId, pessoaId),
 
   INDEX IDX_CANDIDATO_BATISMO_BATISMO (batismoId),
-  INDEX IDX_CANDIDATO_BATISMO_CONGREGACAO (congregacaoId),
   INDEX IDX_CANDIDATO_BATISMO_PESSOA (pessoaId),
   INDEX IDX_CANDIDATO_BATISMO_SITUACAO (situacaoId),
 
@@ -609,30 +607,13 @@ CREATE TABLE CandidatoBatismo (
     FOREIGN KEY(batismoId) REFERENCES Batismo(batismoId)
     ON DELETE RESTRICT ON UPDATE CASCADE,
 
-  CONSTRAINT FK_CANDIDATO_BATISMO_X_CONGREGACAO
-    FOREIGN KEY(congregacaoId) REFERENCES Congregacao(congregacaoId)
-    ON DELETE RESTRICT ON UPDATE CASCADE,
-
-  CONSTRAINT FK_CANDIDATO_BATISMO_X_MEMBRO
+  CONSTRAINT FK_CANDIDATO_BATISMO_X_PESSOA
     FOREIGN KEY(pessoaId) REFERENCES Pessoa(pessoaId)
     ON DELETE RESTRICT ON UPDATE CASCADE,
   
   CONSTRAINT FK_CANDIDATO_BATISMO_X_SITUACAO
     FOREIGN KEY(situacaoId) REFERENCES Situacao(situacaoId)
     ON DELETE RESTRICT ON UPDATE CASCADE
-
-) ENGINE=InnoDB;
-
-/*========================================================*/
-/*                       TIPO SOLICITACAO                 */
-/*========================================================*/
-CREATE TABLE TipoSolicitacao (
-  tipoSolicitacaoId INT PRIMARY KEY AUTO_INCREMENT,
-  descricao VARCHAR(100) UNIQUE NOT NULL,
-  createdAt DATETIME DEFAULT CURRENT_TIMESTAMP,
-  updatedAt DATETIME DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
-  deletedAt DATETIME DEFAULT NULL,
-  modifiedBy BIGINT DEFAULT NULL
 
 ) ENGINE=InnoDB;
 
@@ -665,9 +646,8 @@ CREATE TABLE IgrejaOrigem (
 /*========================================================*/
 CREATE TABLE Solicitacao (
   solicitacaoId BIGINT PRIMARY KEY AUTO_INCREMENT,
-  reuniaoMinisterialId BIGINT DEFAULT NULL,
   congregacaoSolicitanteId INT NOT NULL,
-  tipoSolicitacaoId INT NOT NULL,
+  tipoSolicitacao ENUM('UNIAO', 'MUDANCA', 'TRANSFERENCIA', 'RECONCILIACAO', 'DESLIGAMENTO') NOT NULL,
   pessoaId BIGINT NOT NULL,
   historico TEXT DEFAULT NULL,
   situacaoId INT NOT NULL,
@@ -677,25 +657,13 @@ CREATE TABLE Solicitacao (
   deletedAt DATETIME DEFAULT NULL,
   modifiedBy BIGINT DEFAULT NULL,
 
-  INDEX IDX_SOLIC_PESSOA (pessoaId),
   INDEX IDX_SOLIC_CONGREGACAO_SOLICITANTE (congregacaoSolicitanteId),
-  INDEX IDX_SOLIC_TIPO_SOLICITACAO (tipoSolicitacaoId),
+  INDEX IDX_SOLIC_PESSOA (pessoaId),
   INDEX IDX_SOLIC_SITUACAO (situacaoId),
-  INDEX IDX_SOLIC_REUNIAO (reuniaoMinisterialId),
-
-  CONSTRAINT FK_SOLIC_REUNIAO_MINISTERIAL
-    FOREIGN KEY (reuniaoMinisterialId)
-    REFERENCES ReuniaoMinisterial(reuniaoMinisterialId)
-    ON DELETE RESTRICT ON UPDATE CASCADE,
 
   CONSTRAINT FK_SOLIC_CONGREGACAO_SOLICITANTE
     FOREIGN KEY (congregacaoSolicitanteId)
     REFERENCES Congregacao(congregacaoId)
-    ON DELETE RESTRICT ON UPDATE CASCADE,
-
-  CONSTRAINT FK_SOLIC_TIPO_SOLICITACAO
-    FOREIGN KEY (tipoSolicitacaoId)
-    REFERENCES TipoSolicitacao(tipoSolicitacaoId)
     ON DELETE RESTRICT ON UPDATE CASCADE,
 
   CONSTRAINT FK_SOLIC_PESSOA
@@ -711,28 +679,23 @@ CREATE TABLE Solicitacao (
 
 
 /*========================================================*/
-/*            TABELA SOLICITACAO UNIAO BATISMO            */
+/*            TABELA SOLICITACAO UNIAO                    */
 /*========================================================*/
-CREATE TABLE SolicitacaoUniaoBatismo (
+CREATE TABLE SolicitacaoUniao (
   solicitacaoId BIGINT PRIMARY KEY,
-  candidatoBatismoId BIGINT NOT NULL,
 
   CONSTRAINT FK_SUB_X_SOLICITACAO
     FOREIGN KEY (solicitacaoId)
     REFERENCES Solicitacao(solicitacaoId)
-    ON DELETE RESTRICT ON UPDATE CASCADE,
-
-  CONSTRAINT FK_SUB_X_CANDIDATO_BATISMO
-    FOREIGN KEY (candidatoBatismoId)
-    REFERENCES CandidatoBatismo(candidatoBatismoId)
     ON DELETE RESTRICT ON UPDATE CASCADE
+
 ) ENGINE=InnoDB;
 
 
 /*========================================================*/
-/*            TABELA SOLICITACAO UNIAO MUDANCA            */
+/*            TABELA SOLICITACAO MUDANCA                  */
 /*========================================================*/
-CREATE TABLE SolicitacaoUniaoMudanca (
+CREATE TABLE SolicitacaoMudanca (
   solicitacaoId BIGINT PRIMARY KEY,
   igrejaOrigemId INT NOT NULL,
   cargoIgrejaOrigemId INT DEFAULT NULL,
@@ -812,6 +775,19 @@ END//
 DELIMITER ;
 
 /*========================================================*/
+/*            TABELA SOLICITACAO RECONCILIACAO            */
+/*========================================================*/
+CREATE TABLE SolicitacaoReconciliacao (
+  solicitacaoId BIGINT PRIMARY KEY,
+
+  CONSTRAINT FK_SR_X_SOLICITACAO
+    FOREIGN KEY (solicitacaoId)
+    REFERENCES Solicitacao(solicitacaoId)
+    ON DELETE RESTRICT ON UPDATE CASCADE
+
+) ENGINE=InnoDB;
+
+/*========================================================*/
 /*            TABELA SOLICITACAO DESLIGAMENTO             */
 /*========================================================*/
 CREATE TABLE SolicitacaoDesligamento (
@@ -827,19 +803,6 @@ CREATE TABLE SolicitacaoDesligamento (
     FOREIGN KEY (motivoDesligamentoId)
     REFERENCES MotivoDesligamento(motivoDesligamentoId)
     ON DELETE RESTRICT ON UPDATE CASCADE
-) ENGINE=InnoDB;
-
-/*========================================================*/
-/*            TABELA SOLICITACAO RECONCILIACAO            */
-/*========================================================*/
-CREATE TABLE SolicitacaoReconciliacao (
-  solicitacaoId BIGINT PRIMARY KEY,
-
-  CONSTRAINT FK_SR_X_SOLICITACAO
-    FOREIGN KEY (solicitacaoId)
-    REFERENCES Solicitacao(solicitacaoId)
-    ON DELETE RESTRICT ON UPDATE CASCADE
-
 ) ENGINE=InnoDB;
 
 
@@ -933,50 +896,33 @@ CREATE TABLE ItemHistorico (
 ) ENGINE=InnoDB;
 
 
-
-
 /*#############################################################################*/
 /*### S C R I P T   R E L A T O R I O   G E R A L   C O N G R E G A Ç Õ E S ###*/
 /*#############################################################################*/
 
-/*========================================================*/
-/*                 TABELA TIPO EVENTO                     */
-/*========================================================*/
-CREATE TABLE TipoEvento (
-  tipoEventoId INT PRIMARY KEY AUTO_INCREMENT,
-  descricao VARCHAR(255) UNIQUE NOT NULL, 
-  createdAt DATETIME DEFAULT CURRENT_TIMESTAMP,
-  updatedAt DATETIME DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
-  deletedAt DATETIME DEFAULT NULL,
-  modifiedBy BIGINT DEFAULT NULL
-) ENGINE=InnoDB;
 
 /*========================================================*/
-/*                      TABELA EVENTO                     */
+/*                      TABELA ATIVIDADES                 */
 /*========================================================*/
-CREATE TABLE Evento (
-  eventoId BIGINT PRIMARY KEY AUTO_INCREMENT,
+CREATE TABLE Atividades (
+  atividadeId BIGINT PRIMARY KEY AUTO_INCREMENT,
   congregacaoId INT NOT NULL,
-  tipoEventoId INT NOT NULL,
+  tipoCulto ENUM('AR_LIVRE', 'PUBLICO', 'FAMILIA', 'ENSINO', 'LAR', 'EVANGELISMO', 'ORACAO', 'TARDE_BENCAO', 'ESCOLA DOMINICAL') NOT NULL,
   descricao VARCHAR(100) NOT NULL,
   participantes INT DEFAULT 0,
   visitantes INT DEFAULT 0, 
-  dataEvento DATETIME NOT NULL,
+  dataCulto DATETIME NOT NULL,
   situacaoId INT NOT NULL,
   createdAt DATETIME DEFAULT CURRENT_TIMESTAMP,
   updatedAt DATETIME DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
   deletedAt DATETIME DEFAULT NULL,
   modifiedBy BIGINT DEFAULT NULL,
 
-  INDEX IDX_EVENTO_TIPO_EVENTO (tipoEventoId),
   INDEX IDX_EVENTO_CONGREGACAO (congregacaoId),
   INDEX IDX_EVENTO_SITUACAO (situacaoId),
 
   CONSTRAINT FK_EVENTO_X_CONGREGACAO
     FOREIGN KEY(congregacaoId) REFERENCES Congregacao(congregacaoId) ON DELETE RESTRICT ON UPDATE CASCADE,
-
-  CONSTRAINT FK_EVENTO_X_TIPO_EVENTO
-    FOREIGN KEY(tipoEventoId) REFERENCES TipoEvento(tipoEventoId) ON DELETE RESTRICT ON UPDATE CASCADE,
 
   CONSTRAINT FK_EVENTO_X_SITUACAO
     FOREIGN KEY(situacaoId) REFERENCES Situacao(situacaoId) ON DELETE RESTRICT ON UPDATE CASCADE
@@ -988,8 +934,7 @@ CREATE TABLE Evento (
 /*========================================================*/
 CREATE TABLE Ocorrencia (
   ocorrenciaId BIGINT PRIMARY KEY AUTO_INCREMENT,
-  congregacaoId INT NOT NULL,
-  eventoId BIGINT NOT NULL,
+  atividadeId BIGINT NOT NULL,
   tipoOcorrencia ENUM('CONVERSAO', 'RECONCILIACAO', 'BATISMO_ESPIRITO_SANTO') NOT NULL,
   quantidade INT DEFAULT NULL,
   createdAt DATETIME DEFAULT CURRENT_TIMESTAMP,
@@ -997,13 +942,10 @@ CREATE TABLE Ocorrencia (
   deletedAt DATETIME DEFAULT NULL,
   modifiedBy BIGINT DEFAULT NULL,
 
-  UNIQUE(eventoId, tipoOcorrencia),
+  UNIQUE(atividadeId, tipoOcorrencia),
 
-  CONSTRAINT FK_OCORRENCIA_X_CONGREGACAO
-    FOREIGN KEY(congregacaoId) REFERENCES Congregacao(congregacaoId) ON DELETE CASCADE ON UPDATE CASCADE,
-
-  CONSTRAINT FK_OCORRENCIA_X_EVENTO
-    FOREIGN KEY(eventoId) REFERENCES Evento(eventoId) ON DELETE CASCADE ON UPDATE CASCADE
+  CONSTRAINT FK_OCORRENCIA_X_ATIVIDADE
+    FOREIGN KEY(atividadeId) REFERENCES Atividades(atividadeId) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB;
 
 

@@ -1,7 +1,5 @@
 package br.com.adbrascosmopolis.saac_secretaria.dto.tipo_solicitacao;
 
-import br.com.adbrascosmopolis.saac_secretaria.models.TipoSolicitacao;
-
 public class TipoSolicitacaoDropdownDTO {
 
     private Integer tipoSolicitacaoId;

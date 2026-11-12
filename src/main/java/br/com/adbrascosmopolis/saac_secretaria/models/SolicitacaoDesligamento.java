@@ -8,7 +8,7 @@ import jakarta.persistence.*;
 public class SolicitacaoDesligamento extends Solicitacao{
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "motivoDesligamentoId", referencedColumnName = "motivoDesligamentoId")
+    @JoinColumn(name = "motivoDesligamentoId", nullable = false, referencedColumnName = "motivoDesligamentoId")
     private MotivoDesligamento motivoDesligamento;
 
     public MotivoDesligamento getMotivoDesligamento() {

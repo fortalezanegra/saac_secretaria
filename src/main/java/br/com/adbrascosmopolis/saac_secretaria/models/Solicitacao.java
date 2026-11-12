@@ -1,9 +1,9 @@
 package br.com.adbrascosmopolis.saac_secretaria.models;
 
+import br.com.adbrascosmopolis.saac_secretaria.enumeration.TipoSolicitacao;
 import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
-import org.w3c.dom.Text;
 
 import java.time.LocalDateTime;
 
@@ -18,28 +18,22 @@ public abstract class Solicitacao{
     private Long solicitacaoId;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "reuniaoMinisterialId", referencedColumnName = "reuniaoMinisterialId")
-    private ReuniaoMinisterial reuniaoMinisterial;
-
-    /* Identificacao */
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "congregacaoSolicitanteId", referencedColumnName = "congregacaoId")
+    @JoinColumn(name = "congregacaoSolicitanteId", nullable = false, referencedColumnName = "congregacaoId")
     private Congregacao congregacaoSolicitante;
 
-    //Observação Crítica: Esta coluna gera varias queries de filtro de pessoa/situacao em função do tipo de solicitação
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "tipoSolicitacaoId", referencedColumnName = "tipoSolicitacaoId")
+    @Enumerated(EnumType.STRING)
+    @Column(name = "tipoSolicitacao", nullable = false)
     private TipoSolicitacao tipoSolicitacao;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "pessoaId", referencedColumnName = "pessoaId")
+    @JoinColumn(name = "pessoaId", nullable = false, referencedColumnName = "pessoaId")
     private Pessoa pessoa;
 
-    @Column(name = "historico")
+    @Column(name = "historico", nullable = true)
     private String historico;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "situacaoId", referencedColumnName = "situacaoId")
+    @JoinColumn(name = "situacaoId", nullable = false, referencedColumnName = "situacaoId")
     private Situacao situacao;
 
     @CreationTimestamp
@@ -62,14 +56,6 @@ public abstract class Solicitacao{
 
     public void setSolicitacaoId(Long solicitacaoId) {
         this.solicitacaoId = solicitacaoId;
-    }
-
-    public ReuniaoMinisterial getReuniaoMinisterial() {
-        return reuniaoMinisterial;
-    }
-
-    public void setReuniaoMinisterial(ReuniaoMinisterial reuniaoMinisterial) {
-        this.reuniaoMinisterial = reuniaoMinisterial;
     }
 
     public Congregacao getCongregacaoSolicitante() {

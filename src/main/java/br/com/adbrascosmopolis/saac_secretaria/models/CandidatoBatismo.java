@@ -20,10 +20,6 @@ public class CandidatoBatismo {
     private Batismo batismo;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "congregacaoId", referencedColumnName = "congregacaoId")
-    private Congregacao congregacao;
-
-    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "pessoaId", referencedColumnName = "pessoaId")
     private Pessoa pessoa;
 
@@ -59,14 +55,6 @@ public class CandidatoBatismo {
 
     public void setBatismo(Batismo batismo) {
         this.batismo = batismo;
-    }
-
-    public Congregacao getCongregacao() {
-        return congregacao;
-    }
-
-    public void setCongregacao(Congregacao congregacao) {
-        this.congregacao = congregacao;
     }
 
     public Pessoa getPessoa() {

@@ -21,8 +21,8 @@ public class Ocorrencia {
     private Congregacao congregacao;
 
     @ManyToOne(fetch = FetchType.LAZY) // ou EAGER se quiser carregar junto
-    @JoinColumn(name = "eventoId", referencedColumnName = "eventoId")
-    private Evento evento;
+    @JoinColumn(name = "atividadeId", referencedColumnName = "atividadeId")
+    private Atividades atividade;
 
     @Enumerated(EnumType.STRING)
     private TipoOcorrencia tipoOcorrencia;
@@ -60,12 +60,12 @@ public class Ocorrencia {
         this.congregacao = congregacao;
     }
 
-    public Evento getEvento() {
-        return evento;
+    public Atividades getAtividade() {
+        return atividade;
     }
 
-    public void setEvento(Evento evento) {
-        this.evento = evento;
+    public void setAtividade(Atividades atividade) {
+        this.atividade = atividade;
     }
 
     public TipoOcorrencia getTipoOcorrencia() {

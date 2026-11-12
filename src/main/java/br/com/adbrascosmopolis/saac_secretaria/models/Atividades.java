@@ -1,5 +1,6 @@
 package br.com.adbrascosmopolis.saac_secretaria.models;
 
+import br.com.adbrascosmopolis.saac_secretaria.enumeration.TipoCulto;
 import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -9,20 +10,20 @@ import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "Evento")
-public class Evento {
+public class Atividades {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "eventoId")
-    private Long eventoId;
+    @Column(name = "atividadeId")
+    private Long atividadeId;
 
     @ManyToOne(fetch = FetchType.LAZY) // ou EAGER se quiser carregar junto
     @JoinColumn(name = "congregacaoId", referencedColumnName = "congregacaoId")
     private Congregacao congregacao;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "tipoEventoId", referencedColumnName = "tipoEventoId")
-    private TipoEvento tipoEvento;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "tipoCulto", nullable = false)
+    private TipoCulto tipoCulto;
 
     @Column(name = "descricao")
     private String descricao;
@@ -54,12 +55,12 @@ public class Evento {
     @Column(name = "modifiedBy")
     private Integer modifiedBy;
 
-    public Long getEventoId() {
-        return eventoId;
+    public Long getAtividadeId() {
+        return atividadeId;
     }
 
-    public void setEventoId(Long eventoId) {
-        this.eventoId = eventoId;
+    public void setAtividadeId(Long atividadeId) {
+        this.atividadeId = atividadeId;
     }
 
     public Congregacao getCongregacao() {
@@ -70,12 +71,12 @@ public class Evento {
         this.congregacao = congregacao;
     }
 
-    public TipoEvento getTipoEvento() {
-        return tipoEvento;
+    public TipoCulto getTipoCulto() {
+        return tipoCulto;
     }
 
-    public void setTipoEvento(TipoEvento tipoEvento) {
-        this.tipoEvento = tipoEvento;
+    public void setTipoCulto(TipoCulto tipoCulto) {
+        this.tipoCulto = tipoCulto;
     }
 
     public String getDescricao() {

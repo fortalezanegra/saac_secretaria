@@ -9,7 +9,7 @@ public class OcorrenciaEditDTO {
 
     private Long ocorrenciaId;
     private Integer congregacaoId;
-    private Long eventoId;
+    private Long atividadeId;
     private TipoOcorrencia tipoOcorrencia;
     private Integer quantidade;
     private LocalDateTime deletedAt;
@@ -20,7 +20,7 @@ public class OcorrenciaEditDTO {
 
         dto.ocorrenciaId = o.getOcorrenciaId();
         dto.congregacaoId = o.getCongregacao() != null ? o.getCongregacao().getCongregacaoId() : null;
-        dto.eventoId = o.getEvento() != null ? o.getEvento().getEventoId() : null;
+        dto.atividadeId = o.getAtividade() != null ? o.getAtividade().getAtividadeId() : null;
         dto.tipoOcorrencia = o.getTipoOcorrencia();
         dto.quantidade = o.getQuantidade();
         dto.deletedAt = o.getDeletedAt();
@@ -44,12 +44,12 @@ public class OcorrenciaEditDTO {
         this.congregacaoId = congregacaoId;
     }
 
-    public Long getEventoId() {
-        return eventoId;
+    public Long getAtividadeId() {
+        return atividadeId;
     }
 
-    public void setEventoId(Long eventoId) {
-        this.eventoId = eventoId;
+    public void setAtividadeId(Long atividadeId) {
+        this.atividadeId = atividadeId;
     }
 
     public TipoOcorrencia getTipoOcorrencia() {

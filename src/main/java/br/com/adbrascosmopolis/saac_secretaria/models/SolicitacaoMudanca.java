@@ -3,21 +3,21 @@ package br.com.adbrascosmopolis.saac_secretaria.models;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "SolicitacaoUniaoMudanca")
+@Table(name = "SolicitacaoMudanca")
 @PrimaryKeyJoinColumn(name = "solicitacaoId", referencedColumnName = "solicitacaoId")
-public class SolicitacaoUniaoMudanca extends Solicitacao{
+public class SolicitacaoMudanca extends Solicitacao{
 
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "igrejaOrigemId", referencedColumnName = "igrejaOrigemId")
+    @JoinColumn(name = "igrejaOrigemId", nullable = false, referencedColumnName = "igrejaOrigemId")
     private IgrejaOrigem igrejaOrigem;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "cargoIgrejaOrigenId", referencedColumnName = "cargoMinisterialId")
+    @JoinColumn(name = "cargoIgrejaOrigemId", nullable = true, referencedColumnName = "cargoMinisterialId")
     private CargoMinisterial cargoIgrejaOrigem;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "cargoRecebidoId", referencedColumnName = "cargoMinisterialId")
+    @JoinColumn(name = "cargoRecebidoId", nullable = true, referencedColumnName = "cargoMinisterialId")
     private CargoMinisterial cargoRecebido;
 
     public IgrejaOrigem getIgrejaOrigem() {

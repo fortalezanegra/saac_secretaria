@@ -19,4 +19,7 @@ public interface SituacaoRepository extends JpaRepository<Situacao, Integer> {
        WHERE s.contexto = :contexto
 """)
     List<Situacao> listarSituacaoContexto(@Param("contexto") String contexto);
+
+
+    Situacao findBySituacaoId(Integer situacaoId);
 }

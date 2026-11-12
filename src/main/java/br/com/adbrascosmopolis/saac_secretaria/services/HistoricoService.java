@@ -1,8 +1,5 @@
 package br.com.adbrascosmopolis.saac_secretaria.services;
 
-import br.com.adbrascosmopolis.saac_secretaria.dto.evento.EventoRequestDTO;
-import br.com.adbrascosmopolis.saac_secretaria.dto.evento.EventoResponseDTO;
-import br.com.adbrascosmopolis.saac_secretaria.models.Evento;
 import br.com.adbrascosmopolis.saac_secretaria.models.Historico;
 import br.com.adbrascosmopolis.saac_secretaria.repository.HistoricoRepository;
 import br.com.adbrascosmopolis.saac_secretaria.repository.PessoaRepository;

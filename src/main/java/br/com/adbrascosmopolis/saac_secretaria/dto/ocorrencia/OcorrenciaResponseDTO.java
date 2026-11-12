@@ -8,8 +8,8 @@ public class OcorrenciaResponseDTO {
     private Long ocorrenciaId;
     private Integer congregacaoId;
     private String congregacao;
-    private Long eventoId;
-    private String evento;
+    private Long atividadeId;
+    private String atividade;
     private TipoOcorrencia tipoOcorrencia;
     private Integer quantidade;
 
@@ -17,16 +17,16 @@ public class OcorrenciaResponseDTO {
             Long ocorrenciaId,
             Integer congregacaoId,
             String congregacao,
-            Long eventoId,
-            String evento,
+            Long atividadeId,
+            String atividade,
             TipoOcorrencia tipoOcorrencia,
             Integer quantidade
     ){
         this.ocorrenciaId = ocorrenciaId;
         this.congregacaoId = congregacaoId;
         this.congregacao = congregacao;
-        this.eventoId = eventoId;
-        this.evento = evento;
+        this.atividadeId = atividadeId;
+        this.atividade = atividade;
         this.tipoOcorrencia = tipoOcorrencia;
         this.quantidade = quantidade;
     }
@@ -39,8 +39,8 @@ public class OcorrenciaResponseDTO {
                 o.getOcorrenciaId(),
                 o.getCongregacao() != null ? o.getCongregacao().getCongregacaoId() : null,
                 o.getCongregacao() != null ? o.getCongregacao().getNome() : null,
-                o.getEvento() != null ? o.getEvento().getEventoId() : null,
-                o.getEvento() != null ? o.getEvento().getDescricao()  : null,
+                o.getAtividade() != null ? o.getAtividade().getAtividadeId() : null,
+                o.getAtividade() != null ? o.getAtividade().getDescricao()  : null,
 
                 o.getTipoOcorrencia(),
                 o.getQuantidade()
@@ -71,20 +71,20 @@ public class OcorrenciaResponseDTO {
         this.congregacao = congregacao;
     }
 
-    public Long getEventoId() {
-        return eventoId;
+    public Long getAtividadeId() {
+        return atividadeId;
     }
 
-    public void setEventoId(Long eventoId) {
-        this.eventoId = eventoId;
+    public void setAtividadeId(Long atividadeId) {
+        this.atividadeId = atividadeId;
     }
 
-    public String getEvento() {
-        return evento;
+    public String getAtividade() {
+        return atividade;
     }
 
-    public void setEvento(String evento) {
-        this.evento = evento;
+    public void setAtividade(String atividade) {
+        this.atividade = atividade;
     }
 
     public TipoOcorrencia getTipoOcorrencia() {

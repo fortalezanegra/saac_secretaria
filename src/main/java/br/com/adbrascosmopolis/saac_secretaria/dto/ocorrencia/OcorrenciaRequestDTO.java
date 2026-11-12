@@ -1,24 +1,24 @@
 package br.com.adbrascosmopolis.saac_secretaria.dto.ocorrencia;
 
 import br.com.adbrascosmopolis.saac_secretaria.enumeration.TipoOcorrencia;
-import br.com.adbrascosmopolis.saac_secretaria.models.Evento;
+import br.com.adbrascosmopolis.saac_secretaria.models.Atividades;
 import br.com.adbrascosmopolis.saac_secretaria.models.Ocorrencia;
 
 public class OcorrenciaRequestDTO {
 
     private Integer congregacaoId;
-    private Long eventoId;
+    private Long atividadeId;
     private TipoOcorrencia tipoOcorrencia;
     private Integer quantidade;
 
     public OcorrenciaRequestDTO(
             Integer congregacaoId,
-            Long eventoId,
+            Long atividadeId,
             TipoOcorrencia tipoOcorrencia,
             Integer quantidade
     ){
         this.congregacaoId = congregacaoId;
-        this.eventoId = eventoId;
+        this.atividadeId = atividadeId;
         this.tipoOcorrencia = tipoOcorrencia;
         this.quantidade = quantidade;
     }
@@ -29,10 +29,10 @@ public class OcorrenciaRequestDTO {
         ocorrencia.setQuantidade(this.quantidade);
 
         //Relacionamento
-        if(this.eventoId != null){
-            Evento evento = new Evento();
-            evento.setEventoId(this.eventoId);
-            ocorrencia.setEvento(evento);
+        if(this.atividadeId != null){
+            Atividades atividade = new Atividades();
+            atividade.setAtividadeId(this.atividadeId);
+            ocorrencia.setAtividade(atividade);
         }
 
         return  ocorrencia;
@@ -47,12 +47,12 @@ public class OcorrenciaRequestDTO {
         this.congregacaoId = congregacaoId;
     }
 
-    public Long getEventoId() {
-        return eventoId;
+    public Long getAtividadeId() {
+        return atividadeId;
     }
 
-    public void setEventoId(Long eventoId) {
-        this.eventoId = eventoId;
+    public void setAtividadeId(Long atividadeId) {
+        this.atividadeId = atividadeId;
     }
 
     public TipoOcorrencia getTipoOcorrencia() {
