@@ -286,46 +286,6 @@ INSERT INTO CargoMinisterial(descricao) VALUES
 ('Bispo(a)');
 
 /*========================================================*/
-/*                        TABELA SEXO                     */
-/*========================================================*/
-CREATE TABLE Sexo (
-  sexoId INT PRIMARY KEY AUTO_INCREMENT,
-  descricao VARCHAR(10) NOT NULL,
-  createdAt DATETIME DEFAULT CURRENT_TIMESTAMP,
-  updatedAt DATETIME DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
-  deletedAt DATETIME DEFAULT NULL,
-  modifiedBy BIGINT DEFAULT NULL,
-  UNIQUE (descricao)
-
-) ENGINE=InnoDB;
-
-/*Tabela Sexo*/
-INSERT INTO Sexo(Descricao) VALUES
-('Masculino'),
-('Feminino');
-
-/*========================================================*/
-/*                    TABELA ESTADO CIVIL                 */
-/*========================================================*/
-CREATE TABLE EstadoCivil (
-  estadoCivilId INT PRIMARY KEY AUTO_INCREMENT,
-  descricao VARCHAR(50) NOT NULL,
-  createdAt DATETIME DEFAULT CURRENT_TIMESTAMP,
-  updatedAt DATETIME DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
-  deletedAt DATETIME DEFAULT NULL,
-  modifiedBy BIGINT DEFAULT NULL,
-  UNIQUE (descricao)
-
-) ENGINE=InnoDB;
-
-/*Tabela EstadoCivil*/
-INSERT INTO EstadoCivil(Descricao) VALUES
-('Solteiro(a)'),
-('Casado(a)'),
-('Divorciado(a)'),
-('Viúvo(a)');
-
-/*========================================================*/
 /*                     TABELA FORMACAO                    */
 /*========================================================*/
 CREATE TABLE Formacao (
@@ -488,19 +448,6 @@ CREATE TABLE Endereco (
 /*#############################################################################*/
 
 /*========================================================*/
-/*                  TABELA TIPO REUNIAO                   */
-/*========================================================*/
-CREATE TABLE TipoReuniao(
-  tipoReuniaoId BIGINT PRIMARY KEY AUTO_INCREMENT,
-  descricao VARCHAR(255) UNIQUE NOT NULL,
-  createdAt DATETIME DEFAULT CURRENT_TIMESTAMP,
-  updatedAt DATETIME DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
-  deletedAt DATETIME DEFAULT NULL,
-  modifiedBy BIGINT DEFAULT NULL
-
-) ENGINE=InnoDB;
-
-/*========================================================*/
 /*               TABELA REUNIAO MINISTEIRAL               */
 /*========================================================*/
 CREATE TABLE ReuniaoMinisterial(
@@ -514,12 +461,8 @@ CREATE TABLE ReuniaoMinisterial(
   deletedAt DATETIME DEFAULT NULL,
   modifiedBy BIGINT DEFAULT NULL,
 
-  INDEX IDX_REUNIAO_TIPO_REUNIAO (tipoReuniaoId),
   INDEX IDX_REUNIAO_CONGREGACAO (congregacaoId),
   INDEX IDX_REUNIAO_DATA (dataReuniao),
-
-  CONSTRAINT FK_REUNIAO_MINISTERIAL_X_TIPO_REUNIAO
-  FOREIGN KEY(tipoReuniaoId) REFERENCES TipoReuniao(tipoReuniaoId)  ON DELETE RESTRICT ON UPDATE CASCADE,
 
   CONSTRAINT FK_REUNIAO_MINISTERIAL_X_CONGREGACAO
   FOREIGN KEY(congregacaoId) REFERENCES Congregacao(congregacaoId) ON DELETE RESTRICT ON UPDATE CASCADE,

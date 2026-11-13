@@ -16,8 +16,8 @@ INSERT INTO Situacao (descricao, contexto, ativo, ordem) VALUES
 
 -- REUNIAO_MINISTERIAL
 ('Pendente',  'REUNIAO_MINISTERIAL', 1, 1),
-('Concluido', 'REUNIAO_MINISTERIAL', 1, 2),
-('Cancelado', 'REUNIAO_MINISTERIAL', 1, 3),
+('Concluida', 'REUNIAO_MINISTERIAL', 1, 2),
+('Cancelada', 'REUNIAO_MINISTERIAL', 1, 3),
 
 -- ATA_REUNIAO
 ('Aguardando Redação',    'ATA_REUNIAO', 1, 1),
@@ -37,40 +37,13 @@ INSERT INTO Situacao (descricao, contexto, ativo, ordem) VALUES
 ('Cancelado',      'BATISMO_CANDIDATO', 1, 3),
 ('Nao Compareceu', 'BATISMO_CANDIDATO', 1, 4),
 
--- SOLICITACAO_UNIAO
-('Aguardando Reuniao', 'SOLICITACAO_UNIAO', 1, 1),
-('Aprovada',           'SOLICITACAO_UNIAO', 1, 2),
-('Reprovada',          'SOLICITACAO_UNIAO', 1, 3),
-('Cancelada',          'SOLICITACAO_UNIAO', 1, 4),
-('Consolidada',        'SOLICITACAO_UNIAO', 1, 5),
-
--- SOLICITACAO_MUDANCA
-('Aguardando Reuniao', 'SOLICITACAO_MUDANCA', 1, 1),
-('Aprovada',           'SOLICITACAO_MUDANCA', 1, 2),
-('Reprovada',          'SOLICITACAO_MUDANCA', 1, 3),
-('Cancelada',          'SOLICITACAO_MUDANCA', 1, 4),
-('Consolidada',        'SOLICITACAO_MUDANCA', 1, 5),
-
--- SOLICITACAO_RECONCILIACAO
-('Aguardando Reuniao', 'SOLICITACAO_RECONCILIACAO', 1, 1),
-('Aprovada',           'SOLICITACAO_RECONCILIACAO', 1, 2),
-('Reprovada',          'SOLICITACAO_RECONCILIACAO', 1, 3),
-('Cancelada',          'SOLICITACAO_RECONCILIACAO', 1, 4),
-('Consolidada',        'SOLICITACAO_RECONCILIACAO', 1, 5),
-
--- SOLICITACAO_TRANSFERENCIA
-('Aguardando Reuniao', 'SOLICITACAO_TRANSFERENCIA', 1, 1),
-('Aprovada',           'SOLICITACAO_TRANSFERENCIA', 1, 2),
-('Reprovada',          'SOLICITACAO_TRANSFERENCIA', 1, 3),
-('Cancelada',          'SOLICITACAO_TRANSFERENCIA', 1, 4),
-('Consolidada',        'SOLICITACAO_TRANSFERENCIA', 1, 5),
-
--- SOLICITACAO_DESLIGAMENTO
-('Aguardando Reuniao', 'SOLICITACAO_DESLIGAMENTO', 1, 1),
-('Aprovada',           'SOLICITACAO_DESLIGAMENTO', 1, 2),
-('Reprovada',          'SOLICITACAO_DESLIGAMENTO', 1, 3),
-('Cancelada',          'SOLICITACAO_DESLIGAMENTO', 1, 4),
-('Consolidada',        'SOLICITACAO_DESLIGAMENTO', 1, 5),
+-- SOLICITACAO
+('Aguardando Reuniao', 'SOLICITACAO', 1, 1),
+('Aprovada',           'SOLICITACAO', 1, 2),
+('Reprovada',          'SOLICITACAO', 1, 3),
+('Cancelada',          'SOLICITACAO', 1, 4),
+('Consolidada',        'SOLICITACAO', 1, 5),
+('Reagendada',        'SOLICITACAO', 1, 6),
 
 -- EVENTO
 ('Pendente',  'EVENTO', 1, 1),
@@ -167,7 +140,7 @@ INSERT INTO Congregacao(setorId, nome, sigla, endereco)VALUES
 
 /*Tabela CargoMinisterial */
 INSERT INTO CargoMinisterial(Descricao) VALUES
-('Nenhum'),
+('N/A'),
 ('Membro'),
 ('Auxiliar de Trabalho'),
 ('Diacono'),
@@ -185,9 +158,10 @@ INSERT INTO CargoMinisterial(Descricao) VALUES
 
 /* TIPO REUNIAO */
 INSERT INTO TipoReuniao(descricao) VALUES
-('Reunião de Pastores'),
-('Reunião de Dirigentes'),
-('Reunião de Obreiros');
+('Pastores'),
+('Dirigentes'),
+('Obreiros'),
+('Extraordinária');
 
 /* REUNIAO MINISTERIAL */
 INSERT INTO ReuniaoMinisterial (tipoReuniaoId, congregacaoId, dataReuniao, situacaoId) VALUES
@@ -208,6 +182,7 @@ INSERT INTO MotivoDesligamento(descricao) VALUES
 
 /* TIPO HISTORICO */
 INSERT INTO TipoHistorico(descricao) VALUES
+('Informativo'),
 ('Conversão'),
 ('Batismo'),
 ('União'),

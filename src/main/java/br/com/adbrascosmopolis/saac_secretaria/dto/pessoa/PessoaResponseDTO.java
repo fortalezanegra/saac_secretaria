@@ -1,5 +1,7 @@
 package br.com.adbrascosmopolis.saac_secretaria.dto.pessoa;
 
+import br.com.adbrascosmopolis.saac_secretaria.enumeration.EstadoCivil;
+import br.com.adbrascosmopolis.saac_secretaria.enumeration.Sexo;
 import br.com.adbrascosmopolis.saac_secretaria.models.Pessoa;
 
 import java.time.LocalDate;
@@ -9,7 +11,7 @@ public class PessoaResponseDTO {
     private Long pessoaId;
     private String tipoVinculo;
     private String nome;
-    private String sexo;
+    private Sexo sexo;
     private LocalDate dataNascimento;
     private String telefone;
     private String email;
@@ -19,7 +21,7 @@ public class PessoaResponseDTO {
     private String profissao;
     private String pai;
     private String mae;
-    private String estadoCivil;
+    private EstadoCivil estadoCivil;
     private String conjuge;
     private String certidao;
     private String tipoSanguineo;
@@ -34,7 +36,7 @@ public class PessoaResponseDTO {
             Long pessoaId,
             String tipoVinculo,
             String nome,
-            String sexo,
+            Sexo sexo,
             LocalDate dataNascimento,
             String telefone,
             String email,
@@ -44,7 +46,7 @@ public class PessoaResponseDTO {
             String profissao,
             String pai,
             String mae,
-            String estadoCivil,
+            EstadoCivil estadoCivil,
             String conjuge,
             String certidao,
             String tipoSanguineo,
@@ -89,7 +91,7 @@ public class PessoaResponseDTO {
                 p.getPessoaId(),
                 p.getTipoVinculo() != null ? p.getTipoVinculo().getDescricao() : null,
                 p.getNome(),
-                p.getSexo() != null ? p.getSexo().getDescricao() : null,
+                p.getSexo(),
                 p.getDataNascimento(),
                 p.getTelefone(),
                 p.getEmail(),
@@ -99,7 +101,7 @@ public class PessoaResponseDTO {
                 p.getProfissao() != null ? p.getProfissao().getDescricao() : null,
                 p.getPai(),
                 p.getMae(),
-                p.getEstadoCivil() != null ? p.getEstadoCivil().getDescricao() : null,
+                p.getEstadoCivil(),
                 p.getConjuge(),
                 p.getCertidao(),
                 p.getTipoSanguineo(),
@@ -136,11 +138,11 @@ public class PessoaResponseDTO {
         this.nome = nome;
     }
 
-    public String getSexo() {
+    public Sexo getSexo() {
         return sexo;
     }
 
-    public void setSexo(String sexo) {
+    public void setSexo(Sexo sexo) {
         this.sexo = sexo;
     }
 
@@ -216,11 +218,11 @@ public class PessoaResponseDTO {
         this.mae = mae;
     }
 
-    public String getEstadoCivil() {
+    public EstadoCivil getEstadoCivil() {
         return estadoCivil;
     }
 
-    public void setEstadoCivil(String estadoCivil) {
+    public void setEstadoCivil(EstadoCivil estadoCivil) {
         this.estadoCivil = estadoCivil;
     }
 

@@ -32,16 +32,11 @@ public class PessoaService {
     private final CongregacaoRepository congregacaoRepository;
     @Autowired
     private final CargoMinisterialRepository cargoMinisterialRepository;
-    @Autowired
-    private final EstadoCivilRepository estadoCivilRepository;
-    @Autowired
     private final FormacaoRepository formacaoRepository;
     @Autowired
     private final ProfissaoRepository profissaoRepository;
     @Autowired
     private final SituacaoRepository situacaoRepository;
-    @Autowired
-    private final SexoRepository sexoRepository;
     @Autowired
     private final HistoricoRepository historicoRepository;
 
@@ -50,21 +45,17 @@ public class PessoaService {
             PessoaRepository pessoaRepository,
             CongregacaoRepository congregacaoRepository,
             CargoMinisterialRepository cargoMinisterialRepository,
-            EstadoCivilRepository estadoCivilRepository,
             FormacaoRepository formacaoRepository,
             ProfissaoRepository profissaoRepository,
             SituacaoRepository situacaoRepository,
-            SexoRepository sexoRepository,
             HistoricoRepository historicoRepository){
         this.tipoVinculoRepository = tipoVinculoRepository;
         this.pessoaRepository = pessoaRepository;
         this.congregacaoRepository = congregacaoRepository;
         this.cargoMinisterialRepository = cargoMinisterialRepository;
-        this.estadoCivilRepository = estadoCivilRepository;
         this.formacaoRepository = formacaoRepository;
         this.profissaoRepository = profissaoRepository;
         this.situacaoRepository = situacaoRepository;
-        this.sexoRepository = sexoRepository;
         this.historicoRepository = historicoRepository;
     }
 
@@ -100,7 +91,7 @@ public class PessoaService {
                         p.getPessoaId(),
                         p.getTipoVinculo() != null ? p.getTipoVinculo().getDescricao() : null,
                         p.getNome(),
-                        p.getSexo() != null ? p.getSexo().getDescricao() : null,
+                        p.getSexo(),
                         p.getDataNascimento(),
                         p.getTelefone(),
                         p.getEmail(),
@@ -110,7 +101,7 @@ public class PessoaService {
                         p.getProfissao() != null ? p.getProfissao().getDescricao() : null,
                         p.getPai(),
                         p.getMae(),
-                        p.getEstadoCivil() != null ? p.getEstadoCivil().getDescricao() : null,
+                        p.getEstadoCivil(),
                         p.getConjuge(),
                         p.getCertidao(),
                         p.getTipoSanguineo(),
@@ -131,7 +122,7 @@ public class PessoaService {
                         p.getPessoaId(),
                         p.getTipoVinculo() != null ? p.getTipoVinculo().getDescricao() : null,
                         p.getNome(),
-                        p.getSexo() != null ? p.getSexo().getDescricao() : null,
+                        p.getSexo(),
                         p.getDataNascimento(),
                         p.getTelefone(),
                         p.getEmail(),
@@ -141,7 +132,7 @@ public class PessoaService {
                         p.getProfissao() != null ? p.getProfissao().getDescricao() : null,
                         p.getPai(),
                         p.getMae(),
-                        p.getEstadoCivil() != null ? p.getEstadoCivil().getDescricao() : null,
+                        p.getEstadoCivil(),
                         p.getConjuge(),
                         p.getCertidao(),
                         p.getTipoSanguineo(),
@@ -162,7 +153,7 @@ public class PessoaService {
                         p.getPessoaId(),
                         p.getTipoVinculo() != null ? p.getTipoVinculo().getDescricao() : null,
                         p.getNome(),
-                        p.getSexo() != null ? p.getSexo().getDescricao() : null,
+                        p.getSexo(),
                         p.getDataNascimento(),
                         p.getTelefone(),
                         p.getEmail(),
@@ -172,7 +163,7 @@ public class PessoaService {
                         p.getProfissao() != null ? p.getProfissao().getDescricao() : null,
                         p.getPai(),
                         p.getMae(),
-                        p.getEstadoCivil() != null ? p.getEstadoCivil().getDescricao() : null,
+                        p.getEstadoCivil(),
                         p.getConjuge(),
                         p.getCertidao(),
                         p.getTipoSanguineo(),
@@ -195,7 +186,7 @@ public class PessoaService {
                         p.getPessoaId(),
                         p.getTipoVinculo() != null ? p.getTipoVinculo().getDescricao() : null,
                         p.getNome(),
-                        p.getSexo() != null ? p.getSexo().getDescricao() : null,
+                        p.getSexo(),
                         p.getDataNascimento(),
                         p.getTelefone(),
                         p.getEmail(),
@@ -205,7 +196,7 @@ public class PessoaService {
                         p.getProfissao() != null ? p.getProfissao().getDescricao() : null,
                         p.getPai(),
                         p.getMae(),
-                        p.getEstadoCivil() != null ? p.getEstadoCivil().getDescricao() : null,
+                        p.getEstadoCivil(),
                         p.getConjuge(),
                         p.getCertidao(),
                         p.getTipoSanguineo(),
@@ -234,7 +225,7 @@ public class PessoaService {
                         p.getPessoaId(),
                         p.getTipoVinculo() != null ? p.getTipoVinculo().getDescricao() : null,
                         p.getNome(),
-                        p.getSexo() != null ? p.getSexo().getDescricao() : null,
+                        p.getSexo(),
                         p.getDataNascimento(),
                         p.getTelefone(),
                         p.getEmail(),
@@ -244,7 +235,7 @@ public class PessoaService {
                         p.getProfissao() != null ? p.getProfissao().getDescricao() : null,
                         p.getPai(),
                         p.getMae(),
-                        p.getEstadoCivil() != null ? p.getEstadoCivil().getDescricao() : null,
+                        p.getEstadoCivil(),
                         p.getConjuge(),
                         p.getCertidao(),
                         p.getTipoSanguineo(),
@@ -341,6 +332,7 @@ public class PessoaService {
         Pessoa pessoa = new Pessoa();
 
         pessoa.setNome(dto.getNome());
+        pessoa.setSexo(dto.getSexo());
         pessoa.setDataNascimento(dto.getDataNascimento());
         pessoa.setTelefone(dto.getTelefone());
         pessoa.setEmail(dto.getEmail());
@@ -348,6 +340,7 @@ public class PessoaService {
         pessoa.setCpf(dto.getCpf());
         pessoa.setPai(dto.getPai());
         pessoa.setMae(dto.getMae());
+        pessoa.setEstadoCivil(dto.getEstadoCivilId());
         pessoa.setConjuge(dto.getConjuge());
         pessoa.setCertidao(dto.getCertidao());
         pessoa.setTipoSanguineo(dto.getTipoSanguineo());
@@ -373,20 +366,6 @@ public class PessoaService {
             pessoa.setCargoMinisterial(
                     cargoMinisterialRepository.findById(dto.getCargoMinisterialId())
                             .orElseThrow(() -> new RuntimeException("Cargo Ministerial não encontrado"))
-            );
-        }
-
-        if (dto.getSexoId() != null) {
-            pessoa.setSexo(
-                    sexoRepository.findById(dto.getSexoId())
-                            .orElseThrow(() -> new RuntimeException("Sexo não encontrado"))
-            );
-        }
-
-        if (dto.getEstadoCivilId() != null) {
-            pessoa.setEstadoCivil(
-                    estadoCivilRepository.findById(dto.getEstadoCivilId())
-                            .orElseThrow(() -> new RuntimeException("Estado Civil não encontrado"))
             );
         }
 
@@ -462,11 +441,6 @@ public class PessoaService {
                     tipoVinculoRepository.getReferenceById(dto.getTipoVinculoId())
             );
 
-        if (dto.getSexoId() != null)
-            result.setSexo(
-                    sexoRepository.getReferenceById(dto.getSexoId())
-            );
-
         if (dto.getFormacaoId() != null)
             result.setFormacao(
                     formacaoRepository.getReferenceById(dto.getFormacaoId())
@@ -475,11 +449,6 @@ public class PessoaService {
         if (dto.getProfissaoId() != null)
             result.setProfissao(
                     profissaoRepository.getReferenceById(dto.getProfissaoId())
-            );
-
-        if (dto.getEstadoCivilId() != null)
-            result.setEstadoCivil(
-                    estadoCivilRepository.getReferenceById(dto.getEstadoCivilId())
             );
 
         if (dto.getCongregacaoId() != null)

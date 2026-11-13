@@ -1,5 +1,7 @@
 package br.com.adbrascosmopolis.saac_secretaria.models;
 
+import br.com.adbrascosmopolis.saac_secretaria.enumeration.EstadoCivil;
+import br.com.adbrascosmopolis.saac_secretaria.enumeration.Sexo;
 import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -23,8 +25,8 @@ public class Pessoa {
     @Column(name = "nome", length = 100, nullable = false)
     private String nome;
 
-    @ManyToOne(fetch = FetchType.LAZY) // ou EAGER se quiser carregar junto
-    @JoinColumn(name = "sexoId", referencedColumnName = "sexoId")
+    @Enumerated(EnumType.STRING)
+    @Column(name = "sexo")
     private Sexo sexo;
 
     @Column(name = "dataNascimento")
@@ -56,8 +58,8 @@ public class Pessoa {
     @Column(name = "mae")
     private String mae;
 
-    @ManyToOne(fetch = FetchType.LAZY) // ou EAGER se quiser carregar junto
-    @JoinColumn(name = "estadoCivilId", referencedColumnName = "estadoCivilId")
+    @Enumerated(EnumType.STRING)
+    @Column(name = "estadoCivil")
     private EstadoCivil estadoCivil;
 
     @Column(name = "conjuge")

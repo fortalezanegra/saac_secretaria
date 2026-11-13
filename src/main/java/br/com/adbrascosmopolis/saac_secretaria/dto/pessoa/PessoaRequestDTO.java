@@ -1,5 +1,7 @@
 package br.com.adbrascosmopolis.saac_secretaria.dto.pessoa;
 
+import br.com.adbrascosmopolis.saac_secretaria.enumeration.EstadoCivil;
+import br.com.adbrascosmopolis.saac_secretaria.enumeration.Sexo;
 import br.com.adbrascosmopolis.saac_secretaria.models.*;
 
 import java.time.LocalDate;
@@ -8,7 +10,7 @@ public class PessoaRequestDTO {
 
     private Integer tipoVinculoId;
     private String nome;
-    private Integer sexoId;
+    private Sexo sexo;
     private LocalDate dataNascimento;
     private String telefone;
     private String email;
@@ -18,7 +20,7 @@ public class PessoaRequestDTO {
     private Integer profissaoId;
     private String pai;
     private String mae;
-    private Integer estadoCivilId;
+    private EstadoCivil estadoCivil;
     private String conjuge;
     private String certidao;
     private String tipoSanguineo;
@@ -32,7 +34,7 @@ public class PessoaRequestDTO {
     public PessoaRequestDTO(
             Integer tipoVinculoId,
             String nome,
-            Integer sexoId,
+            Sexo sexo,
             LocalDate dataNascimento,
             String telefone,
             String email,
@@ -42,7 +44,7 @@ public class PessoaRequestDTO {
             Integer profissaoId,
             String pai,
             String mae,
-            Integer estadoCivilId,
+            EstadoCivil estadoCivil,
             String conjuge,
             String certidao,
             String tipoSanguineo,
@@ -54,7 +56,7 @@ public class PessoaRequestDTO {
 
         this.tipoVinculoId = tipoVinculoId;
         this.nome = nome;
-        this.sexoId = sexoId;
+        this.sexo = sexo;
         this.dataNascimento = dataNascimento;
         this.telefone = telefone;
         this.email = email;
@@ -64,7 +66,7 @@ public class PessoaRequestDTO {
         this.profissaoId = profissaoId;
         this.pai = pai;
         this.mae = mae;
-        this.estadoCivilId = estadoCivilId;
+        this.estadoCivil = estadoCivil;
         this.conjuge = conjuge;
         this.certidao = certidao;
         this.tipoSanguineo = tipoSanguineo;
@@ -80,6 +82,7 @@ public class PessoaRequestDTO {
         Pessoa pessoa = new Pessoa();
 
         pessoa.setNome(this.nome);
+        pessoa.setSexo(this.sexo);
         pessoa.setDataNascimento(this.dataNascimento);
         pessoa.setTelefone(this.telefone);
         pessoa.setEmail(this.email);
@@ -87,6 +90,7 @@ public class PessoaRequestDTO {
         pessoa.setCpf(this.cpf);
         pessoa.setPai(this.pai);
         pessoa.setMae(this.mae);
+        pessoa.setEstadoCivil(this.estadoCivil);
         pessoa.setConjuge(this.conjuge);
         pessoa.setCertidao(this.certidao);
         pessoa.setTipoSanguineo(this.tipoSanguineo);
@@ -101,12 +105,6 @@ public class PessoaRequestDTO {
             pessoa.setTipoVinculo(tipoVinculo);
         }
 
-        if (this.sexoId != null) {
-            Sexo sexo = new Sexo();
-            sexo.setSexoId(this.sexoId);
-            pessoa.setSexo(sexo);
-        }
-
         if (this.formacaoId != null) {
             Formacao formacao = new Formacao();
             formacao.setFormacaoId(this.formacaoId);
@@ -117,12 +115,6 @@ public class PessoaRequestDTO {
             Profissao profissao = new Profissao();
             profissao.setProfissaoId(this.profissaoId);
             pessoa.setProfissao(profissao);
-        }
-
-        if (this.estadoCivilId != null) {
-            EstadoCivil estadoCivil = new EstadoCivil();
-            estadoCivil.setEstadoCivilId(this.estadoCivilId);
-            pessoa.setEstadoCivil(estadoCivil);
         }
 
         if (this.congregacaoId != null) {
@@ -162,12 +154,12 @@ public class PessoaRequestDTO {
         this.nome = nome;
     }
 
-    public Integer getSexoId() {
-        return sexoId;
+    public Sexo getSexo() {
+        return sexo;
     }
 
-    public void setSexoId(Integer sexoId) {
-        this.sexoId = sexoId;
+    public void setSexo(Sexo sexo) {
+        this.sexo = sexo;
     }
 
     public LocalDate getDataNascimento() {
@@ -242,12 +234,12 @@ public class PessoaRequestDTO {
         this.mae = mae;
     }
 
-    public Integer getEstadoCivilId() {
-        return estadoCivilId;
+    public EstadoCivil getEstadoCivilId() {
+        return estadoCivil;
     }
 
-    public void setEstadoCivilId(Integer estadoCivilId) {
-        this.estadoCivilId = estadoCivilId;
+    public void setEstadoCivil(EstadoCivil estadoCivil) {
+        this.estadoCivil = estadoCivil;
     }
 
     public String getConjuge() {
