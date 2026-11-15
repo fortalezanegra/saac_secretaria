@@ -36,15 +36,15 @@ public class PessoaController {
 
     /* Pesquisar Todas as Pessoas */
     @GetMapping("/all")
-    @PreAuthorize("hasAuthority('PERMISSION_TESOURARIA_MOVIMENTO_FINANCEIRO_READ_GLOBAL') or hasAuthority('PERMISSION_TESOURARIA_MOVIMENTO_FINANCEIRO_READ_LOCAL')")
-    public ResponseEntity<List<PessoaResponseDTO>> getAll(){
+    @PreAuthorize("hasAuthority('PERMISSION_SECRETARIA_MEMBRO_READ_GLOBAL') or hasAuthority('PERMISSION_SECRETARIA_MEMBRO_READ_LOCAL')")
+     public ResponseEntity<List<PessoaResponseDTO>> getAll(){
         List<PessoaResponseDTO> pessoas = _service.getAll();
         return ResponseEntity.ok(pessoas);
     }
 
     /* Pesquisar Todas as Pessoas não deletadas */
     @GetMapping()
-    @PreAuthorize("hasAuthority('PERMISSION_TESOURARIA_MOVIMENTO_FINANCEIRO_READ_GLOBAL') or hasAuthority('PERMISSION_TESOURARIA_MOVIMENTO_FINANCEIRO_READ_LOCAL')")
+    @PreAuthorize("hasAuthority('PERMISSION_SECRETARIA_MEMBRO_READ_GLOBAL') or hasAuthority('PERMISSION_SECRETARIA_MEMBRO_READ_LOCAL')")
     public ResponseEntity<List<PessoaResponseDTO>> getAllNotDeleted(){
         List<PessoaResponseDTO> pessoas = _service.getAllNotDeleted();
         return ResponseEntity.ok(pessoas);
@@ -52,6 +52,7 @@ public class PessoaController {
 
     /* Dropdown Pessoas por Congregação e Situacao */
     @GetMapping("/dropdown/congregacao/situacao")
+    @PreAuthorize("hasAuthority('PERMISSION_SECRETARIA_MEMBRO_READ_GLOBAL') or hasAuthority('PERMISSION_SECRETARIA_MEMBRO_READ_LOCAL')")
     public ResponseEntity<List<PessoaDropdownDTO>> getPessoaBySituacao(
             @RequestBody PessoaRequestDTO dto){
         List<PessoaDropdownDTO> pessoas = _service.dropdownByCongregacaoAndSituacao(dto);
@@ -59,6 +60,7 @@ public class PessoaController {
     }
 
     @GetMapping("/{vinculo}/{situacao}")
+    @PreAuthorize("hasAuthority('PERMISSION_SECRETARIA_MEMBRO_READ_GLOBAL') or hasAuthority('PERMISSION_SECRETARIA_MEMBRO_READ_LOCAL')")
     public ResponseEntity<List<PessoaResponseDTO>> getPessoaByVinculoAndSituacao(
             @PathVariable("vinculo") String vinculo,
             @PathVariable ("situacao") String situacao) {
@@ -67,6 +69,7 @@ public class PessoaController {
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasAuthority('PERMISSION_SECRETARIA_MEMBRO_READ_GLOBAL') or hasAuthority('PERMISSION_SECRETARIA_MEMBRO_READ_LOCAL')")
     public ResponseEntity<?> getById(@PathVariable Long id) {
         Pessoa p = _service.listById(id);
 
@@ -81,6 +84,7 @@ public class PessoaController {
 
     /* Buscar Duplicidade de nomes no banco */
     @GetMapping("/nome/{name}")
+    @PreAuthorize("hasAuthority('PERMISSION_SECRETARIA_MEMBRO_READ_GLOBAL') or hasAuthority('PERMISSION_SECRETARIA_MEMBRO_READ_LOCAL')")
     public ResponseEntity<List<PessoaResponseDTO>> getByPessoas(@PathVariable String name) {
         var pessoas = _service.listByPessoas(name);
         return ResponseEntity.ok(pessoas);
@@ -88,6 +92,7 @@ public class PessoaController {
 
     // Endpoint para buscar o membro por ID para edição
     @GetMapping("/edit/{id}")
+    @PreAuthorize("hasAuthority('PERMISSION_SECRETARIA_MEMBRO_READ_GLOBAL') or hasAuthority('PERMISSION_SECRETARIA_MEMBRO_READ_LOCAL')")
     public ResponseEntity<PessoaEditDTO> getMembroForEdit(@PathVariable Long id) {
         Pessoa p = _service.listById(id);
         if (p == null) {
@@ -101,12 +106,14 @@ public class PessoaController {
     }
 
     @GetMapping("/congregacao/{id}")
+    @PreAuthorize("hasAuthority('PERMISSION_SECRETARIA_MEMBRO_READ_GLOBAL') or hasAuthority('PERMISSION_SECRETARIA_MEMBRO_READ_LOCAL')")
     public ResponseEntity<List<PessoaResponseDTO>> listarPorCongregacao(@PathVariable Integer id) {
         List<PessoaResponseDTO> membros = _service.listByCongregacao(id);
         return ResponseEntity.ok(membros);
     }
 
     @PostMapping("/search")
+    @PreAuthorize("hasAuthority('PERMISSION_SECRETARIA_MEMBRO_READ_GLOBAL') or hasAuthority('PERMISSION_SECRETARIA_MEMBRO_READ_LOCAL')")
     public ResponseEntity<List<PessoaResponseDTO>> search(
             @RequestBody PessoaRequestDTO request) {
 
@@ -126,6 +133,7 @@ public class PessoaController {
 
     /*Pesquisa avancada paginada*/
     @PostMapping("/search/paged")
+    @PreAuthorize("hasAuthority('PERMISSION_SECRETARIA_MEMBRO_READ_GLOBAL') or hasAuthority('PERMISSION_SECRETARIA_MEMBRO_READ_LOCAL')")
     public ResponseEntity<PageResponseDTO<PessoaResponseDTO>> search(
             @RequestBody PessoaRequestDTO request,
             @RequestParam(defaultValue = "0") int page,

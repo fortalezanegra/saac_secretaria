@@ -1,5 +1,6 @@
 package br.com.adbrascosmopolis.saac_secretaria.repository;
 
+import br.com.adbrascosmopolis.saac_secretaria.enumeration.TipoReuniao;
 import br.com.adbrascosmopolis.saac_secretaria.models.ReuniaoMinisterial;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -19,16 +20,14 @@ public interface ReuniaoMinisterialRepository extends JpaRepository<ReuniaoMinis
     @Query("""
     SELECT r
     FROM ReuniaoMinisterial r
-    JOIN FETCH r.tipoReuniao
     JOIN FETCH r.congregacao
     WHERE r.deletedAt IS NULL
     ORDER BY r.dataReuniao DESC
 """)
-    List<ReuniaoMinisterial> listarDropdown();
+    List<ReuniaoMinisterial> listDropdown();
 
     @Query("""
     select r from ReuniaoMinisterial r
-    left join fetch r.tipoReuniao
     left join fetch r.congregacao
     left join fetch r.situacao
     WHERE r.deletedAt IS NULL
@@ -37,4 +36,14 @@ public interface ReuniaoMinisterialRepository extends JpaRepository<ReuniaoMinis
     Optional<ReuniaoMinisterial> findByIdFetchAll(@Param("id") Long id);
 
     ReuniaoMinisterial findByReuniaoMinisterialId(Long reuniaoId);
+
+
+    @Query("""
+    select r from ReuniaoMinisterial r
+    left join fetch r.congregacao
+    left join fetch r.situacao
+    WHERE r.deletedAt IS NULL
+""")
+    List<ReuniaoMinisterial> listAllNotDeleted();
+
 }

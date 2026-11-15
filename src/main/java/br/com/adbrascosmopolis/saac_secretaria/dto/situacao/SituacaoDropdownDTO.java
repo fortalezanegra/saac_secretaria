@@ -4,14 +4,12 @@ public class SituacaoDropdownDTO {
 
     private Integer situacaoId;
     private String descricao;
-    private String contexto;
 
     public SituacaoDropdownDTO(){}
 
-    public SituacaoDropdownDTO(Integer situacaoId, String descricao, String contexto){
+    public SituacaoDropdownDTO(Integer situacaoId, String descricao){
         this.situacaoId = situacaoId;
         this.descricao = descricao;
-        this.contexto = contexto;
     }
 
     public Integer getSituacaoId() {
@@ -28,13 +26,5 @@ public class SituacaoDropdownDTO {
 
     public void setDescricao(String descricao) {
         this.descricao = descricao;
-    }
-
-    public String getContexto() {
-        return contexto;
-    }
-
-    public void setContexto(String contexto) {
-        this.contexto = contexto;
     }
 }

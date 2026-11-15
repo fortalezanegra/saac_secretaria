@@ -23,13 +23,10 @@ public class SituacaoService {
         return situacaoMembro.stream()
                 .map(s -> new SituacaoDropdownDTO(
                         s.getSituacaoId(),
-                        s.getDescricao(),
-                        s.getContexto()
+                        s.getDescricao()
                 ))
                 .collect(Collectors.toList());
 
     }
-
-
 
 }

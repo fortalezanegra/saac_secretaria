@@ -3,15 +3,15 @@
 ####################################################################################################################*/
 
 /* Removendo banco se existir */
-DROP DATABASE IF EXISTS saac_secretaria;
+DROP DATABASE IF EXISTS saac_secretaria_test;
 
 /* Criando Banco de Dados */
-CREATE DATABASE saac_secretaria 
+CREATE DATABASE saac_secretaria_test
   DEFAULT CHARACTER SET utf8mb4 
   COLLATE utf8mb4_unicode_ci;
 
 /* Selecionando Banco */
-USE saac_secretaria;
+USE saac_secretaria_test;
 
 /*========================================================*/
 /*                     TABELA SITUACAO                    */
@@ -28,97 +28,6 @@ CREATE TABLE Situacao (
   modifiedBy BIGINT DEFAULT NULL,
   UNIQUE(descricao, contexto)
 ) ENGINE=InnoDB;
-
-/*Tabela Situacao*/
-INSERT INTO Situacao (descricao, contexto, ativo, ordem) VALUES
--- MEMBRO
-('Candidato(a) União',             'MEMBRO', 1, 1),
-('Candidato(a) Batismo',           'MEMBRO', 1, 2),
-('Ativo',                          'MEMBRO', 1, 3),
-('Inativo',                        'MEMBRO', 1, 4),
-('Falecido',                       'MEMBRO', 1, 5),
-('Aguardando Batismo',             'MEMBRO', 1, 6),
-('Aguardando Reuniao Ministerial', 'MEMBRO', 1, 7),
-
--- REUNIAO_MINISTERIAL
-('Pendente',  'REUNIAO_MINISTERIAL', 1, 1),
-('Concluido', 'REUNIAO_MINISTERIAL', 1, 2),
-('Cancelado', 'REUNIAO_MINISTERIAL', 1, 3),
-
--- ATA_REUNIAO
-('Aguardando Redação',    'ATA_REUNIAO', 1, 1),
-('Em Analise',            'ATA_REUNIAO', 1, 2),
-('Aguardando Aprovação',  'ATA_REUNIAO', 1, 3),
-('Aprovada',              'ATA_REUNIAO', 1, 4),
-('Consolidada',           'ATA_REUNIAO', 1, 5),
-
--- BATISMO_EVENTO
-('Pendente',  'BATISMO_EVENTO', 1, 1),
-('Concluido', 'BATISMO_EVENTO', 1, 2),
-('Cancelado', 'BATISMO_EVENTO', 1, 3),
-
--- BATISMO_CANDIDATO
-('Pendente',       'BATISMO_CANDIDATO', 1, 1),
-('Concluido',      'BATISMO_CANDIDATO', 1, 2),
-('Cancelado',      'BATISMO_CANDIDATO', 1, 3),
-('Nao Compareceu', 'BATISMO_CANDIDATO', 1, 4),
-
--- SOLICITACAO_UNIAO
-('Aguardando Reuniao', 'SOLICITACAO_UNIAO', 1, 1),
-('Aprovada',           'SOLICITACAO_UNIAO', 1, 2),
-('Reprovada',          'SOLICITACAO_UNIAO', 1, 3),
-('Cancelada',          'SOLICITACAO_UNIAO', 1, 4),
-('Consolidada',        'SOLICITACAO_UNIAO', 1, 5),
-
--- SOLICITACAO_UNIAO_BATISMO
-('Aguardando Reuniao', 'SOLICITACAO_UNIAO_BATISMO', 1, 1),
-('Aprovada',           'SOLICITACAO_UNIAO_BATISMO', 1, 2),
-('Reprovada',          'SOLICITACAO_UNIAO_BATISMO', 1, 3),
-('Cancelada',          'SOLICITACAO_UNIAO_BATISMO', 1, 4),
-('Consolidada',        'SOLICITACAO_UNIAO_BATISMO', 1, 5),
-
--- SOLICITACAO_UNIAO_MUDANCA
-('Aguardando Reuniao', 'SOLICITACAO_UNIAO_MUDANCA', 1, 1),
-('Aprovada',           'SOLICITACAO_UNIAO_MUDANCA', 1, 2),
-('Reprovada',          'SOLICITACAO_UNIAO_MUDANCA', 1, 3),
-('Cancelada',          'SOLICITACAO_UNIAO_MUDANCA', 1, 4),
-('Consolidada',        'SOLICITACAO_UNIAO_MUDANCA', 1, 5),
-
--- SOLICITACAO_RECONCILIACAO
-('Aguardando Reuniao', 'SOLICITACAO_RECONCILIACAO', 1, 1),
-('Aprovada',           'SOLICITACAO_RECONCILIACAO', 1, 2),
-('Reprovada',          'SOLICITACAO_RECONCILIACAO', 1, 3),
-('Cancelada',          'SOLICITACAO_RECONCILIACAO', 1, 4),
-('Consolidada',        'SOLICITACAO_RECONCILIACAO', 1, 5),
-
--- SOLICITACAO_TRANSFERENCIA
-('Aguardando Reuniao', 'SOLICITACAO_TRANSFERENCIA', 1, 1),
-('Aprovada',           'SOLICITACAO_TRANSFERENCIA', 1, 2),
-('Reprovada',          'SOLICITACAO_TRANSFERENCIA', 1, 3),
-('Cancelada',          'SOLICITACAO_TRANSFERENCIA', 1, 4),
-('Consolidada',        'SOLICITACAO_TRANSFERENCIA', 1, 5),
-
--- SOLICITACAO_DESLIGAMENTO
-('Aguardando Reuniao', 'SOLICITACAO_DESLIGAMENTO', 1, 1),
-('Aprovada',           'SOLICITACAO_DESLIGAMENTO', 1, 2),
-('Reprovada',          'SOLICITACAO_DESLIGAMENTO', 1, 3),
-('Cancelada',          'SOLICITACAO_DESLIGAMENTO', 1, 4),
-('Consolidada',        'SOLICITACAO_DESLIGAMENTO', 1, 5),
-
--- EVENTO
-('Pendente',  'EVENTO', 1, 1),
-('Concluido', 'EVENTO', 1, 2),
-('Cancelado', 'EVENTO', 1, 3),
-
--- DOCUMENTO
-('Aguardando Envio',     'DOCUMENTO', 1, 1),
-('Enviado',              'DOCUMENTO', 1, 2),
-('Aguardando Revisao',   'DOCUMENTO', 1, 3),
-('Revisado',             'DOCUMENTO', 1, 4),
-('Aguardando Aprovacao', 'DOCUMENTO', 1, 5),
-('Aprovado',             'DOCUMENTO', 1, 6),
-('Aguardando Liberacao', 'DOCUMENTO', 1, 7),
-('Liberado',             'DOCUMENTO', 1, 8);
 
 /*========================================================*/
 /*                       TABELA PAIS                      */
@@ -194,15 +103,6 @@ CREATE TABLE Setor (
 
 ) ENGINE=InnoDB;
 
-/*Tabela Setor*/
-INSERT INTO Setor(Nome, Sigla, Descricao, CidadeId) VALUES
-('Setor 1', 'ADBC-SET01', 'Grupo de Congregações', null),
-('Setor 2', 'ADBC-SET02', 'Grupo de Congregações', null),
-('Setor 3', 'ADBC-SET03', 'Grupo de Congregações', null),
-('Setor 4', 'ADBC-SET04', 'Grupo de Congregações', null),
-('Setor 5', 'ADBC-SET05', 'Grupo de Congregações', null),
-('Setor 6', 'ADBC-SET06', 'Grupo de Congregações', null);
-
 /*========================================================*/
 /*                   TABELA CONGREGACAO                   */
 /*========================================================*/
@@ -224,40 +124,6 @@ CREATE TABLE Congregacao (
 
 ) ENGINE=InnoDB;
 
-/*Tabela Congregacao*/
-INSERT INTO Congregacao(setorId, nome, sigla, endereco)VALUES
-((SELECT setorId FROM Setor WHERE nome ='Setor 1'), 'Catedral da Fonte', 'CAF', 'Rua Moacir do Amaral, 767 Cosmopolis-SP'),
-((SELECT setorId FROM Setor WHERE nome ='Setor 1'), 'Rosamélia', 'RSA', 'Rua Walter Zacarias, 33 Rosamélia Cosmopolis-SP'),
-((SELECT setorId FROM Setor WHERE nome ='Setor 1'), 'Laranjeiras', 'LRJ', 'Rua Camilo Stucki, 202 Recanto das Laranjeiras Cosmopolis-SP'),
-((SELECT setorId FROM Setor WHERE nome ='Setor 1'), 'Colibri', 'CLB', 'Rua Frederico Decresci, 339 Colibri Cosmopolis-SP'),
-((SELECT setorId FROM Setor WHERE nome ='Setor 1'), 'Novo Cosmopolis', 'NCM', 'Rua Paulo de Azevedo Filho, 397 Novo Cosmopolis Cosmopolis-SP'),
-
-((SELECT setorId FROM Setor WHERE nome ='Setor 2'), 'Parque Esther 1', 'PQE1', 'Rua Paulo Leivas Macalão, 101 Parque Esther 1 Cosmopolis-SP'),
-((SELECT setorId FROM Setor WHERE nome ='Setor 2'), 'Parque Esther 2', 'PQR2', 'Rua Antonio Bordin, 145 Pq. Esther 2 Cosmopolis-SP'),
-((SELECT setorId FROM Setor WHERE nome ='Setor 2'), 'Bader José AUN', 'BDR', 'Rua Adolpho Neumann, 02 Bader José AUN Cosmopolis-SP'),
-((SELECT setorId FROM Setor WHERE nome ='Setor 2'), 'Jd. Eldorado', 'ELD', 'Rua Alberto Stuki, 328 Jd. Eldorado Cosmopolis-SP'),
-((SELECT setorId FROM Setor WHERE nome ='Setor 2'), 'Souza Queiroz', 'SZQ', 'Rua ? Souza Queiroz Cosmopolis-SP'),
-
-((SELECT setorId FROM Setor WHERE nome ='Setor 3'), 'Andorinhas', 'AND', 'Rua Luiz V. de Camões, 550 Andorinhas Cosmopolis-SP'),
-((SELECT setorId FROM Setor WHERE nome ='Setor 3'), 'Jd. de Lourdes', 'JDL', 'Rua José Luis Bernardo da Silva,82 Cosmopolis-SP'),
-((SELECT setorId FROM Setor WHERE nome ='Setor 3'), 'Nosso Teto', 'NST', 'Rua Bortolo Caron, 37 Cosmopolis-SP'),
-
-((SELECT setorId FROM Setor WHERE nome ='Setor 4'), 'Uirapuru', 'URP', 'Rua Tomaz Antonio Gonzaga, 371 Uirapuru Cosmopolis-SP'),
-
-((SELECT setorId FROM Setor WHERE nome ='Setor 5'), 'Groot', 'GRT', 'Rua ? Holambra-SP'),
-((SELECT setorId FROM Setor WHERE nome ='Setor 5'), 'Imigrantes', 'IMT', 'Rua ? Holambra-SP'),
-
-((SELECT setorId FROM Setor WHERE nome ='Setor 6'), 'Americo de Campos', 'AMC', 'Rua ? Americo de Campos-SP'),
-((SELECT setorId FROM Setor WHERE nome ='Setor 6'), 'Ouroeste', 'OUR', 'Rua ? Ouroeste-SP'),
-((SELECT setorId FROM Setor WHERE nome ='Setor 6'), 'Riolândia', 'RIL', 'Rua ? Riolândia-SP'),
-((SELECT setorId FROM Setor WHERE nome ='Setor 6'), 'Santa Albertina', 'SAL', 'Rua ? SantaAlbertina-SP'),
-((SELECT setorId FROM Setor WHERE nome ='Setor 6'), 'Mesópolis', 'MSP', 'Rua ? Mesópolis-SP'),
-((SELECT setorId FROM Setor WHERE nome ='Setor 6'), 'Populina', 'PPL', 'Rua ? Populina-SP'),
-((SELECT setorId FROM Setor WHERE nome ='Setor 6'), 'Nipoã', 'NPA', 'Rua ? Nipoã-SP'),
-((SELECT setorId FROM Setor WHERE nome ='Setor 6'), 'Monte Aprazivel', 'MAP', 'Rua ? Monte Aprazivel-SP'),
-((SELECT setorId FROM Setor WHERE nome ='Setor 6'), 'Cosmorama', 'CMR', 'Rua ? Cosmorama-SP'),
-((SELECT setorId FROM Setor WHERE nome ='Setor 6'), 'Cardoso', 'CRD', 'Rua ? Cardoso-SP');
-
 /*========================================================*/
 /*                 TABELA CARGO MINISTERIAL               */
 /*========================================================*/
@@ -272,19 +138,6 @@ CREATE TABLE CargoMinisterial (
 
 ) ENGINE=InnoDB;
 
-/*Tabela CargoMinisterial */
-INSERT INTO CargoMinisterial(descricao) VALUES
-('Nenhum'),
-('Membro'),
-('Auxiliar de Trabalho'),
-('Diacono'),
-('Diaconisa'),
-('Missionário(a)'),
-('Presbitero'),
-('Evangelista'),
-('Pastor(a)'),
-('Bispo(a)');
-
 /*========================================================*/
 /*                     TABELA FORMACAO                    */
 /*========================================================*/
@@ -298,18 +151,6 @@ CREATE TABLE Formacao (
   UNIQUE (descricao)
 
 ) ENGINE=InnoDB;
-
-/*Tabela Formacao*/
-INSERT INTO Formacao(Descricao) VALUES
-('Ensino Fundamental Incompleto'),
-('Ensino Fundamental Completo'),
-('Ensino Medio Incompleto'),
-('Ensino Medio Completo'),
-('Ensino Superior Incompleto'),
-('Ensino Superior Completo'),
-('Pós Graduação'),
-('Mestrado'),
-('Doutorado');
 
 /*========================================================*/
 /*                     TABELA PROFISSAO                   */
@@ -339,14 +180,6 @@ CREATE TABLE TipoVinculo (
 
 ) ENGINE=InnoDB;
 
-/*Tabela Tipo Vinculo */
-INSERT INTO TipoVinculo(descricao) VALUES
-('Assitido'),
-('Contribuinte'),
-('Novo Convertido'),
-('Congregado'),
-('Membro');
-
 /*========================================================*/
 /*                       TABELA PESSOA                    */
 /*========================================================*/
@@ -355,7 +188,7 @@ CREATE TABLE Pessoa (
   tipoVinculoId INT NOT NULL,
 
   nome VARCHAR(100) NOT NULL,
-  sexoId INT DEFAULT NULL,
+  sexo ENUM('MASCULINO', 'FEMININO') DEFAULT NULL,
   dataNascimento DATE DEFAULT NULL,
   telefone VARCHAR(20),
   email VARCHAR(50),
@@ -367,7 +200,7 @@ CREATE TABLE Pessoa (
 
   pai VARCHAR(100) DEFAULT NULL,
   mae VARCHAR(100) DEFAULT NULL,
-  estadoCivilId INT DEFAULT NULL,
+  estadoCivil ENUM('CASADO_A', 'SOLTEIRO_A', 'DIVORCIADO_A', 'VIUVO_A') DEFAULT NULL,
   conjuge VARCHAR(100) DEFAULT NULL,
   certidao VARCHAR(100) DEFAULT NULL,
   tipoSanguineo VARCHAR(10) DEFAULT NULL,
@@ -393,17 +226,11 @@ CREATE TABLE Pessoa (
   CONSTRAINT FK_MEMBRO_X_TIPO_VINCULO FOREIGN KEY (tipoVinculoId)
     REFERENCES TipoVinculo(tipoVinculoId) ON DELETE RESTRICT,
 
-  CONSTRAINT FK_MEMBRO_X_SEXO FOREIGN KEY (sexoId)
-    REFERENCES Sexo(sexoId) ON DELETE SET NULL,
-
     CONSTRAINT FK_MEMBRO_X_FORMACAO FOREIGN KEY (formacaoId)
     REFERENCES Formacao(formacaoId) ON DELETE SET NULL,
     
   CONSTRAINT FK_MEMBRO_X_PROFISSAO FOREIGN KEY (profissaoId)
     REFERENCES Profissao(profissaoId) ON DELETE SET NULL,
-
-  CONSTRAINT FK_MEMBRO_X_ESTADO_CIVIL FOREIGN KEY (estadoCivilId)
-    REFERENCES EstadoCivil(estadoCivilId) ON DELETE SET NULL,
 
   CONSTRAINT FK_MEMBRO_X_CONGREGACAO FOREIGN KEY (congregacaoId)
     REFERENCES Congregacao(congregacaoId) ON DELETE RESTRICT,
@@ -452,7 +279,7 @@ CREATE TABLE Endereco (
 /*========================================================*/
 CREATE TABLE ReuniaoMinisterial(
   reuniaoMinisterialId BIGINT PRIMARY KEY AUTO_INCREMENT,
-  tipoReuniaoId INT NOT NULL,
+  tipoReuniao ENUM('PASTORES', 'DIRIGENTES', 'OBREIROS', 'EXTRAORDINARIA') NOT NULL,
   congregacaoId INT NOT NULL,
   dataReuniao DATE NOT NULL,
   situacaoId INT NOT NULL,
@@ -674,9 +501,6 @@ CREATE TABLE SolicitacaoTransferencia (
   congregacaoOrigemId INT NOT NULL,
   congregacaoDestinoId INT NOT NULL,
 
-  CONSTRAINT CK_ST_CONGREGACOES_DIFERENTES
-    CHECK (congregacaoOrigemId <> congregacaoDestinoId),
-
   CONSTRAINT FK_ST_X_SOLICITACAO
     FOREIGN KEY (solicitacaoId)
     REFERENCES Solicitacao(solicitacaoId)
@@ -693,29 +517,29 @@ CREATE TABLE SolicitacaoTransferencia (
     ON DELETE RESTRICT ON UPDATE CASCADE
 ) ENGINE=InnoDB;
 
-DELIMITER //
+-- DELIMITER //
 
-CREATE TRIGGER TRG_SOL_TRANSFERENCIA_BI
-BEFORE INSERT ON SolicitacaoTransferencia
-FOR EACH ROW
-BEGIN
-  IF NEW.congregacaoOrigemId = NEW.congregacaoDestinoId THEN
-    SIGNAL SQLSTATE '45000'
-      SET MESSAGE_TEXT = 'A congregacao de origem deve ser diferente da congregacao de destino';
-  END IF;
-END//
+-- CREATE TRIGGER TRG_SOL_TRANSFERENCIA_BI
+-- BEFORE INSERT ON SolicitacaoTransferencia
+-- FOR EACH ROW
+-- BEGIN
+--   IF NEW.congregacaoOrigemId = NEW.congregacaoDestinoId THEN
+--     SIGNAL SQLSTATE '45000'
+--       SET MESSAGE_TEXT = 'A congregacao de origem deve ser diferente da congregacao de destino';
+--   END IF;
+-- END//
 
-CREATE TRIGGER TRG_SOL_TRANSFERENCIA_BU
-BEFORE UPDATE ON SolicitacaoTransferencia
-FOR EACH ROW
-BEGIN
-  IF NEW.congregacaoOrigemId = NEW.congregacaoDestinoId THEN
-    SIGNAL SQLSTATE '45000'
-      SET MESSAGE_TEXT = 'A congregacao de origem deve ser diferente da congregacao de destino';
-  END IF;
-END//
+-- CREATE TRIGGER TRG_SOL_TRANSFERENCIA_BU
+-- BEFORE UPDATE ON SolicitacaoTransferencia
+-- FOR EACH ROW
+-- BEGIN
+--   IF NEW.congregacaoOrigemId = NEW.congregacaoDestinoId THEN
+--     SIGNAL SQLSTATE '45000'
+--       SET MESSAGE_TEXT = 'A congregacao de origem deve ser diferente da congregacao de destino';
+--   END IF;
+-- END//
 
-DELIMITER ;
+-- DELIMITER ;
 
 /*========================================================*/
 /*            TABELA SOLICITACAO RECONCILIACAO            */
@@ -864,10 +688,10 @@ CREATE TABLE Atividades (
   INDEX IDX_EVENTO_CONGREGACAO (congregacaoId),
   INDEX IDX_EVENTO_SITUACAO (situacaoId),
 
-  CONSTRAINT FK_EVENTO_X_CONGREGACAO
+  CONSTRAINT FK_ATIVIDADE_X_CONGREGACAO
     FOREIGN KEY(congregacaoId) REFERENCES Congregacao(congregacaoId) ON DELETE RESTRICT ON UPDATE CASCADE,
 
-  CONSTRAINT FK_EVENTO_X_SITUACAO
+  CONSTRAINT FK_ATIVIDADE_X_SITUACAO
     FOREIGN KEY(situacaoId) REFERENCES Situacao(situacaoId) ON DELETE RESTRICT ON UPDATE CASCADE
 
 ) ENGINE=InnoDB;

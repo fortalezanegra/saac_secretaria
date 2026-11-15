@@ -4,11 +4,11 @@ import br.com.adbrascosmopolis.saac_secretaria.dto.reuniao_ministerial.ReuniaoMi
 import br.com.adbrascosmopolis.saac_secretaria.dto.reuniao_ministerial.ReuniaoMinisterialEditDTO;
 import br.com.adbrascosmopolis.saac_secretaria.dto.reuniao_ministerial.ReuniaoMinisterialRequestDTO;
 import br.com.adbrascosmopolis.saac_secretaria.dto.reuniao_ministerial.ReuniaoMinisterialResponseDTO;
+import br.com.adbrascosmopolis.saac_secretaria.dto.situacao.SituacaoDropdownDTO;
 import br.com.adbrascosmopolis.saac_secretaria.models.ReuniaoMinisterial;
 import br.com.adbrascosmopolis.saac_secretaria.repository.CongregacaoRepository;
 import br.com.adbrascosmopolis.saac_secretaria.repository.ReuniaoMinisterialRepository;
 import br.com.adbrascosmopolis.saac_secretaria.repository.SituacaoRepository;
-import br.com.adbrascosmopolis.saac_secretaria.repository.TipoReuniaoRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
@@ -16,6 +16,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -23,32 +24,42 @@ import java.util.stream.Collectors;
 public class ReuniaoMinisterialService {
 
     private final ReuniaoMinisterialRepository reuniaoMinisterialRepository;
-    private final TipoReuniaoRepository tipoReuniaoRepository;
     private final CongregacaoRepository congregacaoRepository;
     private final SituacaoRepository situacaoRepository;
 
     public ReuniaoMinisterialService(
             ReuniaoMinisterialRepository reuniaoMinisterialRepository,
-            TipoReuniaoRepository tipoReuniaoRepository,
             CongregacaoRepository congregacaoRepository,
             SituacaoRepository situacaoRepository){
         this.reuniaoMinisterialRepository = reuniaoMinisterialRepository;
-        this.tipoReuniaoRepository = tipoReuniaoRepository;
         this.congregacaoRepository = congregacaoRepository;
         this.situacaoRepository = situacaoRepository;
     }
 
-    /* Dropdown */
+    /* Dropdown Reunioes */
     public List<ReuniaoMinisterialDropdownDTO> dropdown() {
 
-        List<ReuniaoMinisterial> reuniao = reuniaoMinisterialRepository.listarDropdown();
+        List<ReuniaoMinisterial> reuniao = reuniaoMinisterialRepository.listDropdown();
 
         return reuniao.stream()
                 .map(r -> new ReuniaoMinisterialDropdownDTO(
                         r.getReuniaoMinisterialId(),
-                        r.getTipoReuniao().getDescricao(),
+                        r.getTipoReuniao(),
                         r.getCongregacao().getNome(),
                         r.getDataReuniao()
+                ))
+                .collect(Collectors.toList());
+    }
+
+    /* Dropdown Situações com Contexto = REUNIAO_MINISTERIAL */
+    public List<SituacaoDropdownDTO> dropdownSituacao(String contexto) {
+
+        List<SituacaoDropdownDTO> situacaoes = situacaoRepository.listarDropdownPorContexto(contexto);
+
+        return situacaoes.stream()
+                .map(r -> new SituacaoDropdownDTO(
+                        r.getSituacaoId(),
+                        r.getDescricao()
                 ))
                 .collect(Collectors.toList());
     }
@@ -60,15 +71,17 @@ public class ReuniaoMinisterialService {
     }
 
     // Buscar por todas as Reuniões
-    public List<ReuniaoMinisterialResponseDTO> listAll(){
-        List<ReuniaoMinisterial> reuniao = reuniaoMinisterialRepository.findAll(Sort.by(Sort.Direction.DESC, "dataReuniao"));
+    public List<ReuniaoMinisterialResponseDTO> listAllNotDeleted(){
+        List<ReuniaoMinisterial> reuniao = reuniaoMinisterialRepository.listAllNotDeleted();
 
         return reuniao.stream()
                 .map( r -> new ReuniaoMinisterialResponseDTO(
                         r.getReuniaoMinisterialId(),
-                        r.getTipoReuniao() != null ? r.getTipoReuniao().getDescricao() : null,
+                        r.getTipoReuniao(),
+                        r.getCongregacao() != null ? r.getCongregacao().getCongregacaoId() : null,
                         r.getCongregacao() != null ? r.getCongregacao().getNome() : null,
                         r.getDataReuniao(),
+                        r.getSituacao() != null ? r.getSituacao().getSituacaoId() : null,
                         r.getSituacao() != null ? r.getSituacao().getDescricao() : null
                 )).toList();
     }
@@ -108,14 +121,8 @@ public class ReuniaoMinisterialService {
 
         //DataReuniao
         reuniao.setDataReuniao(dto.getDataReuniao());
+        reuniao.setTipoReuniao(dto.getTipoReuniao());
 
-        // Buscar entidades relacionadas pelo ID
-        if(dto.getTipoReuniaoId() != null){
-            reuniao.setTipoReuniao(
-                    tipoReuniaoRepository.findById(dto.getTipoReuniaoId())
-                            .orElseThrow(() -> new RuntimeException("Tipo Reunião não encontrada"))
-            );
-        }
 
         if(dto.getCongregacaoId() != null){
             reuniao.setCongregacao(
@@ -139,19 +146,15 @@ public class ReuniaoMinisterialService {
     }
 
     // Update
-    public ReuniaoMinisterial update(ReuniaoMinisterialEditDTO dto){
+    public ReuniaoMinisterialResponseDTO update(ReuniaoMinisterialEditDTO dto){
         ReuniaoMinisterial result = reuniaoMinisterialRepository.findById(dto.getReuniaoMinisterialId())
                 .orElseThrow(()-> new RuntimeException("Reunião Ministerial não encontrada"));
 
+        result.setTipoReuniao(dto.getTipoReuniao());
         result.setDataReuniao(dto.getDataReuniao());
         result.setDeletedAt(dto.getDeletedAt());
 
-        // Relacionamentos (CORRETO)
-        if(dto.getTipoReuniaoId() != null){
-            result.setTipoReuniao(
-                    tipoReuniaoRepository.getReferenceById(dto.getTipoReuniaoId())
-            );
-        }
+
 
         if(dto.getCongregacaoId() != null){
             result.setCongregacao(
@@ -165,16 +168,16 @@ public class ReuniaoMinisterialService {
             );
         }
 
-        return reuniaoMinisterialRepository.save(result);
+        return ReuniaoMinisterialResponseDTO.fromReuniaoMinisterial(reuniaoMinisterialRepository.save(result));
     }
 
     // Delete
-    public ReuniaoMinisterial delete(ReuniaoMinisterialEditDTO dto){
+    public ReuniaoMinisterialResponseDTO delete(ReuniaoMinisterialEditDTO dto){
         ReuniaoMinisterial result = reuniaoMinisterialRepository.findById(dto.getReuniaoMinisterialId())
                 .orElseThrow(()-> new RuntimeException("Reunião Ministerial não encontrada"));
 
-        result.setDeletedAt(dto.getDeletedAt());
+        result.setDeletedAt(LocalDateTime.now());
 
-        return reuniaoMinisterialRepository.save(result);
+        return ReuniaoMinisterialResponseDTO.fromReuniaoMinisterial(reuniaoMinisterialRepository.save(result));
     }
 }

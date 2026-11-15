@@ -1,5 +1,6 @@
 package br.com.adbrascosmopolis.saac_secretaria.dto.reuniao_ministerial;
 
+import br.com.adbrascosmopolis.saac_secretaria.enumeration.TipoReuniao;
 import br.com.adbrascosmopolis.saac_secretaria.models.*;
 
 import java.time.LocalDate;
@@ -7,39 +8,35 @@ import java.time.LocalDateTime;
 
 public class ReuniaoMinisterialRequestDTO {
 
-    private Integer tipoReuniaoId;
+    private TipoReuniao tipoReuniao;
     private Integer congregacaoId;
     private LocalDate dataReuniao;
     private Integer situacaoId;
     private LocalDateTime deletedAt;
 
     public ReuniaoMinisterialRequestDTO(
-            Integer tipoReuniaoId,
+            TipoReuniao tipoReuniao,
             Integer congregacaoId,
             LocalDate dataReuniao,
             Integer situacaoId,
             LocalDateTime deletedAt
     ){
-        this.tipoReuniaoId = tipoReuniaoId;
+        this.tipoReuniao = tipoReuniao;
         this.congregacaoId = congregacaoId;
         this.dataReuniao = dataReuniao;
         this.situacaoId = situacaoId;
         this.deletedAt = deletedAt;
     }
 
+    public ReuniaoMinisterialRequestDTO(){}
+
     public ReuniaoMinisterial mapToReuniaoMinisterial(){
 
         ReuniaoMinisterial reuniao = new ReuniaoMinisterial();
 
+        reuniao.setTipoReuniao(this.tipoReuniao);
         reuniao.setDataReuniao(this.dataReuniao);
         reuniao.setDeletedAt(this.deletedAt);
-
-        //Relacionamentos
-        if(this.tipoReuniaoId != null){
-            TipoReuniao tipo = new TipoReuniao();
-            tipo.setTipoReuniaoId(this.tipoReuniaoId);
-            reuniao.setTipoReuniao(tipo);
-        }
 
         if(this.congregacaoId != null){
             Congregacao congregacao = new Congregacao();
@@ -56,12 +53,12 @@ public class ReuniaoMinisterialRequestDTO {
         return reuniao;
     }
 
-    public Integer getTipoReuniaoId() {
-        return tipoReuniaoId;
+    public TipoReuniao getTipoReuniao() {
+        return tipoReuniao;
     }
 
-    public void setTipoReuniaoId(Integer tipoReuniaoId) {
-        this.tipoReuniaoId = tipoReuniaoId;
+    public void setTipoReuniao(TipoReuniao tipoReuniao) {
+        this.tipoReuniao = tipoReuniao;
     }
 
     public Integer getCongregacaoId() {

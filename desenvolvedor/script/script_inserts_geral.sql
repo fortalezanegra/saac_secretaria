@@ -5,14 +5,14 @@
 
 /*Tabela Situacao*/
 INSERT INTO Situacao (descricao, contexto, ativo, ordem) VALUES
+
 -- MEMBRO
-('Candidato(a) União',             'MEMBRO', 1, 1),
-('Candidato(a) Batismo',           'MEMBRO', 1, 2),
-('Ativo',                          'MEMBRO', 1, 3),
-('Inativo',                        'MEMBRO', 1, 4),
-('Falecido',                       'MEMBRO', 1, 5),
-('Aguardando Batismo',             'MEMBRO', 1, 6),
-('Aguardando Reuniao Ministerial', 'MEMBRO', 1, 7),
+('Ativo',                          'MEMBRO', 1, 1),
+('Inativo',                        'MEMBRO', 1, 2),
+('Falecido',                       'MEMBRO', 1, 3),
+('Aguardando Batismo',             'MEMBRO', 1, 4),
+('Aguardando Reuniao Ministerial', 'MEMBRO', 1, 5),
+('N/A',                            'MEMBRO', 1, 6),
 
 -- REUNIAO_MINISTERIAL
 ('Pendente',  'REUNIAO_MINISTERIAL', 1, 1),
@@ -24,7 +24,7 @@ INSERT INTO Situacao (descricao, contexto, ativo, ordem) VALUES
 ('Em Analise',            'ATA_REUNIAO', 1, 2),
 ('Aguardando Aprovação',  'ATA_REUNIAO', 1, 3),
 ('Aprovada',              'ATA_REUNIAO', 1, 4),
-('Consolidada',           'ATA_REUNIAO', 1, 5),
+('N/A',                   'ATA_REUNIAO', 1, 5),
 
 -- BATISMO_EVENTO
 ('Pendente',  'BATISMO_EVENTO', 1, 1),
@@ -42,13 +42,7 @@ INSERT INTO Situacao (descricao, contexto, ativo, ordem) VALUES
 ('Aprovada',           'SOLICITACAO', 1, 2),
 ('Reprovada',          'SOLICITACAO', 1, 3),
 ('Cancelada',          'SOLICITACAO', 1, 4),
-('Consolidada',        'SOLICITACAO', 1, 5),
-('Reagendada',        'SOLICITACAO', 1, 6),
-
--- EVENTO
-('Pendente',  'EVENTO', 1, 1),
-('Concluido', 'EVENTO', 1, 2),
-('Cancelado', 'EVENTO', 1, 3),
+('Reagendada',         'SOLICITACAO', 1, 5),
 
 -- DOCUMENTO
 ('Aguardando Envio',     'DOCUMENTO', 1, 1),
@@ -58,7 +52,12 @@ INSERT INTO Situacao (descricao, contexto, ativo, ordem) VALUES
 ('Aguardando Aprovacao', 'DOCUMENTO', 1, 5),
 ('Aprovado',             'DOCUMENTO', 1, 6),
 ('Aguardando Liberacao', 'DOCUMENTO', 1, 7),
-('Liberado',             'DOCUMENTO', 1, 8);
+('Liberado',             'DOCUMENTO', 1, 8),
+
+-- ATIVIDADES
+('Pendente',  'ATIVIDADES', 1, 1),
+('Concluido', 'ATIVIDADES', 1, 2),
+('Cancelado', 'ATIVIDADES', 1, 3);
 
 /*Tabela Tipo Vinculo */
 INSERT INTO TipoVinculo(descricao) VALUES
@@ -67,11 +66,6 @@ INSERT INTO TipoVinculo(descricao) VALUES
 ('Novo Convertido'),
 ('Congregado'),
 ('Membro');
-
-/*Tabela Sexo*/
-INSERT INTO Sexo(Descricao) VALUES
-('Masculino'),
-('Feminino');
 
 /*Tabela Formacao*/
 INSERT INTO Formacao(Descricao) VALUES
@@ -87,13 +81,6 @@ INSERT INTO Formacao(Descricao) VALUES
 
 /*Tabela Profissão*/
 /*Insert em arquivo separado devido a quantidade*/
-
-/*Tabela EstadoCivil*/
-INSERT INTO EstadoCivil(Descricao) VALUES
-('Solteiro(a)'),
-('Casado(a)'),
-('Divorciado(a)'),
-('Viúvo(a)');
 
 /*Tabela Setor*/
 INSERT INTO Setor(Nome, Sigla, Descricao, CidadeId) VALUES
@@ -156,21 +143,25 @@ INSERT INTO CargoMinisterial(Descricao) VALUES
 /*########################## I N S E R T S ###########################*/
 /*####################################################################*/
 
-/* TIPO REUNIAO */
-INSERT INTO TipoReuniao(descricao) VALUES
-('Pastores'),
-('Dirigentes'),
-('Obreiros'),
-('Extraordinária');
-
 /* REUNIAO MINISTERIAL */
-INSERT INTO ReuniaoMinisterial (tipoReuniaoId, congregacaoId, dataReuniao, situacaoId) VALUES
-(1, 1, '2026-11-15', 1),
-(2, 1, '2026-11-25', 1);
+INSERT INTO ReuniaoMinisterial (tipoReuniao, congregacaoId, dataReuniao, situacaoId) VALUES
+('PASTORES', 1, '2026-11-15', 1),
+('DIRIGENTES', 1, '2026-11-26', 1),
+('OBREIROS', 1, '2026-11-27', 1),
+('EXTRAORDINARIA', 1, '2026-11-28', 1);
 
 /* BATISMO */
 INSERT INTO Batismo(congregacaoId, dataBatismo, situacaoId) VALUES
 (1, '2026-12-12', 1);
+
+/* IGREJA ORIGEM */
+INSERT INTO IgrejaOrigem(descricao) VALUES
+('Assembleia de Deus - Ministério Madureira'),
+('Assembleia de Deus - Ministério Belem'),
+('Igreja do Evangelho Quadrangular'),
+('Batista'),
+('Deus é Amor'),
+('Família de Jesus');
 
 /* MOTIVO DESLIGAMENTO */
 INSERT INTO MotivoDesligamento(descricao) VALUES
@@ -199,21 +190,15 @@ INSERT INTO TipoHistorico(descricao) VALUES
 
 
 /* ATIVIDADES */
-INSERT INTO Evento(congregacaoId, tipoCulto, descricao, participantes, dataEvento, situacaoId) VALUES
-(7, 'FAMILIA', 'Culto da Familia', 40, '2026-01-04', 44),
-(7, 'ENSINO', 'Culto Ensino', 15, '2026-01-06', 44),
-(7, 'LAR', 10, 'Tereza', '2026-01-09', 44),
-(7, 'AR_LIVRE', 'Quadra de Esportes Pq. Esther 2', 50, '2026-01-10', 44);
-
-/* TIPO OCORRENCIA */
-INSERT INTO TipoOcorrencia(descricao)VALUES
-('Conversao'),
-('Reconciliacao'),  
-('Batismo Espirito Santo');
+INSERT INTO Atividades(congregacaoId, tipoCulto, descricao, participantes, dataCulto, situacaoId) VALUES
+(7, 'FAMILIA', 'Culto da Familia', 40, '2026-01-04', 36),
+(7, 'ENSINO', 'Culto Ensino', 15, '2026-01-06', 36),
+(7, 'LAR', 'Tereza', 10, '2026-01-09', 36),
+(7, 'AR_LIVRE', 'Quadra de Esportes Pq. Esther 2', 50, '2026-01-10', 36);
 
 /*  OCORRENCIA */
-INSERT INTO Ocorrencia(congregacaoId, atividadeId, tipoOcorrencia, quantidade)VALUES
-(7, 1, 'CONVERSAO', 3),
-(7, 3, 'BATISMO_ESPIRITO_SANTO', 1),
-(7, 4, 'RECONCILIACAO', 3);
+INSERT INTO Ocorrencia(atividadeId, tipoOcorrencia, quantidade)VALUES
+(1, 'CONVERSAO', 3),
+(3, 'BATISMO_ESPIRITO_SANTO', 1),
+(4, 'RECONCILIACAO', 3);
 

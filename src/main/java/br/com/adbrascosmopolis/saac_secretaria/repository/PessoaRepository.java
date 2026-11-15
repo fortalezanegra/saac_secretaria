@@ -14,15 +14,11 @@ import java.util.Optional;
 public interface
 PessoaRepository extends JpaRepository<Pessoa, Long>, JpaSpecificationExecutor<Pessoa> {
 
-    List<Pessoa> findByDeletedAtIsNull();
-
     @Query("""
     select p from Pessoa p
     left join fetch p.tipoVinculo
     left join fetch p.congregacao
     left join fetch p.cargoMinisterial
-    left join fetch p.sexo
-    left join fetch p.estadoCivil
     left join fetch p.formacao
     left join fetch p.profissao
     left join fetch p.situacao
@@ -35,8 +31,6 @@ PessoaRepository extends JpaRepository<Pessoa, Long>, JpaSpecificationExecutor<P
     left join fetch p.tipoVinculo
     left join fetch p.congregacao
     left join fetch p.cargoMinisterial
-    left join fetch p.sexo
-    left join fetch p.estadoCivil
     left join fetch p.formacao
     left join fetch p.profissao
     left join fetch p.situacao
@@ -45,12 +39,6 @@ PessoaRepository extends JpaRepository<Pessoa, Long>, JpaSpecificationExecutor<P
     order by p.nome
 """)
     List<Pessoa> findPessoaByVinculoAndSituacao(@Param("vinculo") String vinculo, @Param("situacao") String situacao);
-
-    Pessoa findByPessoaId(Long pessoaId);
-
-    List<Pessoa> findByNome(String nome);
-
-    List<Pessoa> findByCongregacaoCongregacaoId(Integer congregacaoId);
 
     /* Dropdown Pessoas */
     @Query("""
@@ -73,5 +61,13 @@ PessoaRepository extends JpaRepository<Pessoa, Long>, JpaSpecificationExecutor<P
     @Modifying
     @Query("UPDATE Pessoa p SET p.foto = :urlFoto WHERE p.pessoaId = :id")
     int atualizarFoto(@Param("id") Integer id, @Param("urlFoto") String urlFoto);
+
+    List<Pessoa> findByDeletedAtIsNull();
+
+    Pessoa findByPessoaId(Long pessoaId);
+
+    List<Pessoa> findByNome(String nome);
+
+    List<Pessoa> findByCongregacaoCongregacaoId(Integer congregacaoId);
 
 }

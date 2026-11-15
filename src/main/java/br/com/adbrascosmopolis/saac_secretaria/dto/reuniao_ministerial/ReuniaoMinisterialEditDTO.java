@@ -1,5 +1,6 @@
 package br.com.adbrascosmopolis.saac_secretaria.dto.reuniao_ministerial;
 
+import br.com.adbrascosmopolis.saac_secretaria.enumeration.TipoReuniao;
 import br.com.adbrascosmopolis.saac_secretaria.models.ReuniaoMinisterial;
 
 import java.time.LocalDate;
@@ -8,7 +9,7 @@ import java.time.LocalDateTime;
 public class ReuniaoMinisterialEditDTO {
 
     private Long reuniaoMinisterialId;
-    private Integer tipoReuniaoId;
+    private TipoReuniao tipoReuniao;
     private Integer congregacaoId;
     private LocalDate dataReuniao;
     private Integer situacaoId;
@@ -19,7 +20,7 @@ public class ReuniaoMinisterialEditDTO {
         ReuniaoMinisterialEditDTO dto = new ReuniaoMinisterialEditDTO();
 
         dto.reuniaoMinisterialId = r.getReuniaoMinisterialId();
-        dto.tipoReuniaoId = r.getTipoReuniao() != null ? r.getTipoReuniao().getTipoReuniaoId() : null;
+        dto.tipoReuniao = r.getTipoReuniao();
         dto.congregacaoId = r.getCongregacao() != null ? r.getCongregacao().getCongregacaoId() : null;
         dto.dataReuniao = r.getDataReuniao();
         dto.situacaoId = r.getSituacao() != null ? r.getSituacao().getSituacaoId() : null;
@@ -36,12 +37,12 @@ public class ReuniaoMinisterialEditDTO {
         this.reuniaoMinisterialId = reuniaoMinisterialId;
     }
 
-    public Integer getTipoReuniaoId() {
-        return tipoReuniaoId;
+    public TipoReuniao getTipoReuniao() {
+        return tipoReuniao;
     }
 
-    public void setTipoReuniaoId(Integer tipoReuniaoId) {
-        this.tipoReuniaoId = tipoReuniaoId;
+    public void setTipoReuniao(TipoReuniao tipoReuniao) {
+        this.tipoReuniao = tipoReuniao;
     }
 
     public Integer getCongregacaoId() {

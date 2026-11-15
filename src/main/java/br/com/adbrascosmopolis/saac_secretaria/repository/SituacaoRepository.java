@@ -1,5 +1,6 @@
 package br.com.adbrascosmopolis.saac_secretaria.repository;
 
+import br.com.adbrascosmopolis.saac_secretaria.dto.situacao.SituacaoDropdownDTO;
 import br.com.adbrascosmopolis.saac_secretaria.models.Pessoa;
 import br.com.adbrascosmopolis.saac_secretaria.models.Situacao;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -19,6 +20,18 @@ public interface SituacaoRepository extends JpaRepository<Situacao, Integer> {
        WHERE s.contexto = :contexto
 """)
     List<Situacao> listarSituacaoContexto(@Param("contexto") String contexto);
+
+    @Query("""
+    SELECT new br.com.adbrascosmopolis.saac_secretaria.dto.situacao.SituacaoDropdownDTO(
+        s.situacaoId,
+        s.descricao
+    )
+    FROM Situacao s
+    WHERE s.contexto = :contexto
+      AND s.deletedAt IS NULL
+    ORDER BY s.descricao
+    """)
+    List<SituacaoDropdownDTO> listarDropdownPorContexto(@Param("contexto") String contexto);
 
 
     Situacao findBySituacaoId(Integer situacaoId);

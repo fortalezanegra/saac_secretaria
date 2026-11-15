@@ -28,24 +28,24 @@ public class CongregacaoController {
         this._service = service;
     }
 
-    // Dropdown/ComboBox
-    @GetMapping()
-    @PreAuthorize("hasAuthority('PERMISSION_TESOURARIA_MOVIMENTO_FINANCEIRO_READ_GLOBAL') or hasAuthority('PERMISSION_TESOURARIA_MOVIMENTO_FINANCEIRO_READ_LOCAL')")
-    public ResponseEntity<List<CongregacaoDropdownDTO>> getAll(){
+    // Dropdown
+    @GetMapping("/dropdown")
+    @PreAuthorize("hasAuthority('PERMISSION_SECRETARIA_CONGREGACAO_READ_GLOBAL') or hasAuthority('PERMISSION_SECRETARIA_CONGREGACAO_READ_LOCAL')")
+    public ResponseEntity<List<CongregacaoDropdownDTO>> dropdown(){
         List<CongregacaoDropdownDTO> congregacoes = _service.dropdown();
         return ResponseEntity.ok(congregacoes);
     }
 
     // Buscar todas as congregações
     @GetMapping("/all")
-    @PreAuthorize("hasAuthority('PERMISSION_TESOURARIA_MOVIMENTO_FINANCEIRO_READ_GLOBAL') or hasAuthority('PERMISSION_TESOURARIA_MOVIMENTO_FINANCEIRO_READ_LOCAL')")
-    public ResponseEntity<List<CongregacaoResponseDTO>> getAllComplete() {
+    @PreAuthorize("hasAuthority('PERMISSION_SECRETARIA_CONGREGACAO_READ_GLOBAL') or hasAuthority('PERMISSION_SECRETARIA_CONGREGACAO_READ_LOCAL')")    public ResponseEntity<List<CongregacaoResponseDTO>> getAllComplete() {
         List<CongregacaoResponseDTO> congregacoes = _service.listAll();
         return ResponseEntity.ok(congregacoes);
     }
 
     // Buscar Congregação por Id
     @GetMapping("/{id}")
+    @PreAuthorize("hasAuthority('PERMISSION_SECRETARIA_CONGREGACAO_READ_GLOBAL') or hasAuthority('PERMISSION_SECRETARIA_CONGREGACAO_READ_LOCAL')")
     public ResponseEntity<CongregacaoResponseDTO> getById(@PathVariable Integer id) {
         Congregacao c = _service.listById(id);
         if (c == null) return ResponseEntity.notFound().build();
@@ -54,6 +54,7 @@ public class CongregacaoController {
 
     // Listar Congregação por Setor
     @GetMapping("/setor/{id}")
+    @PreAuthorize("hasAuthority('PERMISSION_SECRETARIA_CONGREGACAO_READ_GLOBAL') or hasAuthority('PERMISSION_SECRETARIA_CONGREGACAO_READ_LOCAL')")
     public ResponseEntity<List<CongregacaoResponseDTO>> listarPorSetor(@PathVariable Integer id) {
         List<CongregacaoResponseDTO> congregacoes = _service.listBySetor(id);
         return ResponseEntity.ok(congregacoes);
@@ -61,6 +62,7 @@ public class CongregacaoController {
 
     // Search By Nome - Pesquisa Avançada
     @GetMapping("/search")
+    @PreAuthorize("hasAuthority('PERMISSION_SECRETARIA_CONGREGACAO_READ_GLOBAL') or hasAuthority('PERMISSION_SECRETARIA_CONGREGACAO_READ_LOCAL')")
     public ResponseEntity<List<CongregacaoResponseDTO>> search(
             @RequestParam(value = "nome", required = false) String nome) {
         List<CongregacaoResponseDTO> congregacao = _service.searchByExample(nome)
@@ -72,6 +74,7 @@ public class CongregacaoController {
 
     // Endpoint para buscar  congregacao por ID para edição
     @GetMapping("/edit/{id}")
+    @PreAuthorize("hasAuthority('PERMISSION_SECRETARIA_CONGREGACAO_READ_GLOBAL') or hasAuthority('PERMISSION_SECRETARIA_CONGREGACAO_READ_LOCAL')")
     public ResponseEntity<CongregacaoEditDTO> getCongregacaoForEdit(@PathVariable Integer id) {
         Congregacao c = _service.listById(id);
         if (c == null) {
