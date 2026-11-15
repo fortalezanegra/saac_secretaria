@@ -42,7 +42,7 @@ public interface SolicitacaoRepository extends JpaRepository<Solicitacao, Long> 
         JOIN FETCH s.congregacaoSolicitante
         JOIN FETCH s.pessoa
         JOIN FETCH s.situacao
-        WHERE s.deletedAt IS NULL AND WHERE s.solicitacaoId = :id    
+        WHERE s.deletedAt IS NULL AND s.solicitacaoId = :id    
     """)
     SolicitacaoTransferencia searchById(@Param("id") Long id);
 
