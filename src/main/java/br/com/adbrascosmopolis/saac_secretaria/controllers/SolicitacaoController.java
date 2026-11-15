@@ -35,6 +35,10 @@ public class SolicitacaoController {
 
         return ResponseEntity
                 .status(HttpStatus.CREATED)
-                .body(SolicitacaoTransferenciaResponseDTO.fromSolicitacao(transferencia));
+                .body(SolicitacaoTransferenciaResponseDTO.fromSolicitacaoTransferencia(transferencia));
     }
+
+
+
+
 }

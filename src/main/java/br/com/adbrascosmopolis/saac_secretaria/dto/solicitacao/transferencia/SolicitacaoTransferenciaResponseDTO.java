@@ -48,7 +48,7 @@ public class SolicitacaoTransferenciaResponseDTO {
         this.congregacaoDestino = congregacaoDestino;
     }
 
-    public static SolicitacaoTransferenciaResponseDTO fromSolicitacao(SolicitacaoTransferencia solicitacao) {
+    public static SolicitacaoTransferenciaResponseDTO fromSolicitacaoTransferencia(SolicitacaoTransferencia solicitacao) {
 
         if (solicitacao == null) {
             return null;
