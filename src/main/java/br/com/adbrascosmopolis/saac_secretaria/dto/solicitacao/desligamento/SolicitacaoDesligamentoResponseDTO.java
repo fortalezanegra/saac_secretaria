@@ -12,6 +12,8 @@ public class SolicitacaoDesligamentoResponseDTO {
     private TipoSolicitacao tipoSolicitacao;
     private Long pessoaId;
     private String pessoa;
+    private Integer motivoDesligamentoId;
+    private String motivoDesligamento;
     private String historico;
     private Integer situacaoId;
     private String situacao;
@@ -23,6 +25,8 @@ public class SolicitacaoDesligamentoResponseDTO {
             TipoSolicitacao tipoSolicitacao,
             Long pessoaId,
             String pessoa,
+            Integer motivoDesligamentoId,
+            String motivoDesligamento,
             String historico,
             Integer situacaoId,
             String situacao
@@ -33,6 +37,8 @@ public class SolicitacaoDesligamentoResponseDTO {
         this.tipoSolicitacao = tipoSolicitacao;
         this.pessoaId = pessoaId;
         this.pessoa = pessoa;
+        this.motivoDesligamentoId = motivoDesligamentoId;
+        this.motivoDesligamento = motivoDesligamento;
         this.historico = historico;
         this.situacaoId = situacaoId;
         this.situacao = situacao;
@@ -52,6 +58,8 @@ public class SolicitacaoDesligamentoResponseDTO {
                 s.getTipoSolicitacao(),
                 s.getPessoa() != null ? s.getPessoa().getPessoaId() : null,
                 s.getPessoa() != null ? s.getPessoa().getNome() : null,
+                s.getMotivoDesligamento() != null ? s.getMotivoDesligamento().getMotivoDesligamentoId() : null,
+                s.getMotivoDesligamento() != null ? s.getMotivoDesligamento().getDescricao() : null,
                 s.getHistorico(),
                 s.getSituacao() != null ? s.getSituacao().getSituacaoId() : null,
                 s.getSituacao() != null ? s.getSituacao().getDescricao() : null
@@ -104,6 +112,22 @@ public class SolicitacaoDesligamentoResponseDTO {
 
     public void setPessoa(String pessoa) {
         this.pessoa = pessoa;
+    }
+
+    public Integer getMotivoDesligamentoId() {
+        return motivoDesligamentoId;
+    }
+
+    public void setMotivoDesligamentoId(Integer motivoDesligamentoId) {
+        this.motivoDesligamentoId = motivoDesligamentoId;
+    }
+
+    public String getMotivoDesligamento() {
+        return motivoDesligamento;
+    }
+
+    public void setMotivoDesligamento(String motivoDesligamento) {
+        this.motivoDesligamento = motivoDesligamento;
     }
 
     public String getHistorico() {

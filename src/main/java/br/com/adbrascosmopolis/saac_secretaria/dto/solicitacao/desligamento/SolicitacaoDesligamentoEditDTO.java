@@ -10,6 +10,7 @@ public class SolicitacaoDesligamentoEditDTO {
     private Integer congregacaoSolicitanteId;
     private TipoSolicitacao tipoSolicitacao;
     private Long pessoaId;
+    private Integer motivoDesligamentoId;
     private String historico;
     private Integer situacaoId;
 
@@ -18,6 +19,7 @@ public class SolicitacaoDesligamentoEditDTO {
             Integer congregacaoSolicitanteId,
             TipoSolicitacao tipoSolicitacao,
             Long pessoaId,
+            Integer motivoDesligamentoId,
             String historico,
             Integer situacaoId
     ){
@@ -25,6 +27,7 @@ public class SolicitacaoDesligamentoEditDTO {
         this.congregacaoSolicitanteId = congregacaoSolicitanteId;
         this.tipoSolicitacao = tipoSolicitacao;
         this.pessoaId = pessoaId;
+        this.motivoDesligamentoId = motivoDesligamentoId;
         this.historico = historico;
         this.situacaoId = situacaoId;
     }
@@ -41,6 +44,7 @@ public class SolicitacaoDesligamentoEditDTO {
                 s.getCongregacaoSolicitante() != null ? s.getCongregacaoSolicitante().getCongregacaoId() : null,
                 s.getTipoSolicitacao(),
                 s.getPessoa() != null ? s.getPessoa().getPessoaId() : null,
+                s.getMotivoDesligamento() != null ? s.getMotivoDesligamento().getMotivoDesligamentoId() : null,
                 s.getHistorico(),
                 s.getSituacao() != null ? s.getSituacao().getSituacaoId() : null
         );
@@ -76,6 +80,14 @@ public class SolicitacaoDesligamentoEditDTO {
 
     public void setPessoaId(Long pessoaId) {
         this.pessoaId = pessoaId;
+    }
+
+    public Integer getMotivoDesligamentoId() {
+        return motivoDesligamentoId;
+    }
+
+    public void setMotivoDesligamentoId(Integer motivoDesligamentoId) {
+        this.motivoDesligamentoId = motivoDesligamentoId;
     }
 
     public String getHistorico() {

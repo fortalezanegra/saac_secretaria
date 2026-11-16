@@ -2,9 +2,10 @@ package br.com.adbrascosmopolis.saac_secretaria.dto.solicitacao.desligamento;
 
 import br.com.adbrascosmopolis.saac_secretaria.enumeration.TipoSolicitacao;
 import br.com.adbrascosmopolis.saac_secretaria.factory.solicitacao.CriarSolicitacaoCommand;
+import br.com.adbrascosmopolis.saac_secretaria.factory.solicitacao.CriarSolicitacaoDesligamentoCommand;
 import jakarta.validation.constraints.NotNull;
 
-public class SolicitacaoDesligamentoRequestDTO extends CriarSolicitacaoCommand {
+public class SolicitacaoDesligamentoRequestDTO extends CriarSolicitacaoDesligamentoCommand {
 
     @NotNull
     private Integer congregacaoSolicitanteId;
@@ -19,6 +20,9 @@ public class SolicitacaoDesligamentoRequestDTO extends CriarSolicitacaoCommand {
 
     @NotNull
     private Integer situacaoId;
+
+    @NotNull
+    private Integer motivoDesligamentoId;
 
     @Override
     public Integer getCongregacaoSolicitanteId() {
@@ -67,5 +71,14 @@ public class SolicitacaoDesligamentoRequestDTO extends CriarSolicitacaoCommand {
     @Override
     public void setSituacaoId(Integer situacaoId) {
         this.situacaoId = situacaoId;
+    }
+
+    @Override
+    public Integer getMotivoDesligamentoId() {
+        return motivoDesligamentoId;
+    }
+
+    public void setMotivoDesligamentoId(Integer motivoDesligamentoId) {
+        this.motivoDesligamentoId = motivoDesligamentoId;
     }
 }

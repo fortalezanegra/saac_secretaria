@@ -5,6 +5,4 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface CargoMinisterialRepository extends JpaRepository<CargoMinisterial, Integer> {
 
-
-
 }

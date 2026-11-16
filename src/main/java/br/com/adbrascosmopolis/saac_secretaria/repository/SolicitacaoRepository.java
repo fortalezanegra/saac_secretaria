@@ -1,7 +1,6 @@
 package br.com.adbrascosmopolis.saac_secretaria.repository;
 
-import br.com.adbrascosmopolis.saac_secretaria.models.Solicitacao;
-import br.com.adbrascosmopolis.saac_secretaria.models.SolicitacaoTransferencia;
+import br.com.adbrascosmopolis.saac_secretaria.models.*;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -35,7 +34,7 @@ public interface SolicitacaoRepository extends JpaRepository<Solicitacao, Long> 
     List<Solicitacao> dropdown();
 
 
-    /* List Solictacao Transferencia By Id */
+    /* List Solicitacao Transferencia By Id */
     @Query("""
         SELECT s
         FROM Solicitacao s
@@ -44,7 +43,51 @@ public interface SolicitacaoRepository extends JpaRepository<Solicitacao, Long> 
         JOIN FETCH s.situacao
         WHERE s.deletedAt IS NULL AND s.solicitacaoId = :id    
     """)
-    SolicitacaoTransferencia searchById(@Param("id") Long id);
+    SolicitacaoTransferencia transferenciaSearchById(@Param("id") Long id);
+
+    /* List Solicitacao Mudança By Id */
+    @Query("""
+        SELECT s
+        FROM Solicitacao s
+        JOIN FETCH s.congregacaoSolicitante
+        JOIN FETCH s.pessoa
+        JOIN FETCH s.situacao
+        WHERE s.deletedAt IS NULL AND s.solicitacaoId = :id    
+    """)
+    SolicitacaoMudanca mudancaSearchById(@Param("id") Long id);
+
+    /* List Solicitacao Uniao By Id */
+    @Query("""
+        SELECT s
+        FROM Solicitacao s
+        JOIN FETCH s.congregacaoSolicitante
+        JOIN FETCH s.pessoa
+        JOIN FETCH s.situacao
+        WHERE s.deletedAt IS NULL AND s.solicitacaoId = :id    
+    """)
+    SolicitacaoUniao uniaoSearchById(@Param("id") Long id);
+
+    /* List Solicitacao Reconciliacao By Id */
+    @Query("""
+        SELECT s
+        FROM Solicitacao s
+        JOIN FETCH s.congregacaoSolicitante
+        JOIN FETCH s.pessoa
+        JOIN FETCH s.situacao
+        WHERE s.deletedAt IS NULL AND s.solicitacaoId = :id    
+    """)
+    SolicitacaoReconciliacao reconciliacaoSearchById(@Param("id") Long id);
+
+    /* List Solicitacao Desligamento By Id */
+    @Query("""
+        SELECT s
+        FROM Solicitacao s
+        JOIN FETCH s.congregacaoSolicitante
+        JOIN FETCH s.pessoa
+        JOIN FETCH s.situacao
+        WHERE s.deletedAt IS NULL AND s.solicitacaoId = :id    
+    """)
+    SolicitacaoDesligamento desligamentoSearchById(@Param("id") Long id);
 
 
 }

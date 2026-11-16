@@ -1,10 +1,10 @@
 package br.com.adbrascosmopolis.saac_secretaria.dto.solicitacao.reconciliacao;
 
 import br.com.adbrascosmopolis.saac_secretaria.enumeration.TipoSolicitacao;
-import br.com.adbrascosmopolis.saac_secretaria.factory.solicitacao.CriarSolicitacaoCommand;
+import br.com.adbrascosmopolis.saac_secretaria.factory.solicitacao.CriarSolicitacaoReconciliacaoCommand;
 import jakarta.validation.constraints.NotNull;
 
-public class SolicitacaoReconciliacaoRequestDTO extends CriarSolicitacaoCommand {
+public class SolicitacaoReconciliacaoRequestDTO extends CriarSolicitacaoReconciliacaoCommand {
 
     @NotNull
     private Integer congregacaoSolicitanteId;
