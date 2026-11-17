@@ -89,5 +89,17 @@ public interface SolicitacaoRepository extends JpaRepository<Solicitacao, Long> 
     """)
     SolicitacaoDesligamento desligamentoSearchById(@Param("id") Long id);
 
+    @Query("""
+        select s
+          from Solicitacao s
+          join s.situacao sit
+         where s.deletedAt is null
+           and sit.deletedAt is null
+           and sit.contexto = 'SOLICITACAO'
+           and sit.descricao in ('Aguardando Reuniao', 'Reagendada')
+         order by s.createdAt, s.solicitacaoId
+        """)
+    List<Solicitacao> listarAtivasAguardandoOuReagendadas();
+
 
 }

@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface SituacaoRepository extends JpaRepository<Situacao, Integer> {
 
@@ -35,4 +36,19 @@ public interface SituacaoRepository extends JpaRepository<Situacao, Integer> {
 
 
     Situacao findBySituacaoId(Integer situacaoId);
+
+    @Query("""
+        select s
+          from Situacao s
+         where s.descricao = :descricao
+           and s.contexto =  :contexto
+           and s.deletedAt is null
+        """)
+    Optional<Situacao> buscarAtivaPorDescricaoEContexto(
+            @Param("descricao") String descricao,
+            @Param("contexto") String contexto
+    );
+
+
+
 }
