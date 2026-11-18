@@ -1,7 +1,6 @@
 package br.com.adbrascosmopolis.saac_secretaria.repository;
 
 import br.com.adbrascosmopolis.saac_secretaria.dto.situacao.SituacaoDropdownDTO;
-import br.com.adbrascosmopolis.saac_secretaria.models.Pessoa;
 import br.com.adbrascosmopolis.saac_secretaria.models.Situacao;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -34,7 +33,6 @@ public interface SituacaoRepository extends JpaRepository<Situacao, Integer> {
     """)
     List<SituacaoDropdownDTO> listarDropdownPorContexto(@Param("contexto") String contexto);
 
-
     Situacao findBySituacaoId(Integer situacaoId);
 
     @Query("""
@@ -48,6 +46,22 @@ public interface SituacaoRepository extends JpaRepository<Situacao, Integer> {
             @Param("descricao") String descricao,
             @Param("contexto") String contexto
     );
+
+    @Query("""
+        select s
+          from Situacao s
+         where s.descricao = :descricao
+           and s.contexto =  :contexto
+           and s.deletedAt is null
+        """)
+    Situacao findByDescricaoAndContexto(
+            @Param("descricao") String descricao,
+            @Param("contexto") String contexto
+    );
+
+
+
+
 
 
 

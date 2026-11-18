@@ -24,26 +24,30 @@ public interface DecisaoMinisterialRepository extends JpaRepository<DecisaoMinis
     );
 
     @Query(value = """
-        SELECT
-            dm.decisaoMinisterialId AS decisaoMinisterialId,
-            rm.tipoReuniao AS tipoReuniao,
-            rm.dataReuniao AS dataReuniao,
-            s.tipoSolicitacao AS tipoSolicitacao,
-            p.nome AS nome,
-            sit.descricao AS situacaoSolicitacao
-        FROM DecisaoMinisterial dm
-        JOIN ReuniaoMinisterial rm
-            ON rm.reuniaoMinisterialId = dm.reuniaoMinisterialId
-        JOIN Solicitacao s
-            ON s.solicitacaoId = dm.solicitacaoId
-        JOIN Pessoa p
-            ON p.pessoaId = s.pessoaId
-        JOIN Situacao sit
-            ON sit.situacaoId = s.situacaoId
-            WHERE dm.deletedAt IS NULL AND sit.descricao = 'Aguardando Reuniao'
-        """, nativeQuery = true)
-    List<DecisaoMinisterialResumo> listarResumos();
-
+    SELECT
+        dm.decisaoMinisterialId AS decisaoMinisterialId,
+        rm.tipoReuniao AS tipoReuniao,
+        rm.dataReuniao AS dataReuniao,
+        c.congregacaoId AS congregacaoSolicitanteId,
+        c.nome AS congregacaoSolicitante,
+        s.tipoSolicitacao AS tipoSolicitacao,
+        p.pessoaId AS pessoaId,
+        p.nome AS pessoa,
+        sit.situacaoId AS situacaoSolicitacaoId,
+        sit.descricao AS situacaoSolicitacao
+    FROM DecisaoMinisterial dm
+    
+    JOIN ReuniaoMinisterial rm ON rm.reuniaoMinisterialId = dm.reuniaoMinisterialId
+    JOIN Solicitacao s ON s.solicitacaoId = dm.solicitacaoId
+    JOIN Congregacao c ON c.congregacaoId = s.congregacaoSolicitanteId
+    JOIN Pessoa p ON p.pessoaId = s.pessoaId
+    JOIN Situacao sit ON sit.situacaoId = s.situacaoId
+    
+    WHERE dm.deletedAt IS NULL
+      AND s.deletedAt IS NULL
+      AND sit.descricao = 'Aguardando Reuniao'
+    """, nativeQuery = true)
+    List<DecisaoMinisterialResumo> listarResumo();
 
 
 }

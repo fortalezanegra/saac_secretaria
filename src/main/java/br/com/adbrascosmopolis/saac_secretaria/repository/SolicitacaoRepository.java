@@ -9,6 +9,9 @@ import java.util.List;
 
 public interface SolicitacaoRepository extends JpaRepository<Solicitacao, Long> {
 
+    Solicitacao findBySolicitacaoId(Long solicitacaoId);
+
+
     /* List All Solicitações */
     @Query("""
         SELECT s
@@ -100,6 +103,5 @@ public interface SolicitacaoRepository extends JpaRepository<Solicitacao, Long> 
          order by s.createdAt, s.solicitacaoId
         """)
     List<Solicitacao> listarAtivasAguardandoOuReagendadas();
-
 
 }

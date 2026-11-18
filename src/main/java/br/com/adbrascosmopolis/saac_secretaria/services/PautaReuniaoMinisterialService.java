@@ -1,9 +1,7 @@
 package br.com.adbrascosmopolis.saac_secretaria.services;
 
-import br.com.adbrascosmopolis.saac_secretaria.models.DecisaoMinisterial;
-import br.com.adbrascosmopolis.saac_secretaria.models.ReuniaoMinisterial;
-import br.com.adbrascosmopolis.saac_secretaria.models.Situacao;
-import br.com.adbrascosmopolis.saac_secretaria.models.Solicitacao;
+import br.com.adbrascosmopolis.saac_secretaria.dto.pauta_reuniao.PautaReuniaoListDTO;
+import br.com.adbrascosmopolis.saac_secretaria.models.*;
 import br.com.adbrascosmopolis.saac_secretaria.repository.DecisaoMinisterialRepository;
 import br.com.adbrascosmopolis.saac_secretaria.repository.ReuniaoMinisterialRepository;
 import br.com.adbrascosmopolis.saac_secretaria.repository.SituacaoRepository;
@@ -76,31 +74,22 @@ public class PautaReuniaoMinisterialService {
         return decisaoResumo();
     }
 
-    //Lista de Decisoes Ministeriais em aberto
+    //Lista de Solicitacoes em com decisao em aberto para gerarPauta();
     private List<DecisaoMinisterialResumo> decisaoResumo(){
-        List<DecisaoMinisterialResumo> decisao = decisaoRepository.listarResumos();
+
+        List<DecisaoMinisterialResumo> decisao = decisaoRepository.listarResumo();
         return decisao;
     }
 
-    private void validarSituacaoDaReuniao(ReuniaoMinisterial reuniao) {
-        Situacao situacao = reuniao.getSituacao();
+    //Lista solicitações pauta reuniao ministerial em aberto
+    public List<PautaReuniaoListDTO> listarSolicitacoesDaPauta(){
 
-        if (situacao == null || !"Pendente".equals(situacao.getDescricao())) {
-            throw new IllegalStateException(
-                    "A pauta só pode ser gerada para uma reunião com situação Pendente."
-            );
-        }
+        List<DecisaoMinisterialResumo> decisao = decisaoRepository.listarResumo();
+
+        return decisaoRepository.listarResumo()
+                .stream()
+                .map(PautaReuniaoListDTO::fromDecisaoMinisterialResumo)
+                .toList();
     }
-
-    private String obterDescricaoSituacaoInicial(Solicitacao solicitacao) {
-        String descricao = solicitacao.getSituacao().getDescricao();
-
-        if ("Reagendada".equalsIgnoreCase(descricao)) {
-            return "Reagendada";
-        }
-
-        return "Aguardando Reunião";
-    }
-
 
 }

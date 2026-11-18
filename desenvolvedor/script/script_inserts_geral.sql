@@ -57,7 +57,14 @@ INSERT INTO Situacao (descricao, contexto, ativo, ordem) VALUES
 -- ATIVIDADES
 ('Pendente',  'ATIVIDADES', 1, 1),
 ('Concluido', 'ATIVIDADES', 1, 2),
-('Cancelado', 'ATIVIDADES', 1, 3);
+('Cancelado', 'ATIVIDADES', 1, 3),
+
+-- DECISAO_MINISTERIAL
+('Aguardando Reuniao', 'DECISAO_MINISTERIAL', 1, 1),
+('Aprovada',           'DECISAO_MINISTERIAL', 1, 2),
+('Reprovada',          'DECISAO_MINISTERIAL', 1, 3),
+('Cancelada',          'DECISAO_MINISTERIAL', 1, 4),
+('Reagendada',         'DECISAO_MINISTERIAL', 1, 5);
 
 /*Tabela Tipo Vinculo */
 INSERT INTO TipoVinculo(descricao) VALUES
