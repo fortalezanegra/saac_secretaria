@@ -24,7 +24,7 @@ public class PessoaSyncService {
         return pessoas.stream()
                 .map(p -> new PessoaSyncDTO(
                         p.getPessoaId(),
-                        p.getTipoVinculo() != null ? p.getTipoVinculo().getTipoVinculoId() : null,
+                        p.getTipoVinculo(),
                         p.getCongregacao() != null ? p.getCongregacao().getCongregacaoId() : null,
                         p.getCargoMinisterial() != null ? p.getCargoMinisterial().getCargoMinisterialId() : null,
                         p.getNome()

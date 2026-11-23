@@ -1,6 +1,7 @@
 package br.com.adbrascosmopolis.saac_secretaria.dto.solicitacao.desligamento;
 
 import br.com.adbrascosmopolis.saac_secretaria.enumeration.TipoSolicitacao;
+import br.com.adbrascosmopolis.saac_secretaria.enumeration.situacoes.SituacaoSolicitacao;
 import br.com.adbrascosmopolis.saac_secretaria.factory.solicitacao.CriarSolicitacaoCommand;
 import br.com.adbrascosmopolis.saac_secretaria.factory.solicitacao.CriarSolicitacaoDesligamentoCommand;
 import jakarta.validation.constraints.NotNull;
@@ -18,8 +19,7 @@ public class SolicitacaoDesligamentoRequestDTO extends CriarSolicitacaoDesligame
 
     private String historico;
 
-    @NotNull
-    private Integer situacaoId;
+    private SituacaoSolicitacao situacao;
 
     @NotNull
     private Integer motivoDesligamentoId;
@@ -64,13 +64,13 @@ public class SolicitacaoDesligamentoRequestDTO extends CriarSolicitacaoDesligame
     }
 
     @Override
-    public Integer getSituacaoId() {
-        return situacaoId;
+    public SituacaoSolicitacao getSituacao() {
+        return situacao;
     }
 
     @Override
-    public void setSituacaoId(Integer situacaoId) {
-        this.situacaoId = situacaoId;
+    public void setSituacao(SituacaoSolicitacao situacao) {
+        this.situacao = situacao;
     }
 
     @Override

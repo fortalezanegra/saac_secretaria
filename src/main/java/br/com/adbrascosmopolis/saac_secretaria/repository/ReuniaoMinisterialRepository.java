@@ -1,6 +1,7 @@
 package br.com.adbrascosmopolis.saac_secretaria.repository;
 
 import br.com.adbrascosmopolis.saac_secretaria.enumeration.TipoReuniao;
+import br.com.adbrascosmopolis.saac_secretaria.enumeration.situacoes.SituacaoReuniaoMinisterial;
 import br.com.adbrascosmopolis.saac_secretaria.models.ReuniaoMinisterial;
 import jakarta.persistence.LockModeType;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -39,7 +40,6 @@ public interface ReuniaoMinisterialRepository extends JpaRepository<ReuniaoMinis
 
     ReuniaoMinisterial findByReuniaoMinisterialId(Long reuniaoId);
 
-
     @Query("""
     select r from ReuniaoMinisterial r
     left join fetch r.congregacao
@@ -59,17 +59,16 @@ public interface ReuniaoMinisterialRepository extends JpaRepository<ReuniaoMinis
             @Param("id") Long id
     );
 
-
-    @Lock(LockModeType.PESSIMISTIC_WRITE)
     @Query("""
-        select r
-          from ReuniaoMinisterial r
-         where r.situacao.descricao = 'Pendente'
-           and r.situacao.contexto = 'REUNIAO_MINISTERIAL'
-           and r.deletedAt is null
-           and r.reuniaoMinisterialId = :id
+        SELECT r
+          FROM ReuniaoMinisterial r
+         WHERE r.reuniaoMinisterialId = :id
+           AND r.situacao = :situacao
+           AND r.deletedAt IS NULL
         """)
-    Optional<ReuniaoMinisterial> buscarReuniaoPendente(@Param("id") Long id);
-
+    Optional<ReuniaoMinisterial> buscarReuniaoPendente(
+            @Param("id") Long id,
+            @Param("situacao") SituacaoReuniaoMinisterial situacao
+    );
 
 }

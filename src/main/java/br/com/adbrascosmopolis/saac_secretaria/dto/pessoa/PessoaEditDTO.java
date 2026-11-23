@@ -2,6 +2,8 @@ package br.com.adbrascosmopolis.saac_secretaria.dto.pessoa;
 
 import br.com.adbrascosmopolis.saac_secretaria.enumeration.EstadoCivil;
 import br.com.adbrascosmopolis.saac_secretaria.enumeration.Sexo;
+import br.com.adbrascosmopolis.saac_secretaria.enumeration.TipoVinculo;
+import br.com.adbrascosmopolis.saac_secretaria.enumeration.situacoes.SituacaoPessoa;
 import br.com.adbrascosmopolis.saac_secretaria.models.Pessoa;
 
 import java.time.LocalDate;
@@ -10,7 +12,7 @@ import java.time.LocalDateTime;
 public class PessoaEditDTO {
 
     private Long pessoaId;
-    private Integer tipoVinculoId;
+    private TipoVinculo tipoVinculo;
     private String nome;
     private Sexo sexo;
     private LocalDate dataNascimento;
@@ -29,9 +31,9 @@ public class PessoaEditDTO {
     private Integer congregacaoId;
     private Integer cargoMinisterialId;
     private LocalDate dataBatismo;
-    private Integer situacaoId;
     private String foto;
     private LocalDate dataConversao;
+    private SituacaoPessoa situacao;
     private LocalDateTime deletedAt;
 
     // Cria DTO a partir do Membro
@@ -39,7 +41,7 @@ public class PessoaEditDTO {
         PessoaEditDTO dto = new PessoaEditDTO();
 
         dto.pessoaId = p.getPessoaId();
-        dto.tipoVinculoId = p.getTipoVinculo() != null ? p.getTipoVinculo().getTipoVinculoId() : null;
+        dto.tipoVinculo = p.getTipoVinculo();
         dto.nome = p.getNome();
         dto.sexo = p.getSexo();
         dto.dataNascimento = p.getDataNascimento();
@@ -58,9 +60,9 @@ public class PessoaEditDTO {
         dto.congregacaoId = p.getCongregacao() != null ? p.getCongregacao().getCongregacaoId() : null;
         dto.cargoMinisterialId = p.getCargoMinisterial() != null ? p.getCargoMinisterial().getCargoMinisterialId() : null;
         dto.dataBatismo = p.getDataBatismo();
-        dto.situacaoId = p.getSituacao() != null ? p.getSituacao().getSituacaoId() : null;
         dto.foto = p.getFoto();
         dto.dataConversao = p.getDataConversao();
+        dto.situacao = p.getSituacao();
         dto.deletedAt = p.getDeletedAt();
         return dto;
     }
@@ -73,21 +75,28 @@ public class PessoaEditDTO {
         this.pessoaId = pessoaId;
     }
 
-    public Integer getTipoVinculoId() { return tipoVinculoId; }
+    public TipoVinculo getTipoVinculo() {
+        return tipoVinculo;
+    }
 
-    public void setTipoVinculoId(Integer tipoVinculoId) { this.tipoVinculoId = tipoVinculoId; }
+    public void setTipoVinculo(TipoVinculo tipoVinculo) {
+        this.tipoVinculo = tipoVinculo;
+    }
 
     public String getNome() {
         return nome;
     }
 
-    public void setNome(String nome) { this.nome = nome; }
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
 
     public Sexo getSexo() {
         return sexo;
     }
 
-    public void setSexo(EstadoCivil sexoId) {this.sexo = sexo;
+    public void setSexo(Sexo sexo) {
+        this.sexo = sexo;
     }
 
     public LocalDate getDataNascimento() {
@@ -162,11 +171,11 @@ public class PessoaEditDTO {
         this.mae = mae;
     }
 
-    public EstadoCivil getEstadoCivilId() {
+    public EstadoCivil getEstadoCivil() {
         return estadoCivil;
     }
 
-    public void setEstadoCivilId(EstadoCivil estadoCivilId) {
+    public void setEstadoCivil(EstadoCivil estadoCivil) {
         this.estadoCivil = estadoCivil;
     }
 
@@ -218,14 +227,6 @@ public class PessoaEditDTO {
         this.dataBatismo = dataBatismo;
     }
 
-    public Integer getSituacaoId() {
-        return situacaoId;
-    }
-
-    public void setSituacaoId(Integer situacaoId) {
-        this.situacaoId = situacaoId;
-    }
-
     public String getFoto() {
         return foto;
     }
@@ -240,6 +241,14 @@ public class PessoaEditDTO {
 
     public void setDataConversao(LocalDate dataConversao) {
         this.dataConversao = dataConversao;
+    }
+
+    public SituacaoPessoa getSituacao() {
+        return situacao;
+    }
+
+    public void setSituacao(SituacaoPessoa situacao) {
+        this.situacao = situacao;
     }
 
     public LocalDateTime getDeletedAt() {

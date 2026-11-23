@@ -1,22 +1,24 @@
 package br.com.adbrascosmopolis.saac_secretaria.dto.sincronizacao.tesouraria;
 
+import br.com.adbrascosmopolis.saac_secretaria.enumeration.TipoVinculo;
+
 public class PessoaSyncDTO {
 
     private Long pessoaId;
-    private Integer tipoVinculoId;
+    private TipoVinculo tipoVinculo;
     private Integer congregacaoId;
     private Integer cargoMinisterialId;
     private String nome;
 
     public PessoaSyncDTO(
             Long pessoaId,
-            Integer tipoVinculoId,
+            TipoVinculo tipoVinculo,
             Integer congregacaoId,
             Integer cargoMinisterialId,
             String nome
     ){
         this.pessoaId = pessoaId;
-        this.tipoVinculoId = tipoVinculoId;
+        this.tipoVinculo = tipoVinculo;
         this.congregacaoId = congregacaoId;
         this.cargoMinisterialId = cargoMinisterialId;
         this.nome = nome;
@@ -30,12 +32,12 @@ public class PessoaSyncDTO {
         this.pessoaId = pessoaId;
     }
 
-    public Integer getTipoVinculoId() {
-        return tipoVinculoId;
+    public TipoVinculo getTipoVinculo() {
+        return tipoVinculo;
     }
 
-    public void setTipoVinculoId(Integer tipoVinculoId) {
-        this.tipoVinculoId = tipoVinculoId;
+    public void setTipoVinculo(TipoVinculo tipoVinculo) {
+        this.tipoVinculo = tipoVinculo;
     }
 
     public Integer getCongregacaoId() {

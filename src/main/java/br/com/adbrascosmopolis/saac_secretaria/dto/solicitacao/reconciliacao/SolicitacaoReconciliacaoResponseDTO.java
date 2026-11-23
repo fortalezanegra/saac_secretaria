@@ -1,6 +1,7 @@
 package br.com.adbrascosmopolis.saac_secretaria.dto.solicitacao.reconciliacao;
 
 import br.com.adbrascosmopolis.saac_secretaria.enumeration.TipoSolicitacao;
+import br.com.adbrascosmopolis.saac_secretaria.enumeration.situacoes.SituacaoSolicitacao;
 import br.com.adbrascosmopolis.saac_secretaria.models.SolicitacaoReconciliacao;
 import br.com.adbrascosmopolis.saac_secretaria.models.SolicitacaoUniao;
 
@@ -13,8 +14,7 @@ public class SolicitacaoReconciliacaoResponseDTO {
     private Long pessoaId;
     private String pessoa;
     private String historico;
-    private Integer situacaoId;
-    private String situacao;
+    private SituacaoSolicitacao situacao;
 
     public SolicitacaoReconciliacaoResponseDTO(
             Long solicitacaoId,
@@ -24,8 +24,7 @@ public class SolicitacaoReconciliacaoResponseDTO {
             Long pessoaId,
             String pessoa,
             String historico,
-            Integer situacaoId,
-            String situacao
+            SituacaoSolicitacao situacao
     ){
         this.solicitacaoId = solicitacaoId;
         this.congregacaoSolicitanteId = congregacaoSolicitanteId;
@@ -34,7 +33,6 @@ public class SolicitacaoReconciliacaoResponseDTO {
         this.pessoaId = pessoaId;
         this.pessoa = pessoa;
         this.historico = historico;
-        this.situacaoId = situacaoId;
         this.situacao = situacao;
     }
 
@@ -53,8 +51,7 @@ public class SolicitacaoReconciliacaoResponseDTO {
                 s.getPessoa() != null ? s.getPessoa().getPessoaId() : null,
                 s.getPessoa() != null ? s.getPessoa().getNome() : null,
                 s.getHistorico(),
-                s.getSituacao() != null ? s.getSituacao().getSituacaoId() : null,
-                s.getSituacao() != null ? s.getSituacao().getDescricao() : null
+                s.getSituacao()
         );
     }
 
@@ -114,19 +111,11 @@ public class SolicitacaoReconciliacaoResponseDTO {
         this.historico = historico;
     }
 
-    public Integer getSituacaoId() {
-        return situacaoId;
-    }
-
-    public void setSituacaoId(Integer situacaoId) {
-        this.situacaoId = situacaoId;
-    }
-
-    public String getSituacao() {
+    public SituacaoSolicitacao getSituacao() {
         return situacao;
     }
 
-    public void setSituacao(String situacao) {
+    public void setSituacao(SituacaoSolicitacao situacao) {
         this.situacao = situacao;
     }
 }

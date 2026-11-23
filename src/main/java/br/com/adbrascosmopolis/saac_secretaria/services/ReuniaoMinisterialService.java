@@ -81,8 +81,7 @@ public class ReuniaoMinisterialService {
                         r.getCongregacao() != null ? r.getCongregacao().getCongregacaoId() : null,
                         r.getCongregacao() != null ? r.getCongregacao().getNome() : null,
                         r.getDataReuniao(),
-                        r.getSituacao() != null ? r.getSituacao().getSituacaoId() : null,
-                        r.getSituacao() != null ? r.getSituacao().getDescricao() : null
+                        r.getSituacao()
                 )).toList();
     }
 
@@ -122,19 +121,13 @@ public class ReuniaoMinisterialService {
         //DataReuniao
         reuniao.setDataReuniao(dto.getDataReuniao());
         reuniao.setTipoReuniao(dto.getTipoReuniao());
+        reuniao.setSituacao(dto.getSituacao());
 
 
         if(dto.getCongregacaoId() != null){
             reuniao.setCongregacao(
                     congregacaoRepository.findById(dto.getCongregacaoId())
                             .orElseThrow(() -> new RuntimeException("Congregação não encontrada"))
-            );
-        }
-
-        if(dto.getSituacaoId() != null){
-            reuniao.setSituacao(
-                    situacaoRepository.findById(dto.getSituacaoId())
-                            .orElseThrow(() -> new RuntimeException("Situação não encontrada"))
             );
         }
 
@@ -159,12 +152,6 @@ public class ReuniaoMinisterialService {
         if(dto.getCongregacaoId() != null){
             result.setCongregacao(
                     congregacaoRepository.getReferenceById(dto.getCongregacaoId())
-            );
-        }
-
-        if(dto.getSituacaoId() != null){
-            result.setSituacao(
-                    situacaoRepository.getReferenceById(dto.getSituacaoId())
             );
         }
 

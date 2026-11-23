@@ -1,6 +1,7 @@
 package br.com.adbrascosmopolis.saac_secretaria.factory.solicitacao;
 
 import br.com.adbrascosmopolis.saac_secretaria.enumeration.TipoSolicitacao;
+import br.com.adbrascosmopolis.saac_secretaria.enumeration.situacoes.SituacaoSolicitacao;
 import br.com.adbrascosmopolis.saac_secretaria.models.*;
 import br.com.adbrascosmopolis.saac_secretaria.repository.*;
 import org.springframework.stereotype.Component;
@@ -53,11 +54,6 @@ public class SolicitacaoDesligamentoCreator {
                 .orElseThrow(() -> new IllegalArgumentException(
                         "Pessoa não encontrada. ID: " + command.getPessoaId()));
 
-        Situacao situacao = situacaoRepository
-                .findById(command.getSituacaoId())
-                .orElseThrow(() -> new IllegalArgumentException(
-                        "Situação não encontrada. ID: " + command.getSituacaoId()));
-
         MotivoDesligamento motivo = motivoDesligamentoRepository
                 .findById(dados.getMotivoDesligamentoId())
                 .orElseThrow(() -> new IllegalArgumentException(
@@ -67,7 +63,7 @@ public class SolicitacaoDesligamentoCreator {
         SolicitacaoDesligamento solicitacao = new SolicitacaoDesligamento();
         solicitacao.setCongregacaoSolicitante(congregacaoSolicitante);
         solicitacao.setPessoa(pessoa);
-        solicitacao.setSituacao(situacao);
+        solicitacao.setSituacao(SituacaoSolicitacao.AGUARDANDO_REUNIAO);
         solicitacao.setTipoSolicitacao(TipoSolicitacao.DESLIGAMENTO);
         solicitacao.setHistorico(command.getHistorico());
         solicitacao.setMotivoDesligamento(motivo);
@@ -86,7 +82,7 @@ public class SolicitacaoDesligamentoCreator {
         if (command.getPessoaId() == null) {
             throw new IllegalArgumentException("O ID da pessoa é obrigatório.");
         }
-        if (command.getSituacaoId() == null) {
+        if (command.getSituacao() == null) {
             throw new IllegalArgumentException("O ID da situação é obrigatório.");
         }
     }

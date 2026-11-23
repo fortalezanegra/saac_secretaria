@@ -34,6 +34,7 @@ public class SolicitacaoController {
     public ResponseEntity<SolicitacaoTransferenciaResponseDTO> criarTransferencia(
             @Valid @RequestBody SolicitacaoTransferenciaRequestDTO request) {
 
+
         Solicitacao solicitacao = solicitacaoManagerService.criar(request);
 
         if (!(solicitacao instanceof SolicitacaoTransferencia transferencia)) {

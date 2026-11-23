@@ -1,0 +1,142 @@
+Nos já criamos a linha de funcionamento de Reuniao MInisterial desde a tabelna no nysql, passando pelo repository, service e controller no servidor springboot e o frontend no angular.
+
+Criamos o factory para solicitações de Transferencia, mudança, Uniao, Reconciliacao e Desligamento.
+
+Criamos o metodo criação de pauta para a reuniao ministerial associando as solicitações criadas a uma reuniao em aberto.
+
+Precisamos criar o frontend para essas tratativas de solicitações e criação de pauta, porem antes disso temos que focar em criar o procedimentos para tratar as solicitações apreciadas em uma reuniao e consolidar as decisões tomada no banco de dados da secretaria.
+
+Para isso precisamos criar um procedimento que selecione uma reuniao que ja passou pelas situações:
+
+pendente, em andamento e que esteja com a situação concluida.
+
+assim esse procedimentos fara as alterações necessarias no banco de dados e mudara a situação  da reuniao para consolidada.
+
+Nesse procedimementos deveremos executar as trasnferencias de congregacao, mudando um membro de uma cocongregacao origem para uma congregação destino de acordo com as informações apresentadas na solicitação de transferencia.
+
+Se for uma solicitação de uniao, geralmente utilizada para pessoas que acabaram de se batizar, deveremos mudar a situacao no cadastro de membro de N/A para ativo e o cargo de N/A para membro.
+
+No caso de mudanca precisamos muda a situacao no cadastro de membro da pessoa de N/A para Ativo e o cargo deve ser o mesmo que o informado na coluna cargoRecebidoId na tabela de solicitacao mudanca.
+
+No caso de solicitacao de reconciliacao, devemos mudar a situacao do cadastro de membro de inativo para ativo e no caso de uma solicitacao de desligamento mudar a situacao para inativo.
+
+POrem, em todos os casos independente de qual for, devemos colocar o conteudo da coluna historico da solicitacao gerando um novo itemHistorico informando o  tipoHistorico "INFORMATIVO".
+
+A tabela historico se associa a tabela membro atravez da fk pessoaId da tabela pessoa.
+
+A tabela ItemHistorico é associada ao historico de uma pessoa pela fk historicoId, e tambem um enum tipoJistorico (informatico, Conficendial) e finalmente a coluna descrição que deve receber o conteudo da coluna historico da solicitação vigente.
+
+
+********************************************************************
+
+
+No sistema já implementamos o fluxo de Reunião Ministerial: tabelas no MySQL, repository, service e controller no Spring Boot, além do frontend em Angular. Também criamos os factories para solicitações de Transferência, Mudança, União, Reconciliação e Desligamento, bem como o método que cria a pauta de uma reunião e associa a ela as solicitações, desde que esteja aberta.
+
+Antes de desenvolver o frontend para administrar essas solicitações e a criação da pauta, precisamos implementar o procedimento de **consolidação das decisões** tomadas em uma reunião.
+
+Crie uma proposta de implementação para esse procedimento, considerando a arquitetura existente em Spring Boot e MySQL. Se “procedimento” puder significar tanto um método de serviço quanto uma stored procedure no MySQL, explique brevemente a diferença e indique qual opção é mais adequada ao contexto. Não invente nomes de tabelas, colunas, entidades ou relacionamentos que não foram informados: identifique as informações de schema que estiverem faltando e use placeholders claramente identificados quando necessário.
+
+### Regras de negócio
+
+1. O procedimento deve processar somente reuniões cuja situação atual seja **Concluída**. A reunião deve ter passado pelo fluxo de situações **Pendente**, **Em andamento** e **Concluída**; após o processamento bem-sucedido, sua situação deve mudar para **Consolidada**.
+2. Para cada solicitação associada à pauta da reunião, aplicar a alteração correspondente:
+   - **Transferência:** transferir o membro da congregação de origem para a congregação de destino, conforme os dados da solicitação.
+   - **União:** alterar a situação cadastral do membro de `N/A` para `Ativo` e o cargo de `N/A` para `Membro`.
+   - **Mudança:** alterar a situação cadastral do membro de `N/A` para `Ativo` e definir seu cargo com o valor informado em `cargoRecebidoId` na solicitação de Mudança.
+   - **Reconciliação:** alterar a situação cadastral do membro de `Inativo` para `Ativo`.
+   - **Desligamento:** alterar a situação cadastral do membro para `Inativo`.
+3. Para todas as solicitações, independentemente do tipo, registrar o conteúdo da coluna `historico` da solicitação vigente como um novo `ItemHistorico`, com o tipo de histórico `INFORMATIVO`.
+4. O relacionamento informado é: `Historico` associa-se à pessoa por meio de `pessoaId`; `ItemHistorico` associa-se a `Historico` por meio de `historicoId`. O `ItemHistorico` possui o tipo de histórico (enum, com valores como `INFORMATIVO` e `CONFIDENCIAL`) e uma coluna de descrição, que deve receber o conteúdo da coluna `historico` da solicitação. Considere também a relação entre a pessoa, o membro e a solicitação conforme o schema disponível.
+
+### Requisitos da implementação
+
+- Garanta que as alterações cadastrais, os registros de histórico e a mudança da reunião para **Consolidada** sejam executados de forma transacional: se uma etapa falhar, nenhuma alteração parcial deve permanecer.
+- Evite aplicar as mesmas decisões ou criar itens de histórico duplicados caso o processamento seja solicitado novamente. Explique como a idempotência será garantida.
+- Valide a situação da reunião e das solicitações antes de aplicar as alterações. Trate erros como reunião inexistente ou não concluída, solicitação sem dados necessários e tipo de solicitação não reconhecido.
+- Respeite os nomes dos enums, entidades e colunas existentes quando forem fornecidos. Não presuma estados ou relacionamentos adicionais sem sinalizar a suposição.
+
+### Formato da resposta
+
+Organize a resposta em:
+1. Resumo do fluxo de consolidação.
+2. Informações de schema que ainda precisam ser confirmadas.
+3. Implementação sugerida no Spring Boot e, se aplicável, SQL/MySQL, indicando claramente os pontos que dependem do schema.
+4. Tratamento de transações, validações, erros e idempotência.
+5. Testes recomendados para cobrir cada tipo de solicitação e os cenários de falha.
+
+Observação: segue em anexo o script do banco de dados para analise e a criação dos procedimentos necessários.
+
+
+***********************************************
+
+2. Informações de schema a confirmar
+
+A - A constraint informada foi removida do banco de dados.
+B - Foi criada a FK solicitacaoId.
+C - Solicitacao.historico foi alterado para NOT NULL
+D - A Reuniao.situacao = PAUTADA, é utilizada após a pauta ser adiconada a reuniao pendente antes dela passar para EM_ANDAMENTO.
+E - Na verdade não é necessario confirmar se a reunião passo pelas demias situações, eu apenas informei o fluxo das situações ate chegar em concluida. Todas as situações deveram ser alterada sistemicamente de acordo com o procedimentos disparados.
+F - Apenas solicitações com a situacao = APROVADA devem entrar na consolidação.
+G - Manter APROVADA
+H - Lista de cargos da tabela CargoMinisterial:
+
+/*Tabela CargoMinisterial */
+INSERT INTO CargoMinisterial(Descricao) VALUES
+('N/A'),
+('Membro'),
+('Auxiliar de Trabalho'),
+('Diacono'),
+('Diaconisa'),
+('Missionário(a)'),
+('Presbitero'),
+('Evangelista'),
+('Pastor(a)'),
+('Bispo(a)');
+
+I - Uma pessoa de acordo com a tabela TipoVinculo pode ser:
+
+/*Tabela Tipo Vinculo */
+INSERT INTO TipoVinculo(descricao) VALUES
+('Assitido'),
+('Contribuinte'),
+('Novo Convertido'),
+('Congregado'),
+('Membro');
+
+J - O sistema deve sempre atribuir a situacao de acordo com a solicitacao aprovada:
+
+Uniao = Ativo
+Mudanca = Ativo
+Reconciliacao = Ativo
+Desligamento = Inativo
+Transferencia = Ativo
+
+K - Congregação Origem só tem cunho informativo, o importante e a congregação destino para qual o sistema deve associar a pessoaId informada.
+
+L - cargoRecebidoId foi alterado para not null
+
+M - Cada Pessoa possui apenad um unico historico e a ele são acrescentados varios ItemHistorico
+
+N - Confirmado
+
+O - O motivo desligamento fic apenas na solicitacao, as informações relevantes devem ser acrescentadas no historico da solicitacao.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

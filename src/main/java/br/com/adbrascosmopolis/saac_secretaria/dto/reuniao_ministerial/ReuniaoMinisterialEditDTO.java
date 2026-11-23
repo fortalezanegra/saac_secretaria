@@ -1,6 +1,7 @@
 package br.com.adbrascosmopolis.saac_secretaria.dto.reuniao_ministerial;
 
 import br.com.adbrascosmopolis.saac_secretaria.enumeration.TipoReuniao;
+import br.com.adbrascosmopolis.saac_secretaria.enumeration.situacoes.SituacaoReuniaoMinisterial;
 import br.com.adbrascosmopolis.saac_secretaria.models.ReuniaoMinisterial;
 
 import java.time.LocalDate;
@@ -12,7 +13,7 @@ public class ReuniaoMinisterialEditDTO {
     private TipoReuniao tipoReuniao;
     private Integer congregacaoId;
     private LocalDate dataReuniao;
-    private Integer situacaoId;
+    private SituacaoReuniaoMinisterial situacao;
     private LocalDateTime deletedAt;
 
     public static ReuniaoMinisterialEditDTO fromReuniaoMinisterial(ReuniaoMinisterial r){
@@ -23,7 +24,7 @@ public class ReuniaoMinisterialEditDTO {
         dto.tipoReuniao = r.getTipoReuniao();
         dto.congregacaoId = r.getCongregacao() != null ? r.getCongregacao().getCongregacaoId() : null;
         dto.dataReuniao = r.getDataReuniao();
-        dto.situacaoId = r.getSituacao() != null ? r.getSituacao().getSituacaoId() : null;
+        dto.situacao = r.getSituacao();
         dto.deletedAt = r.getDeletedAt();
 
         return dto;
@@ -61,12 +62,12 @@ public class ReuniaoMinisterialEditDTO {
         this.dataReuniao = dataReuniao;
     }
 
-    public Integer getSituacaoId() {
-        return situacaoId;
+    public SituacaoReuniaoMinisterial getSituacao() {
+        return situacao;
     }
 
-    public void setSituacaoId(Integer situacaoId) {
-        this.situacaoId = situacaoId;
+    public void setSituacao(SituacaoReuniaoMinisterial situacao) {
+        this.situacao = situacao;
     }
 
     public LocalDateTime getDeletedAt() {

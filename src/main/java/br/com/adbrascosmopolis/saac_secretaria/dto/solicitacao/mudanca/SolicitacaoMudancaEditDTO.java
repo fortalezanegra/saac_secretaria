@@ -1,5 +1,6 @@
 package br.com.adbrascosmopolis.saac_secretaria.dto.solicitacao.mudanca;
 
+import br.com.adbrascosmopolis.saac_secretaria.enumeration.situacoes.SituacaoSolicitacao;
 import br.com.adbrascosmopolis.saac_secretaria.models.SolicitacaoMudanca;
 
 public class SolicitacaoMudancaEditDTO {
@@ -8,7 +9,7 @@ public class SolicitacaoMudancaEditDTO {
     private Integer congregacaoSolicitanteId;
     private Long pessoaId;
     private String historico;
-    private Integer situacaoId;;
+    private SituacaoSolicitacao situacao;;
     private Integer igrejaOrigemId;
     private Integer cargoIgrejaOrigemId;
     private Integer cargoRecebidoId;
@@ -18,7 +19,7 @@ public class SolicitacaoMudancaEditDTO {
             Integer congregacaoSolicitanteId,
             Long pessoaId,
             String historico,
-            Integer situacaoId,
+            SituacaoSolicitacao situacao,
             Integer igrejaOrigemId,
             Integer cargoIgrejaOrigemId,
             Integer cargoRecebidoId
@@ -27,7 +28,7 @@ public class SolicitacaoMudancaEditDTO {
         this.congregacaoSolicitanteId = congregacaoSolicitanteId;
         this.pessoaId = pessoaId;
         this.historico = historico;
-        this.situacaoId = situacaoId;
+        this.situacao = situacao;
         this.igrejaOrigemId = igrejaOrigemId;
         this.cargoIgrejaOrigemId = cargoIgrejaOrigemId;
         this.cargoRecebidoId = cargoRecebidoId;
@@ -44,7 +45,7 @@ public class SolicitacaoMudancaEditDTO {
                 s.getCongregacaoSolicitante() != null ? s.getCongregacaoSolicitante().getCongregacaoId() : null,
                 s.getPessoa() != null ? s.getPessoa().getPessoaId() : null,
                 s.getHistorico(),
-                s.getSituacao() != null ? s.getSituacao().getSituacaoId() : null,
+                s.getSituacao(),
                 s.getIgrejaOrigem() != null ? s.getIgrejaOrigem().getIgrejaOrigemId() : null,
                 s.getCargoIgrejaOrigem() != null ? s.getCargoIgrejaOrigem().getCargoMinisterialId() : null,
                 s.getCargoRecebido() != null ? s.getCargoRecebido().getCargoMinisterialId() : null
@@ -83,12 +84,12 @@ public class SolicitacaoMudancaEditDTO {
         this.historico = historico;
     }
 
-    public Integer getSituacaoId() {
-        return situacaoId;
+    public SituacaoSolicitacao getSituacao() {
+        return situacao;
     }
 
-    public void setSituacaoId(Integer situacaoId) {
-        this.situacaoId = situacaoId;
+    public void setSituacao(SituacaoSolicitacao situacao) {
+        this.situacao = situacao;
     }
 
     public Integer getIgrejaOrigemId() {

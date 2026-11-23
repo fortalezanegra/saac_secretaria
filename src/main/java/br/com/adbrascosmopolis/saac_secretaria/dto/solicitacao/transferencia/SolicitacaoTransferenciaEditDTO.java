@@ -1,5 +1,6 @@
 package br.com.adbrascosmopolis.saac_secretaria.dto.solicitacao.transferencia;
 
+import br.com.adbrascosmopolis.saac_secretaria.enumeration.situacoes.SituacaoSolicitacao;
 import br.com.adbrascosmopolis.saac_secretaria.factory.solicitacao.CriarSolicitacaoTransferenciaCommand;
 import br.com.adbrascosmopolis.saac_secretaria.models.SolicitacaoTransferencia;
 
@@ -9,7 +10,7 @@ public class SolicitacaoTransferenciaEditDTO extends CriarSolicitacaoTransferenc
     private Integer congregacaoSolicitanteId;
     private Long pessoaId;
     private String historico;
-    private Integer situacaoId;
+    private SituacaoSolicitacao situacao;
     private Integer congregacaoOrigemId;
     private Integer congregacaoDestinoId;
 
@@ -21,7 +22,7 @@ public class SolicitacaoTransferenciaEditDTO extends CriarSolicitacaoTransferenc
         dto.congregacaoSolicitanteId = s.getCongregacaoSolicitante() != null ? s.getCongregacaoSolicitante().getCongregacaoId() : null;
         dto.pessoaId = s.getPessoa() != null ? s.getPessoa().getPessoaId() : null;
         dto.historico = s.getHistorico();
-        dto.situacaoId = s.getSituacao() != null ? s.getSituacao().getSituacaoId() : null;
+        dto.situacao = s.getSituacao();
         dto.congregacaoOrigemId = s.getCongregacaoOrigem() != null ? s.getCongregacaoOrigem().getCongregacaoId() : null;
         dto.congregacaoDestinoId = s.getCongregacaoDestino() != null ? s.getCongregacaoDestino().getCongregacaoId() : null;
 
@@ -67,13 +68,13 @@ public class SolicitacaoTransferenciaEditDTO extends CriarSolicitacaoTransferenc
     }
 
     @Override
-    public Integer getSituacaoId() {
-        return situacaoId;
+    public SituacaoSolicitacao getSituacao() {
+        return situacao;
     }
 
     @Override
-    public void setSituacaoId(Integer situacaoId) {
-        this.situacaoId = situacaoId;
+    public void setSituacao(SituacaoSolicitacao situacao) {
+        this.situacao = situacao;
     }
 
     @Override

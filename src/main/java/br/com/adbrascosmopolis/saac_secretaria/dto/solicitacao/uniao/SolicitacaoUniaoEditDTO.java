@@ -1,6 +1,7 @@
 package br.com.adbrascosmopolis.saac_secretaria.dto.solicitacao.uniao;
 
 import br.com.adbrascosmopolis.saac_secretaria.enumeration.TipoSolicitacao;
+import br.com.adbrascosmopolis.saac_secretaria.enumeration.situacoes.SituacaoSolicitacao;
 import br.com.adbrascosmopolis.saac_secretaria.models.SolicitacaoUniao;
 
 public class SolicitacaoUniaoEditDTO {
@@ -10,7 +11,7 @@ public class SolicitacaoUniaoEditDTO {
     private TipoSolicitacao tipoSolicitacao;
     private Long pessoaId;
     private String historico;
-    private Integer situacaoId;
+    private SituacaoSolicitacao situacao;
 
     public SolicitacaoUniaoEditDTO(
             Long solicitacaoId,
@@ -18,14 +19,14 @@ public class SolicitacaoUniaoEditDTO {
             TipoSolicitacao tipoSolicitacao,
             Long pessoaId,
             String historico,
-            Integer situacaoId
+            SituacaoSolicitacao situacao
     ){
         this.solicitacaoId = solicitacaoId;
         this.congregacaoSolicitanteId = congregacaoSolicitanteId;
         this.tipoSolicitacao = tipoSolicitacao;
         this.pessoaId = pessoaId;
         this.historico = historico;
-        this.situacaoId = situacaoId;
+        this.situacao = situacao;
     }
 
     public static SolicitacaoUniaoEditDTO fromSolicitacaoUniao(SolicitacaoUniao s){
@@ -41,7 +42,7 @@ public class SolicitacaoUniaoEditDTO {
                 s.getTipoSolicitacao(),
                 s.getPessoa() != null ? s.getPessoa().getPessoaId() : null,
                 s.getHistorico(),
-                s.getSituacao() != null ? s.getSituacao().getSituacaoId() : null
+                s.getSituacao()
         );
     }
 
@@ -85,11 +86,11 @@ public class SolicitacaoUniaoEditDTO {
         this.historico = historico;
     }
 
-    public Integer getSituacaoId() {
-        return situacaoId;
+    public SituacaoSolicitacao getSituacao() {
+        return situacao;
     }
 
-    public void setSituacaoId(Integer situacaoId) {
-        this.situacaoId = situacaoId;
+    public void setSituacao(SituacaoSolicitacao situacao) {
+        this.situacao = situacao;
     }
 }

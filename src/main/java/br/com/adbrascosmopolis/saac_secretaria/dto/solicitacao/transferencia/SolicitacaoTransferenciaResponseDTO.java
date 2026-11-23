@@ -1,5 +1,6 @@
 package br.com.adbrascosmopolis.saac_secretaria.dto.solicitacao.transferencia;
 
+import br.com.adbrascosmopolis.saac_secretaria.enumeration.situacoes.SituacaoSolicitacao;
 import br.com.adbrascosmopolis.saac_secretaria.models.SolicitacaoTransferencia;
 
 public class SolicitacaoTransferenciaResponseDTO {
@@ -11,8 +12,7 @@ public class SolicitacaoTransferenciaResponseDTO {
     private Long pessoaId;
     private String pessoa;
     private String historico;
-    private Integer situacaoId;
-    private String situacao;
+    private SituacaoSolicitacao situacao;
     private Integer congregacaoOrigemId;
     private String congregacaoOrigem;
     private Integer congregacaoDestinoId;
@@ -26,8 +26,7 @@ public class SolicitacaoTransferenciaResponseDTO {
             Long pessoaId,
             String pessoa,
             String historico,
-            Integer situacaoId,
-            String situacao,
+            SituacaoSolicitacao situacao,
             Integer congregacaoOrigemId,
             String congregacaoOrigem,
             Integer congregacaoDestinoId,
@@ -40,7 +39,6 @@ public class SolicitacaoTransferenciaResponseDTO {
         this.pessoaId = pessoaId;
         this.pessoa = pessoa;
         this.historico = historico;
-        this.situacaoId = situacaoId;
         this.situacao = situacao;
         this.congregacaoOrigemId = congregacaoOrigemId;
         this.congregacaoOrigem = congregacaoOrigem;
@@ -78,12 +76,7 @@ public class SolicitacaoTransferenciaResponseDTO {
 
                 solicitacao.getHistorico(),
 
-                solicitacao.getSituacao() != null
-                        ? solicitacao.getSituacao().getSituacaoId()
-                        : null,
-                solicitacao.getSituacao() != null
-                        ? solicitacao.getSituacao().getDescricao()
-                        : null,
+                solicitacao.getSituacao(),
 
                 solicitacao.getCongregacaoOrigem() != null
                         ? solicitacao.getCongregacaoOrigem().getCongregacaoId()
@@ -157,19 +150,11 @@ public class SolicitacaoTransferenciaResponseDTO {
         this.historico = historico;
     }
 
-    public Integer getSituacaoId() {
-        return situacaoId;
-    }
-
-    public void setSituacaoId(Integer situacaoId) {
-        this.situacaoId = situacaoId;
-    }
-
-    public String getSituacao() {
+    public SituacaoSolicitacao getSituacao() {
         return situacao;
     }
 
-    public void setSituacao(String situacao) {
+    public void setSituacao(SituacaoSolicitacao situacao) {
         this.situacao = situacao;
     }
 

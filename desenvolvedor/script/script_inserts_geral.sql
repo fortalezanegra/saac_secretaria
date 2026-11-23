@@ -59,21 +59,6 @@ INSERT INTO Situacao (descricao, contexto, ativo, ordem) VALUES
 ('Concluido', 'ATIVIDADES', 1, 2),
 ('Cancelado', 'ATIVIDADES', 1, 3),
 
--- DECISAO_MINISTERIAL
-('Aguardando Reuniao', 'DECISAO_MINISTERIAL', 1, 1),
-('Aprovada',           'DECISAO_MINISTERIAL', 1, 2),
-('Reprovada',          'DECISAO_MINISTERIAL', 1, 3),
-('Cancelada',          'DECISAO_MINISTERIAL', 1, 4),
-('Reagendada',         'DECISAO_MINISTERIAL', 1, 5);
-
-/*Tabela Tipo Vinculo */
-INSERT INTO TipoVinculo(descricao) VALUES
-('Assitido'),
-('Contribuinte'),
-('Novo Convertido'),
-('Congregado'),
-('Membro');
-
 /*Tabela Formacao*/
 INSERT INTO Formacao(Descricao) VALUES
 ('Ensino Fundamental Incompleto'),
@@ -145,17 +130,15 @@ INSERT INTO CargoMinisterial(Descricao) VALUES
 ('Pastor(a)'),
 ('Bispo(a)');
 
-
 /**###################################################################*/
 /*########################## I N S E R T S ###########################*/
 /*####################################################################*/
 
 /* REUNIAO MINISTERIAL */
-INSERT INTO ReuniaoMinisterial (tipoReuniao, congregacaoId, dataReuniao, situacaoId) VALUES
-('PASTORES', 1, '2026-11-15', 1),
-('DIRIGENTES', 1, '2026-11-26', 1),
-('OBREIROS', 1, '2026-11-27', 1),
-('EXTRAORDINARIA', 1, '2026-11-28', 1);
+INSERT INTO ReuniaoMinisterial (tipoReuniao, congregacaoId, dataReuniao, situacao)
+VALUES
+    ('DIRIGENTES', 1, '2026-11-25', 'PENDENTE'),
+    ('DIRIGENTES', 1, '2026-12-10', 'PENDENTE');
 
 /* BATISMO */
 INSERT INTO Batismo(congregacaoId, dataBatismo, situacaoId) VALUES

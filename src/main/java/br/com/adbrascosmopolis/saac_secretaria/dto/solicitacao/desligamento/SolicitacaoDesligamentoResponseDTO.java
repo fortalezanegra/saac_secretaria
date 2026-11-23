@@ -1,6 +1,7 @@
 package br.com.adbrascosmopolis.saac_secretaria.dto.solicitacao.desligamento;
 
 import br.com.adbrascosmopolis.saac_secretaria.enumeration.TipoSolicitacao;
+import br.com.adbrascosmopolis.saac_secretaria.enumeration.situacoes.SituacaoSolicitacao;
 import br.com.adbrascosmopolis.saac_secretaria.models.SolicitacaoDesligamento;
 import br.com.adbrascosmopolis.saac_secretaria.models.SolicitacaoUniao;
 
@@ -15,8 +16,7 @@ public class SolicitacaoDesligamentoResponseDTO {
     private Integer motivoDesligamentoId;
     private String motivoDesligamento;
     private String historico;
-    private Integer situacaoId;
-    private String situacao;
+    private SituacaoSolicitacao situacao;
 
     public SolicitacaoDesligamentoResponseDTO(
             Long solicitacaoId,
@@ -28,8 +28,7 @@ public class SolicitacaoDesligamentoResponseDTO {
             Integer motivoDesligamentoId,
             String motivoDesligamento,
             String historico,
-            Integer situacaoId,
-            String situacao
+            SituacaoSolicitacao situacao
     ){
         this.solicitacaoId = solicitacaoId;
         this.congregacaoSolicitanteId = congregacaoSolicitanteId;
@@ -40,7 +39,6 @@ public class SolicitacaoDesligamentoResponseDTO {
         this.motivoDesligamentoId = motivoDesligamentoId;
         this.motivoDesligamento = motivoDesligamento;
         this.historico = historico;
-        this.situacaoId = situacaoId;
         this.situacao = situacao;
     }
 
@@ -61,8 +59,7 @@ public class SolicitacaoDesligamentoResponseDTO {
                 s.getMotivoDesligamento() != null ? s.getMotivoDesligamento().getMotivoDesligamentoId() : null,
                 s.getMotivoDesligamento() != null ? s.getMotivoDesligamento().getDescricao() : null,
                 s.getHistorico(),
-                s.getSituacao() != null ? s.getSituacao().getSituacaoId() : null,
-                s.getSituacao() != null ? s.getSituacao().getDescricao() : null
+                s.getSituacao()
         );
     }
 
@@ -138,19 +135,11 @@ public class SolicitacaoDesligamentoResponseDTO {
         this.historico = historico;
     }
 
-    public Integer getSituacaoId() {
-        return situacaoId;
-    }
-
-    public void setSituacaoId(Integer situacaoId) {
-        this.situacaoId = situacaoId;
-    }
-
-    public String getSituacao() {
+    public SituacaoSolicitacao getSituacao() {
         return situacao;
     }
 
-    public void setSituacao(String situacao) {
+    public void setSituacao(SituacaoSolicitacao situacao) {
         this.situacao = situacao;
     }
 }

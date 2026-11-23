@@ -2,6 +2,7 @@
 package br.com.adbrascosmopolis.saac_secretaria.models;
 
 import br.com.adbrascosmopolis.saac_secretaria.enumeration.TipoReuniao;
+import br.com.adbrascosmopolis.saac_secretaria.enumeration.situacoes.SituacaoReuniaoMinisterial;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
@@ -27,9 +28,9 @@ public class ReuniaoMinisterial {
     @Column(name = "dataReuniao", nullable = false)
     private LocalDate dataReuniao;
 
-    @ManyToOne(fetch = FetchType.LAZY) // ou EAGER se quiser carregar junto
-    @JoinColumn(name = "situacaoId", referencedColumnName = "situacaoId")
-    private Situacao situacao;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "situacao", nullable = false)
+    private SituacaoReuniaoMinisterial situacao;
 
     @Column(name = "createdAt", nullable = false, updatable = false)
     private LocalDateTime createdAt;
@@ -75,11 +76,11 @@ public class ReuniaoMinisterial {
         this.createdAt = createdAt;
     }
 
-    public Situacao getSituacao() {
+    public SituacaoReuniaoMinisterial getSituacao() {
         return situacao;
     }
 
-    public void setSituacao(Situacao situacao) {
+    public void setSituacao(SituacaoReuniaoMinisterial situacao) {
         this.situacao = situacao;
     }
 

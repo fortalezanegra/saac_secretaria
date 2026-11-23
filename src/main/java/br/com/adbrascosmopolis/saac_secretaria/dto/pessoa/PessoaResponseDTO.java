@@ -2,6 +2,8 @@ package br.com.adbrascosmopolis.saac_secretaria.dto.pessoa;
 
 import br.com.adbrascosmopolis.saac_secretaria.enumeration.EstadoCivil;
 import br.com.adbrascosmopolis.saac_secretaria.enumeration.Sexo;
+import br.com.adbrascosmopolis.saac_secretaria.enumeration.TipoVinculo;
+import br.com.adbrascosmopolis.saac_secretaria.enumeration.situacoes.SituacaoPessoa;
 import br.com.adbrascosmopolis.saac_secretaria.models.Pessoa;
 
 import java.time.LocalDate;
@@ -9,7 +11,7 @@ import java.time.LocalDate;
 public class PessoaResponseDTO {
 
     private Long pessoaId;
-    private String tipoVinculo;
+    private TipoVinculo tipoVinculo;
     private String nome;
     private Sexo sexo;
     private LocalDate dataNascimento;
@@ -28,13 +30,13 @@ public class PessoaResponseDTO {
     private String congregacao;
     private String cargoMinisterial;
     private LocalDate dataBatismo;
-    private String situacao;
     private String foto;
     private LocalDate dataConversao;
+    private SituacaoPessoa situacao;
 
     public PessoaResponseDTO(
             Long pessoaId,
-            String tipoVinculo,
+            TipoVinculo tipoVinculo,
             String nome,
             Sexo sexo,
             LocalDate dataNascimento,
@@ -53,9 +55,9 @@ public class PessoaResponseDTO {
             String congregacao,
             String cargoMinisterial,
             LocalDate dataBatismo,
-            String situacao,
             String foto,
-            LocalDate dataConversao)
+            LocalDate dataConversao,
+            SituacaoPessoa situacao)
     {
         this.pessoaId = pessoaId;
         this.tipoVinculo = tipoVinculo;
@@ -77,9 +79,9 @@ public class PessoaResponseDTO {
         this.congregacao = congregacao;
         this.cargoMinisterial = cargoMinisterial;
         this.dataBatismo = dataBatismo;
-        this.situacao = situacao;
         this.foto = foto;
         this.dataConversao = dataConversao;
+        this.situacao = situacao;
     }
 
     public static PessoaResponseDTO fromPessoa(Pessoa p) {
@@ -89,7 +91,7 @@ public class PessoaResponseDTO {
 
         return new PessoaResponseDTO(
                 p.getPessoaId(),
-                p.getTipoVinculo() != null ? p.getTipoVinculo().getDescricao() : null,
+                p.getTipoVinculo(),
                 p.getNome(),
                 p.getSexo(),
                 p.getDataNascimento(),
@@ -108,9 +110,9 @@ public class PessoaResponseDTO {
                 p.getCongregacao() != null ? p.getCongregacao().getNome() : null,
                 p.getCargoMinisterial() != null ? p.getCargoMinisterial().getDescricao() : null,
                 p.getDataBatismo(),
-                p.getSituacao() != null ? p.getSituacao().getDescricao() : null,
                 p.getFoto(),
-                p.getDataConversao()
+                p.getDataConversao(),
+                p.getSituacao()
         );
     }
 
@@ -122,11 +124,11 @@ public class PessoaResponseDTO {
         this.pessoaId = pessoaId;
     }
 
-    public String getTipoVinculo() {
+    public TipoVinculo getTipoVinculo() {
         return tipoVinculo;
     }
 
-    public void setTipoVinculo(String tipoVinculo) {
+    public void setTipoVinculo(TipoVinculo tipoVinculo) {
         this.tipoVinculo = tipoVinculo;
     }
 
@@ -274,14 +276,6 @@ public class PessoaResponseDTO {
         this.dataBatismo = dataBatismo;
     }
 
-    public String getSituacao() {
-        return situacao;
-    }
-
-    public void setSituacao(String situacao) {
-        this.situacao = situacao;
-    }
-
     public String getFoto() {
         return foto;
     }
@@ -296,5 +290,13 @@ public class PessoaResponseDTO {
 
     public void setDataConversao(LocalDate dataConversao) {
         this.dataConversao = dataConversao;
+    }
+
+    public SituacaoPessoa getSituacao() {
+        return situacao;
+    }
+
+    public void setSituacao(SituacaoPessoa situacao) {
+        this.situacao = situacao;
     }
 }

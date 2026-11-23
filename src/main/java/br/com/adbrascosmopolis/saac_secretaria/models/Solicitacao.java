@@ -1,6 +1,7 @@
 package br.com.adbrascosmopolis.saac_secretaria.models;
 
 import br.com.adbrascosmopolis.saac_secretaria.enumeration.TipoSolicitacao;
+import br.com.adbrascosmopolis.saac_secretaria.enumeration.situacoes.SituacaoSolicitacao;
 import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -18,6 +19,10 @@ public abstract class Solicitacao{
     private Long solicitacaoId;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "reuniaoMinisterialId", referencedColumnName = "reuniaoMinisterialId")
+    private ReuniaoMinisterial reuniaoMinisterial;
+
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "congregacaoSolicitanteId", nullable = false, referencedColumnName = "congregacaoId")
     private Congregacao congregacaoSolicitante;
 
@@ -32,9 +37,9 @@ public abstract class Solicitacao{
     @Column(name = "historico", nullable = true)
     private String historico;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "situacaoId", nullable = false, referencedColumnName = "situacaoId")
-    private Situacao situacao;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "situacao", nullable = false)
+    private SituacaoSolicitacao situacao;
 
     @CreationTimestamp
     @Column(name = "createdAt", nullable = false, updatable = false)
@@ -56,6 +61,14 @@ public abstract class Solicitacao{
 
     public void setSolicitacaoId(Long solicitacaoId) {
         this.solicitacaoId = solicitacaoId;
+    }
+
+    public ReuniaoMinisterial getReuniaoMinisterial() {
+        return reuniaoMinisterial;
+    }
+
+    public void setReuniaoMinisterial(ReuniaoMinisterial reuniaoMinisterial) {
+        this.reuniaoMinisterial = reuniaoMinisterial;
     }
 
     public Congregacao getCongregacaoSolicitante() {
@@ -90,11 +103,11 @@ public abstract class Solicitacao{
         this.historico = historico;
     }
 
-    public Situacao getSituacao() {
+    public SituacaoSolicitacao getSituacao() {
         return situacao;
     }
 
-    public void setSituacao(Situacao situacao) {
+    public void setSituacao(SituacaoSolicitacao situacao) {
         this.situacao = situacao;
     }
 

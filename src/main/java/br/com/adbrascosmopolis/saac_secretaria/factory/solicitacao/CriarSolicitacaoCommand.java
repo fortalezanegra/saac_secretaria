@@ -1,6 +1,7 @@
 package br.com.adbrascosmopolis.saac_secretaria.factory.solicitacao;
 
 import br.com.adbrascosmopolis.saac_secretaria.enumeration.TipoSolicitacao;
+import br.com.adbrascosmopolis.saac_secretaria.enumeration.situacoes.SituacaoSolicitacao;
 
 /**
  * Classe-base abstrata com os dados comuns a todos os comandos
@@ -11,7 +12,7 @@ public abstract class CriarSolicitacaoCommand {
     private Integer congregacaoSolicitanteId;
     private Long pessoaId;
     private String historico;
-    private Integer situacaoId;
+    private SituacaoSolicitacao situacao;
 
     protected CriarSolicitacaoCommand() {
     }
@@ -20,12 +21,12 @@ public abstract class CriarSolicitacaoCommand {
             Integer congregacaoSolicitanteId,
             Long pessoaId,
             String historico,
-            Integer situacaoId) {
+            SituacaoSolicitacao situacao) {
 
         this.congregacaoSolicitanteId = congregacaoSolicitanteId;
         this.pessoaId = pessoaId;
         this.historico = historico;
-        this.situacaoId = situacaoId;
+        this.situacao = situacao;
     }
 
     public Integer getCongregacaoSolicitanteId() {
@@ -52,12 +53,12 @@ public abstract class CriarSolicitacaoCommand {
         this.historico = historico;
     }
 
-    public Integer getSituacaoId() {
-        return situacaoId;
+    public SituacaoSolicitacao getSituacao() {
+        return situacao;
     }
 
-    public void setSituacaoId(Integer situacaoId) {
-        this.situacaoId = situacaoId;
+    public void setSituacao(SituacaoSolicitacao situacao) {
+        this.situacao = situacao;
     }
 
     public abstract TipoSolicitacao getTipoSolicitacao();

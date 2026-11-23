@@ -1,5 +1,7 @@
 package br.com.adbrascosmopolis.saac_secretaria.repository;
 
+import br.com.adbrascosmopolis.saac_secretaria.enumeration.TipoVinculo;
+import br.com.adbrascosmopolis.saac_secretaria.enumeration.situacoes.SituacaoPessoa;
 import br.com.adbrascosmopolis.saac_secretaria.models.Pessoa;
 import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -16,29 +18,25 @@ PessoaRepository extends JpaRepository<Pessoa, Long>, JpaSpecificationExecutor<P
 
     @Query("""
     select p from Pessoa p
-    left join fetch p.tipoVinculo
     left join fetch p.congregacao
     left join fetch p.cargoMinisterial
     left join fetch p.formacao
     left join fetch p.profissao
-    left join fetch p.situacao
     where p.pessoaId = :id
 """)
     Optional<Pessoa> findByIdFetchAll(@Param("id") Long id);
 
     @Query("""
     select p from Pessoa p
-    left join fetch p.tipoVinculo
     left join fetch p.congregacao
     left join fetch p.cargoMinisterial
     left join fetch p.formacao
     left join fetch p.profissao
-    left join fetch p.situacao
-    where p.tipoVinculo.descricao = :vinculo
-    and p.situacao.descricao = :situacao
+    where p.tipoVinculo = :vinculo
+    and p.situacao = :situacao
     order by p.nome
 """)
-    List<Pessoa> findPessoaByVinculoAndSituacao(@Param("vinculo") String vinculo, @Param("situacao") String situacao);
+    List<Pessoa> findPessoaByVinculoAndSituacao(@Param("vinculo") TipoVinculo vinculo, @Param("situacao") SituacaoPessoa situacao);
 
     /* Dropdown Pessoas */
     @Query("""
@@ -47,13 +45,13 @@ PessoaRepository extends JpaRepository<Pessoa, Long>, JpaSpecificationExecutor<P
        JOIN p.congregacao c
        JOIN p.situacao s
        WHERE c.congregacaoId = :congregacaoId
-         AND s.situacaoId = :situacaoId
+         AND p.situacao = :situacao
        ORDER BY p.nome
     """)
 
     List<Pessoa> listarPessoasPorCongregacaoESituacao(
             @Param("congregacaoId") Integer congregacaoId,
-            @Param("situacaoId") Integer situacaoId
+            @Param("situacaoId") SituacaoPessoa situacao
     );
 
     /* Upload Foto */

@@ -1,6 +1,7 @@
 package br.com.adbrascosmopolis.saac_secretaria.dto.reuniao_ministerial;
 
 import br.com.adbrascosmopolis.saac_secretaria.enumeration.TipoReuniao;
+import br.com.adbrascosmopolis.saac_secretaria.enumeration.situacoes.SituacaoReuniaoMinisterial;
 import br.com.adbrascosmopolis.saac_secretaria.models.*;
 
 import java.time.LocalDate;
@@ -11,20 +12,20 @@ public class ReuniaoMinisterialRequestDTO {
     private TipoReuniao tipoReuniao;
     private Integer congregacaoId;
     private LocalDate dataReuniao;
-    private Integer situacaoId;
+    private SituacaoReuniaoMinisterial situacao;
     private LocalDateTime deletedAt;
 
     public ReuniaoMinisterialRequestDTO(
             TipoReuniao tipoReuniao,
             Integer congregacaoId,
             LocalDate dataReuniao,
-            Integer situacaoId,
+            SituacaoReuniaoMinisterial situacao,
             LocalDateTime deletedAt
     ){
         this.tipoReuniao = tipoReuniao;
         this.congregacaoId = congregacaoId;
         this.dataReuniao = dataReuniao;
-        this.situacaoId = situacaoId;
+        this.situacao = situacao;
         this.deletedAt = deletedAt;
     }
 
@@ -36,18 +37,13 @@ public class ReuniaoMinisterialRequestDTO {
 
         reuniao.setTipoReuniao(this.tipoReuniao);
         reuniao.setDataReuniao(this.dataReuniao);
+        reuniao.setSituacao(this.situacao);
         reuniao.setDeletedAt(this.deletedAt);
 
         if(this.congregacaoId != null){
             Congregacao congregacao = new Congregacao();
             congregacao.setCongregacaoId(this.congregacaoId);
             reuniao.setCongregacao(congregacao);
-        }
-
-        if(this.situacaoId != null){
-            Situacao situacao = new Situacao();
-            situacao.setSituacaoId(this.situacaoId);
-            reuniao.setSituacao(situacao);
         }
 
         return reuniao;
@@ -77,12 +73,12 @@ public class ReuniaoMinisterialRequestDTO {
         this.dataReuniao = dataReuniao;
     }
 
-    public Integer getSituacaoId() {
-        return situacaoId;
+    public SituacaoReuniaoMinisterial getSituacao() {
+        return situacao;
     }
 
-    public void setSituacaoId(Integer situacaoId) {
-        this.situacaoId = situacaoId;
+    public void setSituacao(SituacaoReuniaoMinisterial situacao) {
+        this.situacao = situacao;
     }
 
     public LocalDateTime getDeletedAt() {

@@ -2,6 +2,8 @@ package br.com.adbrascosmopolis.saac_secretaria.models;
 
 import br.com.adbrascosmopolis.saac_secretaria.enumeration.EstadoCivil;
 import br.com.adbrascosmopolis.saac_secretaria.enumeration.Sexo;
+import br.com.adbrascosmopolis.saac_secretaria.enumeration.situacoes.SituacaoPessoa;
+import br.com.adbrascosmopolis.saac_secretaria.enumeration.TipoVinculo;
 import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -18,8 +20,8 @@ public class Pessoa {
     @Column(name = "pessoaId")
     private Long pessoaId;
 
-    @ManyToOne(fetch = FetchType.LAZY) // ou EAGER se quiser carregar junto
-    @JoinColumn(name = "tipoVinculoId", referencedColumnName = "tipoVinculoId")
+    @Enumerated(EnumType.STRING)
+    @Column(name = "tipoVinculo", nullable = false)
     private TipoVinculo tipoVinculo;
 
     @Column(name = "nome", length = 100, nullable = false)
@@ -82,15 +84,19 @@ public class Pessoa {
     @Column(name = "dataBatismo")
     private LocalDate dataBatismo;
 
-    @ManyToOne(fetch = FetchType.LAZY) // ou EAGER se quiser carregar junto
-    @JoinColumn(name = "situacaoId", referencedColumnName = "situacaoId")
-    private Situacao situacao;
-
     @Column(name = "foto")
     private String foto;
 
     @Column(name = "dataConversao")
     private LocalDate dataConversao;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "situacao")
+    private SituacaoPessoa situacao;
+
+    //@ManyToOne(fetch = FetchType.LAZY) // ou EAGER se quiser carregar junto
+    //@JoinColumn(name = "situacaoId", referencedColumnName = "situacaoId")
+    //private Situacao situacao;
 
     @CreationTimestamp
     @Column(name = "createdAt", nullable = false, updatable = false)
@@ -266,14 +272,6 @@ public class Pessoa {
         this.dataBatismo = dataBatismo;
     }
 
-    public Situacao getSituacao() {
-        return situacao;
-    }
-
-    public void setSituacao(Situacao situacao) {
-        this.situacao = situacao;
-    }
-
     public String getFoto() {
         return foto;
     }
@@ -288,6 +286,14 @@ public class Pessoa {
 
     public void setDataConversao(LocalDate dataConversao) {
         this.dataConversao = dataConversao;
+    }
+
+    public SituacaoPessoa getSituacao() {
+        return situacao;
+    }
+
+    public void setSituacao(SituacaoPessoa situacao) {
+        this.situacao = situacao;
     }
 
     public LocalDateTime getCreatedAt() {

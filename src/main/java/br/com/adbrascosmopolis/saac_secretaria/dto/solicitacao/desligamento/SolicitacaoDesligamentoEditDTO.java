@@ -1,6 +1,7 @@
 package br.com.adbrascosmopolis.saac_secretaria.dto.solicitacao.desligamento;
 
 import br.com.adbrascosmopolis.saac_secretaria.enumeration.TipoSolicitacao;
+import br.com.adbrascosmopolis.saac_secretaria.enumeration.situacoes.SituacaoSolicitacao;
 import br.com.adbrascosmopolis.saac_secretaria.models.SolicitacaoDesligamento;
 import br.com.adbrascosmopolis.saac_secretaria.models.SolicitacaoUniao;
 
@@ -12,7 +13,7 @@ public class SolicitacaoDesligamentoEditDTO {
     private Long pessoaId;
     private Integer motivoDesligamentoId;
     private String historico;
-    private Integer situacaoId;
+    private SituacaoSolicitacao situacao;
 
     public SolicitacaoDesligamentoEditDTO(
             Long solicitacaoId,
@@ -21,7 +22,7 @@ public class SolicitacaoDesligamentoEditDTO {
             Long pessoaId,
             Integer motivoDesligamentoId,
             String historico,
-            Integer situacaoId
+            SituacaoSolicitacao situacao
     ){
         this.solicitacaoId = solicitacaoId;
         this.congregacaoSolicitanteId = congregacaoSolicitanteId;
@@ -29,7 +30,7 @@ public class SolicitacaoDesligamentoEditDTO {
         this.pessoaId = pessoaId;
         this.motivoDesligamentoId = motivoDesligamentoId;
         this.historico = historico;
-        this.situacaoId = situacaoId;
+        this.situacao = situacao;
     }
 
     public static SolicitacaoDesligamentoEditDTO fromSolicitacaoDesligamento(SolicitacaoDesligamento s){
@@ -46,7 +47,7 @@ public class SolicitacaoDesligamentoEditDTO {
                 s.getPessoa() != null ? s.getPessoa().getPessoaId() : null,
                 s.getMotivoDesligamento() != null ? s.getMotivoDesligamento().getMotivoDesligamentoId() : null,
                 s.getHistorico(),
-                s.getSituacao() != null ? s.getSituacao().getSituacaoId() : null
+                s.getSituacao()
         );
     }
 
@@ -98,11 +99,11 @@ public class SolicitacaoDesligamentoEditDTO {
         this.historico = historico;
     }
 
-    public Integer getSituacaoId() {
-        return situacaoId;
+    public SituacaoSolicitacao getSituacao() {
+        return situacao;
     }
 
-    public void setSituacaoId(Integer situacaoId) {
-        this.situacaoId = situacaoId;
+    public void setSituacao(SituacaoSolicitacao situacao) {
+        this.situacao = situacao;
     }
 }

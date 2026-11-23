@@ -1,5 +1,6 @@
 package br.com.adbrascosmopolis.saac_secretaria.repository;
 
+import br.com.adbrascosmopolis.saac_secretaria.enumeration.situacoes.SituacaoReuniaoMinisterial;
 import br.com.adbrascosmopolis.saac_secretaria.models.*;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -9,33 +10,11 @@ import java.util.List;
 
 public interface SolicitacaoRepository extends JpaRepository<Solicitacao, Long> {
 
-    Solicitacao findBySolicitacaoId(Long solicitacaoId);
-
-
-    /* List All Solicitações */
-    @Query("""
-        SELECT s
-        FROM Solicitacao s
-        JOIN FETCH s.congregacaoSolicitante
-        JOIN FETCH s.pessoa
-        JOIN FETCH s.situacao
-        WHERE s.deletedAt IS NULL
-        ORDER BY s.tipoSolicitacao, s.congregacaoSolicitante.nome ASC    
-    """)
-        List<Solicitacao> listAll();
-
-    /* Dropdown Solicitações Aguardando Reuniao ou Reagendadas*/
-    @Query("""
-        SELECT s
-        FROM Solicitacao s
-        JOIN FETCH s.congregacaoSolicitante
-        JOIN FETCH s.pessoa
-        JOIN FETCH s.situacao
-        WHERE s.deletedAt IS NULL AND s.situacao.descricao IN ('Aguardando Reuniao', 'Reagendada')
-        ORDER BY s.tipoSolicitacao ASC    
-    """)
-    List<Solicitacao> dropdown();
-
+    /*
+    * ###########################################################################################
+    * ################  QUERIES FOR REQUESTS ( SOLICITAÇÕES )  ##################################
+    * ###########################################################################################
+    * */
 
     /* List Solicitacao Transferencia By Id */
     @Query("""
@@ -92,16 +71,47 @@ public interface SolicitacaoRepository extends JpaRepository<Solicitacao, Long> 
     """)
     SolicitacaoDesligamento desligamentoSearchById(@Param("id") Long id);
 
+    /* ############################################################################################## */
+
+    Solicitacao findBySolicitacaoId(Long solicitacaoId);
+
+    /* List All REQUESTS (Solicitações) */
     @Query("""
-        select s
-          from Solicitacao s
-          join s.situacao sit
-         where s.deletedAt is null
-           and sit.deletedAt is null
-           and sit.contexto = 'SOLICITACAO'
-           and sit.descricao in ('Aguardando Reuniao', 'Reagendada')
-         order by s.createdAt, s.solicitacaoId
+        SELECT s
+        FROM Solicitacao s
+        JOIN FETCH s.congregacaoSolicitante
+        JOIN FETCH s.pessoa
+        JOIN FETCH s.situacao
+        WHERE s.deletedAt IS NULL
+        ORDER BY s.tipoSolicitacao, s.congregacaoSolicitante.nome ASC    
+    """)
+    List<Solicitacao> listAll();
+
+    /* List Requests (Solicitações) From Agenda By reuniaoMinisterialId */
+    @Query("""
+        SELECT s
+          FROM Solicitacao s
+          LEFT JOIN FETCH s.pessoa
+          LEFT JOIN FETCH s.congregacaoSolicitante
+          JOIN s.reuniaoMinisterial r
+         WHERE r.reuniaoMinisterialId = :reuniaoId
+           AND r.situacao = :situacao
+           AND r.deletedAt IS NULL
+           AND s.deletedAt IS NULL
+         ORDER BY s.createdAt, s.solicitacaoId
         """)
-    List<Solicitacao> listarAtivasAguardandoOuReagendadas();
+    List<Solicitacao> listRequestFromAgendaByReuniaoMinisterialId(
+            @Param("reuniaoId") Long reuniaoId,
+            @Param("situacao") SituacaoReuniaoMinisterial situacao
+    );
+
+
+    /* Search Requests (Solicitações) For Building Agenda */
+    @Query("""
+    SELECT s
+    FROM Solicitacao s
+    WHERE s.reuniaoMinisterial IS NULL
+    """)
+    List<Solicitacao> searchRequestsForBuildingAgenda();
 
 }

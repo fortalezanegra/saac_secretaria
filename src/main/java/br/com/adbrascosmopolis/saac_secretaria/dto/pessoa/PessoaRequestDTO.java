@@ -1,14 +1,16 @@
 package br.com.adbrascosmopolis.saac_secretaria.dto.pessoa;
 
 import br.com.adbrascosmopolis.saac_secretaria.enumeration.EstadoCivil;
+import br.com.adbrascosmopolis.saac_secretaria.enumeration.TipoVinculo;
 import br.com.adbrascosmopolis.saac_secretaria.enumeration.Sexo;
+import br.com.adbrascosmopolis.saac_secretaria.enumeration.situacoes.SituacaoPessoa;
 import br.com.adbrascosmopolis.saac_secretaria.models.*;
 
 import java.time.LocalDate;
 
 public class PessoaRequestDTO {
 
-    private Integer tipoVinculoId;
+    private TipoVinculo tipoVinculo;
     private String nome;
     private Sexo sexo;
     private LocalDate dataNascimento;
@@ -27,12 +29,12 @@ public class PessoaRequestDTO {
     private Integer congregacaoId;
     private Integer cargoMinisterialId;
     private LocalDate dataBatismo;
-    private Integer situacaoId;
     private String foto;
     private LocalDate dataConversao;
+    private SituacaoPessoa situacao;
 
     public PessoaRequestDTO(
-            Integer tipoVinculoId,
+            TipoVinculo tipoVinculo,
             String nome,
             Sexo sexo,
             LocalDate dataNascimento,
@@ -52,9 +54,10 @@ public class PessoaRequestDTO {
             Integer cargoMinisterialId,
             LocalDate dataBatismo,
             String foto,
-            LocalDate dataConversao){
+            LocalDate dataConversao,
+            SituacaoPessoa situacao){
 
-        this.tipoVinculoId = tipoVinculoId;
+        this.tipoVinculo = tipoVinculo;
         this.nome = nome;
         this.sexo = sexo;
         this.dataNascimento = dataNascimento;
@@ -73,14 +76,15 @@ public class PessoaRequestDTO {
         this.congregacaoId = congregacaoId;
         this.cargoMinisterialId = cargoMinisterialId;
         this.dataBatismo = dataBatismo;
-        this.situacaoId = situacaoId;
         this.foto = foto;
         this.dataConversao = dataConversao;
+        this.situacao = situacao;
     }
 
     public Pessoa mapToPessoa() {
         Pessoa pessoa = new Pessoa();
 
+        pessoa.setTipoVinculo(this.tipoVinculo);
         pessoa.setNome(this.nome);
         pessoa.setSexo(this.sexo);
         pessoa.setDataNascimento(this.dataNascimento);
@@ -97,13 +101,7 @@ public class PessoaRequestDTO {
         pessoa.setDataBatismo(this.dataBatismo);
         pessoa.setFoto(this.foto);
         pessoa.setDataConversao(this.dataConversao);
-
-        // Relacionamentos
-        if (this.tipoVinculoId != null) {
-            TipoVinculo tipoVinculo = new TipoVinculo();
-            tipoVinculo.setTipoVinculoId(this.tipoVinculoId);
-            pessoa.setTipoVinculo(tipoVinculo);
-        }
+        pessoa.setSituacao(this.situacao);
 
         if (this.formacaoId != null) {
             Formacao formacao = new Formacao();
@@ -129,21 +127,15 @@ public class PessoaRequestDTO {
             pessoa.setCargoMinisterial(cargo);
         }
 
-        if (this.situacaoId != null) {
-            Situacao situacao = new Situacao();
-            situacao.setSituacaoId(this.situacaoId);
-            pessoa.setSituacao(situacao);
-        }
-
         return pessoa;
     }
 
-    public Integer getTipoVinculoId() {
-        return tipoVinculoId;
+    public TipoVinculo getTipoVinculo() {
+        return tipoVinculo;
     }
 
-    public void setTipoVinculoId(Integer tipoVinculoId) {
-        this.tipoVinculoId = tipoVinculoId;
+    public void setTipoVinculo(TipoVinculo tipoVinculo) {
+        this.tipoVinculo = tipoVinculo;
     }
 
     public String getNome() {
@@ -234,7 +226,7 @@ public class PessoaRequestDTO {
         this.mae = mae;
     }
 
-    public EstadoCivil getEstadoCivilId() {
+    public EstadoCivil getEstadoCivil() {
         return estadoCivil;
     }
 
@@ -290,14 +282,6 @@ public class PessoaRequestDTO {
         this.dataBatismo = dataBatismo;
     }
 
-    public Integer getSituacaoId() {
-        return situacaoId;
-    }
-
-    public void setSituacaoId(Integer situacaoId) {
-        this.situacaoId = situacaoId;
-    }
-
     public String getFoto() {
         return foto;
     }
@@ -312,5 +296,13 @@ public class PessoaRequestDTO {
 
     public void setDataConversao(LocalDate dataConversao) {
         this.dataConversao = dataConversao;
+    }
+
+    public SituacaoPessoa getSituacao() {
+        return situacao;
+    }
+
+    public void setSituacao(SituacaoPessoa situacao) {
+        this.situacao = situacao;
     }
 }

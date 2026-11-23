@@ -1,6 +1,7 @@
 package br.com.adbrascosmopolis.saac_secretaria.dto.solicitacao.transferencia;
 
 import br.com.adbrascosmopolis.saac_secretaria.enumeration.TipoSolicitacao;
+import br.com.adbrascosmopolis.saac_secretaria.enumeration.situacoes.SituacaoSolicitacao;
 import br.com.adbrascosmopolis.saac_secretaria.factory.solicitacao.CriarSolicitacaoTransferenciaCommand;
 import jakarta.validation.constraints.NotNull;
 
@@ -14,8 +15,7 @@ public class SolicitacaoTransferenciaRequestDTO extends CriarSolicitacaoTransfer
 
     private String historico;
 
-    @NotNull
-    private Integer situacaoId;
+    private SituacaoSolicitacao situacao;
 
     @NotNull
     private Integer congregacaoOrigemId;
@@ -56,12 +56,13 @@ public class SolicitacaoTransferenciaRequestDTO extends CriarSolicitacaoTransfer
     }
 
     @Override
-    public Integer getSituacaoId() {
-        return situacaoId;
+    public SituacaoSolicitacao getSituacao() {
+        return situacao;
     }
 
-    public void setSituacaoId(Integer situacaoId) {
-        this.situacaoId = situacaoId;
+    @Override
+    public void setSituacao(SituacaoSolicitacao situacao) {
+        this.situacao = situacao;
     }
 
     @Override

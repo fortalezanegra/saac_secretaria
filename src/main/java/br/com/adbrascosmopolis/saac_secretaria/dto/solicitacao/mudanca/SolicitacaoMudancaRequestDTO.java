@@ -1,5 +1,6 @@
 package br.com.adbrascosmopolis.saac_secretaria.dto.solicitacao.mudanca;
 
+import br.com.adbrascosmopolis.saac_secretaria.enumeration.situacoes.SituacaoSolicitacao;
 import br.com.adbrascosmopolis.saac_secretaria.factory.solicitacao.CriarSolicitacaoMudancaCommand;
 import jakarta.validation.constraints.NotNull;
 
@@ -13,8 +14,7 @@ public class SolicitacaoMudancaRequestDTO extends CriarSolicitacaoMudancaCommand
 
     private String historico;
 
-    @NotNull
-    private Integer situacaoId;
+    private SituacaoSolicitacao situacao;
 
     @NotNull
     private Integer igrejaOrigemId;
@@ -54,13 +54,13 @@ public class SolicitacaoMudancaRequestDTO extends CriarSolicitacaoMudancaCommand
     }
 
     @Override
-    public Integer getSituacaoId() {
-        return situacaoId;
+    public SituacaoSolicitacao getSituacao() {
+        return situacao;
     }
 
     @Override
-    public void setSituacaoId(Integer situacaoId) {
-        this.situacaoId = situacaoId;
+    public void setSituacao(SituacaoSolicitacao situacao) {
+        this.situacao = situacao;
     }
 
     @Override

@@ -1,10 +1,10 @@
 package br.com.adbrascosmopolis.saac_secretaria.dto.reuniao_ministerial;
 
 import br.com.adbrascosmopolis.saac_secretaria.enumeration.TipoReuniao;
+import br.com.adbrascosmopolis.saac_secretaria.enumeration.situacoes.SituacaoReuniaoMinisterial;
 import br.com.adbrascosmopolis.saac_secretaria.models.ReuniaoMinisterial;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 public class ReuniaoMinisterialResponseDTO {
 
@@ -13,8 +13,7 @@ public class ReuniaoMinisterialResponseDTO {
     private Integer congregacaoId;
     private String congregacao;
     private LocalDate dataReuniao;
-    private Integer situacaoId;
-    private String situacao;
+    private SituacaoReuniaoMinisterial situacao;
 
     public ReuniaoMinisterialResponseDTO(
             Long reuniaoMinisterialId,
@@ -22,15 +21,13 @@ public class ReuniaoMinisterialResponseDTO {
             Integer congregacaoId,
             String congregacao,
             LocalDate dataReuniao,
-            Integer situacaoId,
-            String situacao
+            SituacaoReuniaoMinisterial situacao
     ){
         this.reuniaoMinisterialId = reuniaoMinisterialId;
         this.tipoReuniao = tipoReuniao;
         this.congregacaoId = congregacaoId;
         this.congregacao = congregacao;
         this.dataReuniao = dataReuniao;
-        this.situacaoId = situacaoId;
         this.situacao = situacao;
     }
 
@@ -43,11 +40,9 @@ public class ReuniaoMinisterialResponseDTO {
                 r.getCongregacao() != null ? r.getCongregacao().getCongregacaoId() : null,
                 r.getCongregacao() != null ? r.getCongregacao().getNome() : null,
                 r.getDataReuniao(),
-                r.getSituacao() != null ? r.getSituacao().getSituacaoId() : null,
-                r.getSituacao() != null ? r.getSituacao().getDescricao() : null
+                r.getSituacao()
         );
     }
-
 
     public Long getReuniaoMinisterialId() {
         return reuniaoMinisterialId;
@@ -89,19 +84,11 @@ public class ReuniaoMinisterialResponseDTO {
         this.dataReuniao = dataReuniao;
     }
 
-    public Integer getSituacaoId() {
-        return situacaoId;
-    }
-
-    public void setSituacaoId(Integer situacaoId) {
-        this.situacaoId = situacaoId;
-    }
-
-    public String getSituacao() {
+    public SituacaoReuniaoMinisterial getSituacao() {
         return situacao;
     }
 
-    public void setSituacao(String situacao) {
+    public void setSituacao(SituacaoReuniaoMinisterial situacao) {
         this.situacao = situacao;
     }
 }

@@ -4,6 +4,8 @@ import br.com.adbrascosmopolis.saac_secretaria.dto.pessoa.PessoaDropdownDTO;
 import br.com.adbrascosmopolis.saac_secretaria.dto.pessoa.PessoaEditDTO;
 import br.com.adbrascosmopolis.saac_secretaria.dto.pessoa.PessoaRequestDTO;
 import br.com.adbrascosmopolis.saac_secretaria.dto.pessoa.PessoaResponseDTO;
+import br.com.adbrascosmopolis.saac_secretaria.enumeration.TipoVinculo;
+import br.com.adbrascosmopolis.saac_secretaria.enumeration.situacoes.SituacaoPessoa;
 import br.com.adbrascosmopolis.saac_secretaria.models.Historico;
 import br.com.adbrascosmopolis.saac_secretaria.models.Pessoa;
 import br.com.adbrascosmopolis.saac_secretaria.repository.*;
@@ -25,8 +27,6 @@ import java.util.stream.Collectors;
 public class PessoaService {
 
     @Autowired
-    private final TipoVinculoRepository tipoVinculoRepository;
-    @Autowired
     private final PessoaRepository pessoaRepository;
     @Autowired
     private final CongregacaoRepository congregacaoRepository;
@@ -41,7 +41,6 @@ public class PessoaService {
     private final HistoricoRepository historicoRepository;
 
     public PessoaService(
-            TipoVinculoRepository tipoVinculoRepository,
             PessoaRepository pessoaRepository,
             CongregacaoRepository congregacaoRepository,
             CargoMinisterialRepository cargoMinisterialRepository,
@@ -49,7 +48,6 @@ public class PessoaService {
             ProfissaoRepository profissaoRepository,
             SituacaoRepository situacaoRepository,
             HistoricoRepository historicoRepository){
-        this.tipoVinculoRepository = tipoVinculoRepository;
         this.pessoaRepository = pessoaRepository;
         this.congregacaoRepository = congregacaoRepository;
         this.cargoMinisterialRepository = cargoMinisterialRepository;
@@ -61,7 +59,7 @@ public class PessoaService {
 
     // Dropdown/ComboBox By Congregacao And Situacao
     public List<PessoaDropdownDTO> dropdownByCongregacaoAndSituacao(PessoaRequestDTO dto){
-        List<Pessoa> pessoa = pessoaRepository.listarPessoasPorCongregacaoESituacao(dto.getCongregacaoId(), dto.getSituacaoId());
+        List<Pessoa> pessoa = pessoaRepository.listarPessoasPorCongregacaoESituacao(dto.getCongregacaoId(), dto.getSituacao());
 
         return pessoa.stream()
                 .map(p -> new PessoaDropdownDTO(
@@ -89,7 +87,7 @@ public class PessoaService {
         return pessoas.stream()
                 .map(p -> new PessoaResponseDTO(
                         p.getPessoaId(),
-                        p.getTipoVinculo() != null ? p.getTipoVinculo().getDescricao() : null,
+                        p.getTipoVinculo(),
                         p.getNome(),
                         p.getSexo(),
                         p.getDataNascimento(),
@@ -108,9 +106,9 @@ public class PessoaService {
                         p.getCongregacao() != null ? p.getCongregacao().getNome() : null,
                         p.getCargoMinisterial() != null ? p.getCargoMinisterial().getDescricao() : null,
                         p.getDataBatismo(),
-                        p.getSituacao() != null ? p.getSituacao().getDescricao() : null,
                         p.getFoto(),
-                        p.getDataConversao()
+                        p.getDataConversao(),
+                        p.getSituacao()
                 )).toList();
     }
 
@@ -120,7 +118,7 @@ public class PessoaService {
         return pessoas.stream()
                 .map(p -> new PessoaResponseDTO(
                         p.getPessoaId(),
-                        p.getTipoVinculo() != null ? p.getTipoVinculo().getDescricao() : null,
+                        p.getTipoVinculo(),
                         p.getNome(),
                         p.getSexo(),
                         p.getDataNascimento(),
@@ -139,19 +137,19 @@ public class PessoaService {
                         p.getCongregacao() != null ? p.getCongregacao().getNome() : null,
                         p.getCargoMinisterial() != null ? p.getCargoMinisterial().getDescricao() : null,
                         p.getDataBatismo(),
-                        p.getSituacao() != null ? p.getSituacao().getDescricao() : null,
                         p.getFoto(),
-                        p.getDataConversao()
+                        p.getDataConversao(),
+                        p.getSituacao()
                 )).toList();
     }
 
     // List By Vinculo and Situacao
-    public List<PessoaResponseDTO>  listPessoaByVinculoAndSituacao(String vinculo, String situacao){
+    public List<PessoaResponseDTO>  listPessoaByVinculoAndSituacao(TipoVinculo vinculo, SituacaoPessoa situacao){
         List<Pessoa> pessoas = pessoaRepository.findPessoaByVinculoAndSituacao(vinculo, situacao);
         return pessoas.stream()
                 .map(p -> new PessoaResponseDTO(
                         p.getPessoaId(),
-                        p.getTipoVinculo() != null ? p.getTipoVinculo().getDescricao() : null,
+                        p.getTipoVinculo(),
                         p.getNome(),
                         p.getSexo(),
                         p.getDataNascimento(),
@@ -170,9 +168,9 @@ public class PessoaService {
                         p.getCongregacao() != null ? p.getCongregacao().getNome() : null,
                         p.getCargoMinisterial() != null ? p.getCargoMinisterial().getDescricao() : null,
                         p.getDataBatismo(),
-                        p.getSituacao() != null ? p.getSituacao().getDescricao() : null,
                         p.getFoto(),
-                        p.getDataConversao()
+                        p.getDataConversao(),
+                        p.getSituacao()
                 )).toList();
     }
 
@@ -184,7 +182,7 @@ public class PessoaService {
         return pessoas.stream()
                 .map(p -> new PessoaResponseDTO(
                         p.getPessoaId(),
-                        p.getTipoVinculo() != null ? p.getTipoVinculo().getDescricao() : null,
+                        p.getTipoVinculo(),
                         p.getNome(),
                         p.getSexo(),
                         p.getDataNascimento(),
@@ -203,9 +201,9 @@ public class PessoaService {
                         p.getCongregacao() != null ? p.getCongregacao().getNome() : null,
                         p.getCargoMinisterial() != null ? p.getCargoMinisterial().getDescricao() : null,
                         p.getDataBatismo(),
-                        p.getSituacao() != null ? p.getSituacao().getDescricao() : null,
                         p.getFoto(),
-                        p.getDataConversao()
+                        p.getDataConversao(),
+                        p.getSituacao()
                 )).toList();
     }
 
@@ -223,7 +221,7 @@ public class PessoaService {
         return pessoas.stream()
                 .map(p -> new PessoaResponseDTO(
                         p.getPessoaId(),
-                        p.getTipoVinculo() != null ? p.getTipoVinculo().getDescricao() : null,
+                        p.getTipoVinculo(),
                         p.getNome(),
                         p.getSexo(),
                         p.getDataNascimento(),
@@ -242,9 +240,9 @@ public class PessoaService {
                         p.getCongregacao() != null ? p.getCongregacao().getNome() : null,
                         p.getCargoMinisterial() != null ? p.getCargoMinisterial().getDescricao() : null,
                         p.getDataBatismo(),
-                        p.getSituacao() != null ? p.getSituacao().getDescricao() : null,
                         p.getFoto(),
-                        p.getDataConversao()
+                        p.getDataConversao(),
+                        p.getSituacao()
                 )).toList();
     }
 
@@ -259,7 +257,7 @@ public class PessoaService {
                 .matching()
                 .withIgnorePaths(
                         "pessoaId",
-                        "tipoVinculoId",
+                        "tipoVinculo",
                         //"nome",
                         "sexoId",
                         "dataNascimento",
@@ -304,20 +302,11 @@ public class PessoaService {
         }
 
         // 🔎 vínculo por ID (melhor que string)
-        if (request.getTipoVinculoId() != null) {
+        if (request.getTipoVinculo() != null) {
             specs.add((root, query, cb) ->
                     cb.equal(
-                            root.get("tipoVinculo").get("tipoVinculoId"),
-                            request.getTipoVinculoId()
-                    ));
-        }
-
-        // 🔎 situação por ID
-        if (request.getSituacaoId() != null) {
-            specs.add((root, query, cb) ->
-                    cb.equal(
-                            root.get("situacao").get("situacaoId"),
-                            request.getSituacaoId()
+                            root.get("tipoVinculo"),
+                            request.getTipoVinculo()
                     ));
         }
 
@@ -331,6 +320,7 @@ public class PessoaService {
     public PessoaResponseDTO create(PessoaRequestDTO dto) {
         Pessoa pessoa = new Pessoa();
 
+        pessoa.setTipoVinculo(dto.getTipoVinculo());
         pessoa.setNome(dto.getNome());
         pessoa.setSexo(dto.getSexo());
         pessoa.setDataNascimento(dto.getDataNascimento());
@@ -340,21 +330,15 @@ public class PessoaService {
         pessoa.setCpf(dto.getCpf());
         pessoa.setPai(dto.getPai());
         pessoa.setMae(dto.getMae());
-        pessoa.setEstadoCivil(dto.getEstadoCivilId());
+        pessoa.setEstadoCivil(dto.getEstadoCivil());
         pessoa.setConjuge(dto.getConjuge());
         pessoa.setCertidao(dto.getCertidao());
         pessoa.setTipoSanguineo(dto.getTipoSanguineo());
         pessoa.setDataBatismo(dto.getDataBatismo());
         pessoa.setFoto(dto.getFoto());
+        pessoa.setSituacao(dto.getSituacao());
 
         // Buscar entidades relacionadas pelo ID
-        if (dto.getTipoVinculoId() != null) {
-            pessoa.setTipoVinculo(
-                    tipoVinculoRepository.findById(dto.getTipoVinculoId())
-                            .orElseThrow(() -> new RuntimeException("Tipo Vinculo não encontrado"))
-            );
-        }
-
         if (dto.getCongregacaoId() != null) {
             pessoa.setCongregacao(
                     congregacaoRepository.findById(dto.getCongregacaoId())
@@ -380,13 +364,6 @@ public class PessoaService {
             pessoa.setProfissao(
                     profissaoRepository.findById(dto.getProfissaoId())
                             .orElseThrow(() -> new RuntimeException("Profissao não encontrada"))
-            );
-        }
-
-        if (dto.getSituacaoId() != null) {
-            pessoa.setSituacao(
-                    situacaoRepository.findById(dto.getSituacaoId())
-                            .orElseThrow(() -> new RuntimeException("Situacao não encontrada"))
             );
         }
 
@@ -417,6 +394,7 @@ public class PessoaService {
                 .orElseThrow(() -> new RuntimeException("Pessoa não encontrada"));
 
         // Campos simples
+        result.setTipoVinculo(dto.getTipoVinculo());
         result.setNome(dto.getNome());
         result.setDataNascimento(dto.getDataNascimento());
         result.setTelefone(dto.getTelefone());
@@ -430,17 +408,13 @@ public class PessoaService {
         result.setTipoSanguineo(dto.getTipoSanguineo());
         result.setDataBatismo(dto.getDataBatismo());
         result.setMae(dto.getMae());
+        result.setSituacao(dto.getSituacao());
 
         if(dto.getFoto() != null && !dto.getFoto().trim().isEmpty()){
             result.setFoto(dto.getFoto());
         }
 
         // Relacionamentos (CORRETO)
-        if (dto.getTipoVinculoId() != null)
-            result.setTipoVinculo(
-                    tipoVinculoRepository.getReferenceById(dto.getTipoVinculoId())
-            );
-
         if (dto.getFormacaoId() != null)
             result.setFormacao(
                     formacaoRepository.getReferenceById(dto.getFormacaoId())
@@ -459,11 +433,6 @@ public class PessoaService {
         if (dto.getCargoMinisterialId() != null)
             result.setCargoMinisterial(
                     cargoMinisterialRepository.getReferenceById(dto.getCargoMinisterialId())
-            );
-
-        if (dto.getSituacaoId() != null)
-            result.setSituacao(
-                    situacaoRepository.getReferenceById(dto.getSituacaoId())
             );
 
         var pessoaAtualizada =  pessoaRepository.save(result);

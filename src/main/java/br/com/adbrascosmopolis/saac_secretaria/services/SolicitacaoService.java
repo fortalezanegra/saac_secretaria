@@ -47,9 +47,9 @@ public class SolicitacaoService {
         this.situacaoRepository = situacaoRepository;
     }
 
-    // Dropdown Solicitações Aguardando Reuniao e Reagendadas
-    public List<SolicitacaoDropdownDTO> listDropdown() {
-        List<Solicitacao> solicitacaoes = solicitacaoRepository.dropdown();
+    // Listar Solicitações elegiveis
+    public List<SolicitacaoDropdownDTO> listarPauta() {
+        List<Solicitacao> solicitacaoes = solicitacaoRepository.searchRequestsForBuildingAgenda();
 
         return solicitacaoes.stream()
                 .map(s -> new SolicitacaoDropdownDTO(
@@ -74,6 +74,7 @@ public class SolicitacaoService {
 
         // *** Sets ***
         solicitacao.setHistorico(dto.getHistorico());
+        solicitacao.setSituacao(dto.getSituacao());
 
         //Relacionamentos
 
@@ -88,13 +89,6 @@ public class SolicitacaoService {
         if(dto.getPessoaId() != null){
             solicitacao.setPessoa(
                     pessoaRepository.getReferenceById(dto.getPessoaId())
-            );
-        }
-
-        //Situacao
-        if(dto.getSituacaoId() != null){
-            solicitacao.setSituacao(
-                    situacaoRepository.getReferenceById(dto.getSituacaoId())
             );
         }
 
@@ -128,6 +122,7 @@ public class SolicitacaoService {
 
         // *** Sets ***
         solicitacao.setHistorico(dto.getHistorico());
+        solicitacao.setSituacao(dto.getSituacao());
 
         //Relacionamentos
 
@@ -142,13 +137,6 @@ public class SolicitacaoService {
         if(dto.getPessoaId() != null){
             solicitacao.setPessoa(
                     pessoaRepository.getReferenceById(dto.getPessoaId())
-            );
-        }
-
-        //Situacao
-        if(dto.getSituacaoId() != null){
-            solicitacao.setSituacao(
-                    situacaoRepository.getReferenceById(dto.getSituacaoId())
             );
         }
 
@@ -190,6 +178,7 @@ public class SolicitacaoService {
         // *** Sets ***
         solicitacao.setTipoSolicitacao(dto.getTipoSolicitacao());
         solicitacao.setHistorico(dto.getHistorico());
+        solicitacao.setSituacao(dto.getSituacao());
 
         //Relacionamentos
 
@@ -204,13 +193,6 @@ public class SolicitacaoService {
         if(dto.getPessoaId() != null){
             solicitacao.setPessoa(
                     pessoaRepository.getReferenceById(dto.getPessoaId())
-            );
-        }
-
-        //Situacao
-        if(dto.getSituacaoId() != null){
-            solicitacao.setSituacao(
-                    situacaoRepository.getReferenceById(dto.getSituacaoId())
             );
         }
 
@@ -231,6 +213,7 @@ public class SolicitacaoService {
         // *** Sets ***
         solicitacao.setTipoSolicitacao(dto.getTipoSolicitacao());
         solicitacao.setHistorico(dto.getHistorico());
+        solicitacao.setSituacao(dto.getSituacao());
 
         //Relacionamentos
 
@@ -245,13 +228,6 @@ public class SolicitacaoService {
         if(dto.getPessoaId() != null){
             solicitacao.setPessoa(
                     pessoaRepository.getReferenceById(dto.getPessoaId())
-            );
-        }
-
-        //Situacao
-        if(dto.getSituacaoId() != null){
-            solicitacao.setSituacao(
-                    situacaoRepository.getReferenceById(dto.getSituacaoId())
             );
         }
 
@@ -272,6 +248,7 @@ public class SolicitacaoService {
         // *** Sets ***
         solicitacao.setTipoSolicitacao(dto.getTipoSolicitacao());
         solicitacao.setHistorico(dto.getHistorico());
+        solicitacao.setSituacao(dto.getSituacao());
 
         //Relacionamentos
 
@@ -286,13 +263,6 @@ public class SolicitacaoService {
         if(dto.getPessoaId() != null){
             solicitacao.setPessoa(
                     pessoaRepository.getReferenceById(dto.getPessoaId())
-            );
-        }
-
-        //Situacao
-        if(dto.getSituacaoId() != null){
-            solicitacao.setSituacao(
-                    situacaoRepository.getReferenceById(dto.getSituacaoId())
             );
         }
 

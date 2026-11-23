@@ -1,6 +1,7 @@
 package br.com.adbrascosmopolis.saac_secretaria.dto.solicitacao.reconciliacao;
 
 import br.com.adbrascosmopolis.saac_secretaria.enumeration.TipoSolicitacao;
+import br.com.adbrascosmopolis.saac_secretaria.enumeration.situacoes.SituacaoSolicitacao;
 import br.com.adbrascosmopolis.saac_secretaria.factory.solicitacao.CriarSolicitacaoReconciliacaoCommand;
 import jakarta.validation.constraints.NotNull;
 
@@ -17,8 +18,7 @@ public class SolicitacaoReconciliacaoRequestDTO extends CriarSolicitacaoReconcil
 
     private String historico;
 
-    @NotNull
-    private Integer situacaoId;
+    private SituacaoSolicitacao situacao;
 
     @Override
     public Integer getCongregacaoSolicitanteId() {
@@ -60,12 +60,12 @@ public class SolicitacaoReconciliacaoRequestDTO extends CriarSolicitacaoReconcil
     }
 
     @Override
-    public Integer getSituacaoId() {
-        return situacaoId;
+    public SituacaoSolicitacao getSituacao() {
+        return situacao;
     }
 
     @Override
-    public void setSituacaoId(Integer situacaoId) {
-        this.situacaoId = situacaoId;
+    public void setSituacao(SituacaoSolicitacao situacao) {
+        this.situacao = situacao;
     }
 }

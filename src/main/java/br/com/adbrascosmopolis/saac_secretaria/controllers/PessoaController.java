@@ -5,6 +5,8 @@ import br.com.adbrascosmopolis.saac_secretaria.dto.pessoa.PessoaDropdownDTO;
 import br.com.adbrascosmopolis.saac_secretaria.dto.pessoa.PessoaEditDTO;
 import br.com.adbrascosmopolis.saac_secretaria.dto.pessoa.PessoaRequestDTO;
 import br.com.adbrascosmopolis.saac_secretaria.dto.pessoa.PessoaResponseDTO;
+import br.com.adbrascosmopolis.saac_secretaria.enumeration.TipoVinculo;
+import br.com.adbrascosmopolis.saac_secretaria.enumeration.situacoes.SituacaoPessoa;
 import br.com.adbrascosmopolis.saac_secretaria.models.Pessoa;
 import br.com.adbrascosmopolis.saac_secretaria.services.PessoaService;
 import org.springframework.data.domain.Page;
@@ -62,8 +64,8 @@ public class PessoaController {
     @GetMapping("/{vinculo}/{situacao}")
     @PreAuthorize("hasAuthority('PERMISSION_SECRETARIA_MEMBRO_READ_GLOBAL') or hasAuthority('PERMISSION_SECRETARIA_MEMBRO_READ_LOCAL')")
     public ResponseEntity<List<PessoaResponseDTO>> getPessoaByVinculoAndSituacao(
-            @PathVariable("vinculo") String vinculo,
-            @PathVariable ("situacao") String situacao) {
+            @PathVariable("vinculo") TipoVinculo vinculo,
+            @PathVariable ("situacao") SituacaoPessoa situacao) {
         List<PessoaResponseDTO> membros = _service.listPessoaByVinculoAndSituacao(vinculo, situacao);
         return ResponseEntity.ok(membros);
     }
