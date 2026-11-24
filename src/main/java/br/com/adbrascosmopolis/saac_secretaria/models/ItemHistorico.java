@@ -1,5 +1,7 @@
 package br.com.adbrascosmopolis.saac_secretaria.models;
 
+import br.com.adbrascosmopolis.saac_secretaria.enumeration.EstadoCivil;
+import br.com.adbrascosmopolis.saac_secretaria.enumeration.TipoHistorico;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
@@ -19,7 +21,11 @@ public class ItemHistorico {
     private Historico historico;
 
     @ManyToOne(fetch = FetchType.LAZY) // ou EAGER se quiser carregar junto
-    @JoinColumn(name = "tipoHistoricoId", referencedColumnName = "tipoHistoricoId")
+    @JoinColumn(name = "solicitacaoId", referencedColumnName = "solicitacaoId")
+    private Solicitacao solicitacao;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "tipoHistorico")
     private TipoHistorico tipoHistorico;
 
     @Column(name = "descricao", nullable = false)
@@ -54,6 +60,14 @@ public class ItemHistorico {
 
     public void setHistorico(Historico historico) {
         this.historico = historico;
+    }
+
+    public Solicitacao getSolicitacao() {
+        return solicitacao;
+    }
+
+    public void setSolicitacao(Solicitacao solicitacao) {
+        this.solicitacao = solicitacao;
     }
 
     public TipoHistorico getTipoHistorico() {

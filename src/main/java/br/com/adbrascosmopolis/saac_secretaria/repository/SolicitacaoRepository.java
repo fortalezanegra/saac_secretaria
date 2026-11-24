@@ -1,6 +1,7 @@
 package br.com.adbrascosmopolis.saac_secretaria.repository;
 
 import br.com.adbrascosmopolis.saac_secretaria.enumeration.situacoes.SituacaoReuniaoMinisterial;
+import br.com.adbrascosmopolis.saac_secretaria.enumeration.situacoes.SituacaoSolicitacao;
 import br.com.adbrascosmopolis.saac_secretaria.models.*;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -105,7 +106,6 @@ public interface SolicitacaoRepository extends JpaRepository<Solicitacao, Long> 
             @Param("situacao") SituacaoReuniaoMinisterial situacao
     );
 
-
     /* Search Requests (Solicitações) For Building Agenda */
     @Query("""
     SELECT s
@@ -113,5 +113,26 @@ public interface SolicitacaoRepository extends JpaRepository<Solicitacao, Long> 
     WHERE s.reuniaoMinisterial IS NULL
     """)
     List<Solicitacao> searchRequestsForBuildingAgenda();
+
+    /* Search Requests (Solicitações) For Building Agenda */
+    @Query("""
+    SELECT s
+    FROM Solicitacao s
+    WHERE s.reuniaoMinisterial IS NULL
+    AND s.reuniaoMinisterial.reuniaoMinisterialId = :id
+    AND s.situacao = :situacao
+    """)
+    List<Solicitacao> searchRequestsForReuniaoAndSituacao(
+            @Param("id") Long id,
+            @Param("situacao")SituacaoSolicitacao sitaucao
+    );
+
+
+    boolean existsBySolicitacaoId(Long solicitacaoId);
+
+
+
+
+
 
 }
